@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
+import Room from './Room'
 
 import {
   ViroARScene,
@@ -12,6 +13,7 @@ import {
   ViroPortal,
   ViroPortalScene,
   Viro3DObject,
+  ViroBox,
   Text,
   TouchableHighlight,
 } from 'react-viro';
@@ -49,7 +51,13 @@ export default class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
+            <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
+            <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
+            <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
+            <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
 
+            <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
+            <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
         </ViroPortalScene>
         {/* <Viro360Image source={require("./portal_res/360_island.jpg")} /> */}
         <ViroText
