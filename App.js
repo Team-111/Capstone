@@ -23,7 +23,7 @@ import {
 
 import {getUsers} from './server/api/users'
 
-// getUsers()
+
 /*
  TODO: Insert your API key below
  */
@@ -57,6 +57,9 @@ export default class ViroSample extends Component {
     this._getScoreNavigator = this._getScoreNavigator.bind(this);
     this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
     this._exitViro = this._exitViro.bind(this);
+  }
+  componentDidMount() {
+    getUsers()
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()

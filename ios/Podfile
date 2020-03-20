@@ -3,6 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 target 'Capstone' do
   # Pods for Capstone
+
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -37,6 +38,10 @@ target 'Capstone' do
   target 'CapstoneTests' do
     inherit! :search_paths
     # Pods for testing
+      # Added by Danielle
+  pod 'FirebaseCore', :git => 'https://github.com/firebase/firebase-ios-sdk.git', :branch => 'master'
+  pod 'FirebaseFirestore', :git => 'https://github.com/firebase/firebase-ios-sdk.git', :branch => 'master'
+  # End additions
   end
 
   use_native_modules!

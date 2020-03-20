@@ -6,7 +6,9 @@
  */
 
 #import "AppDelegate.h"
-
+//ADDED BY DANIELLE
+#import <Firebase.h>
+//END ADDITION
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -15,6 +17,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  //ADDED BY DANIELLE
+  [FIRApp configure];
+  //END ADDITION
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Capstone"

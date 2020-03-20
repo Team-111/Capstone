@@ -11,11 +11,10 @@
     "watchmanStart": "watchman watch-del-all && rm -rf node_modules/ && yarn cache clean && yarn install && yarn start -- --reset-cache"
   },
   "dependencies": {
-    "@react-native-firebase/app": "^6.3.4",
-    "@react-native-firebase/firestore": "^6.3.4",
     "firebase": "^7.12.0",
     "react": "16.9.0",
     "react-native": "0.59.9",
+    "react-native-firebase": "^5.6.0",
     "react-viro": "2.17.0"
   },
   "devDependencies": {
