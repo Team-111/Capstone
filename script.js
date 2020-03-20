@@ -8,78 +8,78 @@ const SOLVED = 'SolveCryptex';
 // Stage variables
 // --------------------------------------
 
-let stg;
-let sw;
-let sh;
+var stg;
+var sw;
+var sh;
 
-let vw;
-let vh;
+var vw;
+var vh;
 
 // --------------------------------------
 // DOM variables
 // --------------------------------------
 
-let container = document.getElementById('container');
-let stage = document.getElementById('stage');
-let codeElement = document.getElementById('code');
-let charElements = codeElement.getElementsByClassName('char');
-let obj = document.getElementById('object');
-let ringElements = obj.getElementsByClassName('ring');
-let ring = document.getElementById('ring1');
+var container = document.getElementById('container');
+var stage = document.getElementById('stage');
+var codeElement = document.getElementById('code');
+var charElements = codeElement.getElementsByClassName('char');
+var obj = document.getElementById('object');
+var ringElements = obj.getElementsByClassName('ring');
+var ring = document.getElementById('ring1');
 
 // --------------------------------------
 // Cryptex rings variables
 // --------------------------------------
 
-let numRings = 7;
-let ringWidth = 36;
-let ringSpacing = 60;
+var numRings = 7;
+var ringWidth = 36;
+var ringSpacing = 60;
 
-let strings = [];
-let numbers = {};
-let chars = [];
-let codeChars = [];
-let codeTexts = [];
-let codeArray = [];
-let rings = [];
-let buttons = [];
+var strings = [];
+var numbers = {};
+var chars = [];
+var codeChars = [];
+var codeTexts = [];
+var codeArray = [];
+var rings = [];
+var buttons = [];
 
-let hint = '       ';
-let solution = '8675309';
-let success = false;
+var hint = '       ';
+var solution = '8675309';
+var success = false;
 
 // --------------------------------------
 // Keyboard input tracking variables
 // --------------------------------------
 
-let numChars = numRings;
+var numChars = numRings;
 
-let code;
+var code;
 
-let key;
-let charSelected = 36;
-let ringSelected = 0;
-let ringLastSelected = 0;
-let inputMode = 'enter';
+var key;
+var charSelected = 36;
+var ringSelected = 0;
+var ringLastSelected = 0;
+var inputMode = 'enter';
 
 // --------------------------------------
 // Drag variables
 // --------------------------------------
 
-let cylinders = [];
-let currentCylinder;
-let mouseY = 0;
-let initMouseY;
-let ringSelectedInitRotation;
-let previousMouseY;
-let isMouseDown = false;
-let dragRing = false;
+var cylinders = [];
+var currentCylinder;
+var mouseY = 0;
+var initMouseY;
+var ringSelectedInitRotation;
+var previousMouseY;
+var isMouseDown = false;
+var dragRing = false;
 
 // --------------------------------------
 // Cryptex hint messages
 // --------------------------------------
 
-let hintMessages;
+var hintMessages;
 
 // --------------------------------------
 // Initialize Cryptex
@@ -135,7 +135,7 @@ function initializeRings() {
 }
 
 function drawCodeRings() {
-  for (let i = 0; i < numRings; i++) {
+  for (var i = 0; i < numRings; i++) {
     // Create arrays for each ring
     codeChars[i] = [];
     codeTexts[i] = [];
@@ -149,17 +149,17 @@ function drawCodeRings() {
 }
 
 function drawRing(ringIndex) {
-  let ring = document.createElement('div');
+  var ring = document.createElement('div');
 
   ring.id = 'ring' + (ringIndex + 1);
   ring.className = 'ring backfaces';
   ring.addEventListener('click', objectPressHandler);
 
-  for (let i = 0; i < strings.length; i++) {
-    let plane = document.createElement('div');
+  for (var i = 0; i < strings.length; i++) {
+    var plane = document.createElement('div');
 
     // set text for each plane
-    let char = strings[i];
+    var char = strings[i];
     plane.innerText = char;
     plane.setAttribute('unselectable', 'on');
 
@@ -173,7 +173,7 @@ function drawRing(ringIndex) {
     }
 
     // set selected class for first item
-    if (i == 0) {
+    if (i === 0) {
       addClassName(plane, 'selected');
     }
 
@@ -200,10 +200,10 @@ function lookupNumber(num) {
 
 function formatCode() {
   codeElement.innerText = '';
-  for (let i = 0; i < hint.length; i++) {
-    let codeChar = document.createElement('span');
+  for (var i = 0; i < hint.length; i++) {
+    var codeChar = document.createElement('span');
     codeChar.className = 'char';
-    if (i == 0) {
+    if (i === 0) {
       codeChar.className += ' selected';
     }
     codeChar.setAttribute('data-index', i);
@@ -224,30 +224,32 @@ function trackKeyboardInput() {
 }
 
 function initCodeArray() {
-  for (let i = 0; i < hint.length; i++) {
-    if (hint.charAt(i) == ' ') {
-      codeArray[i].index = 36;
-      codeArray[i].char = ' ';
+  for (var i = 0; i < hint.length; i++) {
+    if (hint.charAt(i) === ' ') {
+      codeArray[i]['index'] = 36;
+      codeArray[i]['char'] = ' ';
     } else {
-      for (let j = 0; j < strings.length; j++) {
-        if (hint.charAt(i) == strings[j]) {
-          codeArray[i].index = j;
+      for (var j = 0; j < strings.length; j++) {
+        if (hint.charAt(i) === strings[j]) {
+          codeArray[i]['index'] = j;
         }
       }
-      codeArray[i].char = hint.charAt(i);
+      codeArray[i]['char'] = hint.charAt(i);
     }
   }
 }
 
 function displayCodeArray() {
-  for (let i = 0; i < codeArray.length; i++) {
+  for (var i = 0; i < codeArray.length; i++) {
     // replace spaces with underscores
-    if (codeArray[i].char == ' ') {
+    if (codeArray[i].char === ' ') {
       charElements[i].innerText = '_';
     }
     // otherwise display each character
     // else code = codeArray[i].char;
-    else charElements[i].innerText = codeArray[i].char;
+    else {
+      charElements[i].innerText = codeArray[i].char;
+    }
   }
   // test whether the code has been solved
   code = codeElement.innerText;
@@ -263,7 +265,7 @@ function onKeyPress(e) {
 
   // Capital letters A - Z are character codes 65 - 90
   if (key >= 65 && key <= 90) {
-    let i = key - 65;
+    var i = key - 65;
 
     inputMode = 'enter';
     charSelected = i;
@@ -272,7 +274,7 @@ function onKeyPress(e) {
 
   // Numbers 0 - 9 are character codes 48 - 57
   else if (key >= 48 && key <= 57) {
-    let j = key - 48 + 26;
+    var j = key - 48 + 26;
 
     inputMode = 'enter';
     charSelected = j;
@@ -314,19 +316,21 @@ function onKeyPress(e) {
 function replaceCodeChar(e) {
   // if first character of code is empty,
   // don't play sound on backspace
-  // if (inputMode == "delete" && ringSelected == 0 && codeArray[0].index == 36) {}
+  // if (inputMode === "delete" && ringSelected === 0 && codeArray[0].index === 36) {}
   // else playSound(_typewriter);
 
   // Store selected character into code array
-  let char = String.fromCharCode(e.keyCode);
+  var char = String.fromCharCode(e.keyCode);
   codeArray[ringSelected].index = charSelected;
 
   // Replace selected character with space
-  if (inputMode == 'delete') {
+  if (inputMode === 'delete') {
     codeArray[ringSelected].char = '_';
   }
   // Otherwise replace with selected character
-  else codeArray[ringSelected].char = char;
+  else {
+    codeArray[ringSelected].char = char;
+  }
 
   displayRingCharSelected();
   displayCodeArray();
@@ -335,10 +339,10 @@ function replaceCodeChar(e) {
 }
 
 function updateCodeChar() {
-  let char = strings[charSelected];
+  var char = strings[charSelected];
 
   // update if the selected character has changed
-  if (charSelected != codeArray[ringSelected].index) {
+  if (charSelected !== codeArray[ringSelected].index) {
     codeArray[ringSelected].index = charSelected;
     codeArray[ringSelected].char = char;
 
@@ -366,8 +370,8 @@ function showCodeCharSelected() {
 }
 
 function displaySelectCharElements() {
-  for (let i = 0; i < charElements.length; i++) {
-    if (i == ringSelected) {
+  for (var i = 0; i < charElements.length; i++) {
+    if (i === ringSelected) {
       addClassName(charElements[i], 'selected');
     } else {
       removeClassName(charElements[i], 'selected');
@@ -380,7 +384,7 @@ function displaySelectCharElements() {
 // --------------------------------------
 
 function testCode() {
-  if (code == solution) {
+  if (code === solution) {
     success = true;
     successfullyDecoded();
   }
@@ -403,20 +407,21 @@ function displaySuccessMessage() {
 // --------------------------------------
 
 function rotateRing() {
-  let targetRotation = (codeArray[ringSelected].index * 360) / strings.length;
+  var targetRotation = (codeArray[ringSelected].index * 360) / strings.length;
   rotateElement(ringElements[ringSelected], targetRotation);
 }
 
 function updateRingRotation(ringNum) {
-  let targetRotation = (codeArray[ringNum].index * 360) / strings.length;
+  var targetRotation = (codeArray[ringNum].index * 360) / strings.length;
   rings[ringNum].rotationX = targetRotation;
   rotateElement(ringElements[ringSelected], targetRotation);
 }
 
 // https://stackoverflow.com/questions/19618745/css3-rotate-transition-doesnt-take-shortest-way
 function rotateElement(element, nR) {
-  let rot = rot || 0; // if rot undefined or 0, make 0, else rot
-  let aR = rot % 360;
+  var aR;
+  var rot = rot || 0; // if rot undefined or 0, make 0, else rot
+  var aR = rot % 360;
   if (aR < 0) {
     aR += 360;
   }
@@ -432,16 +437,16 @@ function rotateElement(element, nR) {
 
 function selectRing() {
   // select ring after replacing character
-  if (inputMode == 'enter') {
+  if (inputMode === 'enter') {
     selectNextRing();
-  } else if (inputMode == 'delete') {
+  } else if (inputMode === 'delete') {
     selectPreviousRing();
   }
 }
 
 function selectPreviousRing() {
   if (ringSelected > 0) {
-    if (inputMode == 'select') {
+    if (inputMode === 'select') {
       // playSound(_click, .1);
     }
     ringLastSelected = ringSelected;
@@ -453,7 +458,7 @@ function selectPreviousRing() {
 
 function selectNextRing() {
   if (ringSelected < numRings - 1) {
-    if (inputMode == 'select') {
+    if (inputMode === 'select') {
       // playSound(_click, .1);
     }
     ringLastSelected = ringSelected;
@@ -464,7 +469,7 @@ function selectNextRing() {
 }
 
 function ringUp() {
-  let ringRotation = rings[ringSelected].rotationX - 10;
+  var ringRotation = rings[ringSelected].rotationX - 10;
   ringRotation %= 360;
   rings[ringSelected].rotationX = stepRotation(ringRotation);
 
@@ -472,7 +477,7 @@ function ringUp() {
 }
 
 function ringDown() {
-  let ringRotation = rings[ringSelected].rotationX + 10;
+  var ringRotation = rings[ringSelected].rotationX + 10;
   ringRotation %= 360;
   rings[ringSelected].rotationX = stepRotation(ringRotation);
 
@@ -501,18 +506,18 @@ function displayRingCharSelected() {
 }
 
 function displayCharSelected() {
-  if (codeArray[ringSelected].index != 36) {
-    let index = codeArray[ringSelected].index;
-    let char = codeChars[ringSelected][index];
-    let txt = codeTexts[ringSelected][index];
-    let ring = ringElements[ringSelected];
+  if (codeArray[ringSelected].index !== 36) {
+    var index = codeArray[ringSelected].index;
+    var char = codeChars[ringSelected][index];
+    var txt = codeTexts[ringSelected][index];
+    var ring = ringElements[ringSelected];
     displaySelectedRingCharacter(ringSelected, index);
   }
 }
 
 function displaySelectRingElement() {
-  for (let i = 0; i < ringElements.length; i++) {
-    if (i == ringSelected) {
+  for (var i = 0; i < ringElements.length; i++) {
+    if (i === ringSelected) {
       addClassName(ringElements[i], 'select');
     } else {
       removeClassName(ringElements[i], 'select');
@@ -521,8 +526,8 @@ function displaySelectRingElement() {
 }
 
 function displaySelectedRingCharacter(ringNum, index) {
-  for (let i = 0; i < codeChars[ringNum].length; i++) {
-    if (i == index) {
+  for (var i = 0; i < codeChars[ringNum].length; i++) {
+    if (i === index) {
       addClassName(codeChars[ringNum][i], 'selected');
     } else {
       removeClassName(codeChars[ringNum][i], 'selected');
@@ -542,20 +547,20 @@ function resetRingLastSelected() {
 }
 
 function resetChars(ringNum) {
-  for (let i = 0; i < strings.length; i++) {
-    let char = codeChars[ringNum][i];
-    let txt = codeTexts[ringNum][i];
+  for (var i = 0; i < strings.length; i++) {
+    var char = codeChars[ringNum][i];
+    var txt = codeTexts[ringNum][i];
   }
 }
 
 function resetAllRings() {
-  for (let i = 0; i < numRings; i++) {
+  for (var i = 0; i < numRings; i++) {
     removeClassName(ringElements[i], 'select');
   }
 }
 
 function highlightAllRings() {
-  for (let i = 0; i < numRings; i++) {
+  for (var i = 0; i < numRings; i++) {
     addClassName(ringElements[i], 'select');
   }
 }
@@ -596,12 +601,12 @@ function stage_mouseUpHandler(event) {
 }
 
 function objectPressHandler(event) {
-  let thisRing = event.currentTarget;
-  let num = Number(thisRing.name.substr(4));
+  var thisRing = event.currentTarget;
+  var num = Number(thisRing.name.substr(4));
 
   if (event.target.classList.contains('plane')) {
-    let thisChar = event.target;
-    let char = thisChar.innerText;
+    var thisChar = event.target;
+    var char = thisChar.innerText;
     charSelected = strings.indexOf(char);
   }
 
@@ -616,8 +621,8 @@ function objectPressHandler(event) {
 
 function mouseWheelEvents() {
   // Throttle wheel events
-  let timeout = 200;
-  let mouseWheelEvent = false;
+  var timeout = 200;
+  var mouseWheelEvent = false;
   window.addEventListener('mousewheel', event => {
     if (!mouseWheelEvent) {
       setTimeout(() => {
@@ -639,11 +644,11 @@ function wheelEventHandler(delta) {
 }
 
 function dragRings() {
-  let currentMouseY = mouseY;
+  var currentMouseY = mouseY;
 
   if (isMouseDown && dragRing) {
-    let differenceY = currentMouseY - initMouseY;
-    let ringSelectedRotation = ringSelectedInitRotation - differenceY * 0.6;
+    var differenceY = currentMouseY - initMouseY;
+    var ringSelectedRotation = ringSelectedInitRotation - differenceY * 0.6;
 
     // step rotation
     rings[ringSelected].rotationX = stepRotation(ringSelectedRotation);
@@ -663,14 +668,17 @@ function stepRotation(objRotation) {
     objRotation = 360 + Math.round(objRotation);
   }
 
-  let numRingChars = strings.length;
-  let degreesPerChar = 360 / numRingChars;
-  let charIndex = Math.round(objRotation / degreesPerChar);
-  let targetRotation = degreesPerChar * charIndex;
+  var numRingChars = strings.length;
+  var degreesPerChar = 360 / numRingChars;
+  var charIndex = Math.round(objRotation / degreesPerChar);
+  var targetRotation = degreesPerChar * charIndex;
 
   // keep charSelected within the range of available characters
-  if (charIndex < numRingChars) charSelected = charIndex;
-  else charSelected = 0;
+  if (charIndex < numRingChars) {
+    charSelected = charIndex;
+  } else {
+    charSelected = 0;
+  }
 
   return targetRotation;
 }
@@ -694,25 +702,28 @@ function stepRotation(objRotation) {
 // https://webkit.org/blog-files/3d-transforms/morphing-cubes.html
 
 function hasClassName(inElement, inClassName) {
-  let regExp = new RegExp('(?:^|\\s+)' + inClassName + '(?:\\s+|$)');
+  var regExp = new RegExp('(?:^|\\s+)' + inClassName + '(?:\\s+|$)');
   return regExp.test(inElement.className);
 }
 
 function addClassName(inElement, inClassName) {
-  if (!hasClassName(inElement, inClassName))
+  if (!hasClassName(inElement, inClassName)) {
     inElement.className = [inElement.className, inClassName].join(' ');
+  }
 }
 
 function removeClassName(inElement, inClassName) {
   if (hasClassName(inElement, inClassName)) {
-    let regExp = new RegExp('(?:^|\\s+)' + inClassName + '(?:\\s+|$)', 'g');
-    let curClasses = inElement.className;
+    var regExp = new RegExp('(?:^|\\s+)' + inClassName + '(?:\\s+|$)', 'g');
+    var curClasses = inElement.className;
     inElement.className = curClasses.replace(regExp, ' ');
   }
 }
 
 function toggleClassName(inElement, inClassName) {
-  if (hasClassName(inElement, inClassName))
+  if (hasClassName(inElement, inClassName)) {
     removeClassName(inElement, inClassName);
-  else addClassName(inElement, inClassName);
+  } else {
+    addClassName(inElement, inClassName);
+  }
 }

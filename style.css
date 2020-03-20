@@ -124,13 +124,13 @@ body {
   color: red;
 }
 
-.ring.backfaces .plane {
-  /* backface-visibility: visible; */
+/* .ring.backfaces .plane {
+  backface-visibility: visible;
 }
 
 .ring {
-  /* animation: spin 12s infinite linear; */
-}
+  animation: spin 12s infinite linear;
+} */
 
 @keyframes spin {
   from { transform: rotateX(0); }
