@@ -1,0 +1,329 @@
+/* https://webkit.org/blog-files/3d-transforms/morphing-cubes.html */
+
+:root {
+  --num-rings: 7;
+  --ring-spacing: 30px;
+  --plane-size: 20px;
+  --plane-font-size: 16px;
+  --plane-transform-x: 115px;
+  --plane-size-lrg: 36px;
+  --plane-font-size-lrg: 27px;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #333;
+  color: white;
+  font-family: Helvetica, san-serif;
+  font-size: 12px;
+  margin: 0;
+}
+
+#container {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  background-image: url(./images/cryptex.png);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 530px;
+}
+
+#stage {
+  width: 60%;
+  height: 60%;
+  transition: transform 2s;
+  transform-style: preserve-3d;
+  /* background-image: url(./images/texture.png);
+  background-position: bottom;
+  background-size: cover; */
+}
+
+#code {
+  font-family: "Andale Mono", Courier, monospace;
+  font-size: 1.5em;
+  text-align: center;
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  letter-spacing: .5em;
+}
+
+#code.solved {
+  font-family: Helvetica, sans-serif;
+  letter-spacing: 0;
+}
+
+#code .selected {
+  color: red;
+}
+
+#code span:last-child {
+  letter-spacing: 0;
+}
+
+#object {
+  position: relative;
+  top: 50%;
+  width: calc(var(--ring-spacing) * var(--num-rings));
+  margin: 0 auto;
+  /* background-image: url(./images/texture.png);
+  background-position: center;
+  background-size: cover; */
+}
+
+.ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--plane-size);
+  width: var(--plane-size);
+  transform-style: preserve-3d;
+}
+
+.plane {
+  position: absolute;
+  height: var(--plane-size);
+  width: var(--plane-size);
+  font-size: var(--plane-font-size);
+  box-sizing: border-box;
+  text-align: center;
+  color: white;
+  color: black;
+  background-color: ivory;
+  backface-visibility: hidden;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  border-color: #333;
+  border-style: solid;
+  border-width: thick;
+  box-shadow: 2px 2px 6px #2e2d2d;
+
+}
+
+.ring.select .plane {
+  color: black;
+  background: ivory;
+}
+
+.ring > .selected {
+  color: red;
+}
+
+.ring.select > .selected {
+  color: red;
+}
+
+.ring.backfaces .plane {
+  /* backface-visibility: visible; */
+}
+
+.ring {
+  /* animation: spin 12s infinite linear; */
+}
+
+@keyframes spin {
+  from { transform: rotateX(0); }
+  to   { transform: rotateX(-360deg); }
+}
+
+/* ---------- ring styles ------------- */
+/* .ring > .a {
+  transform: rotateX(360deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .b {
+  transform: rotateX(350deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .c {
+  transform: rotateX(340deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .d {
+  transform: rotateX(330deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .e {
+  transform: rotateX(320deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .f {
+  transform: rotateX(310deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .g {
+  transform: rotateX(300deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .h {
+  transform: rotateX(290deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .i {
+  transform: rotateX(280deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .j {
+  transform: rotateX(270deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .k {
+  transform: rotateX(260deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .l {
+  transform: rotateX(250deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .m {
+  transform: rotateX(240deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .n {
+  transform: rotateX(230deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .o {
+  transform: rotateX(220deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .p {
+  transform: rotateX(210deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .q {
+  transform: rotateX(200deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .r {
+  transform: rotateX(190deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .s {
+  transform: rotateX(180deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .t {
+  transform: rotateX(170deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .u {
+  transform: rotateX(160deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .v {
+  transform: rotateX(150deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .w {
+  transform: rotateX(140deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .x {
+  transform: rotateX(130deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .y {
+  transform: rotateX(120deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .z {
+  transform: rotateX(110deg) translateZ(var(--plane-transform-x));
+} */
+
+.ring > .zero {
+  transform: rotateX(360deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .one {
+  transform: rotateX(324deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .two {
+  transform: rotateX(288deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .three {
+  transform: rotateX(252deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .four {
+  transform: rotateX(216deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .five {
+  transform: rotateX(180deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .six {
+  transform: rotateX(144deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .seven {
+  transform: rotateX(108deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .eight {
+  transform: rotateX(72deg) translateZ(var(--plane-transform-x));
+}
+
+.ring > .nine {
+  transform: rotateX(36deg) translateZ(var(--plane-transform-x));
+}
+
+#ring1 { left: 0; }
+#ring2 { left: calc(var(--ring-spacing) * 1); }
+#ring3 { left: calc(var(--ring-spacing) * 2); }
+#ring4 { left: calc(var(--ring-spacing) * 3); }
+#ring5 { left: calc(var(--ring-spacing) * 4); }
+#ring6 { left: calc(var(--ring-spacing) * 5); }
+#ring7 { left: calc(var(--ring-spacing) * 6); }
+/* #ring8 { left: calc(var(--ring-spacing) * 7); } */
+/* #ring9 { left: calc(var(--ring-spacing) * 8); }
+#ring10 { left: calc(var(--ring-spacing) * 9); }
+#ring11 { left: calc(var(--ring-spacing) * 10); }
+#ring12 { left: calc(var(--ring-spacing) * 11); } */
+
+@media (min-width: 750px) {
+
+  :root {
+    --ring-spacing: 40px;
+    --plane-transform-x: 75px;
+  }
+
+  #container {
+    width: 100%;
+    height: 800px;
+    perspective: 1600;
+    perspective-origin: 50% 50%;
+  }
+
+  #code {
+    font-size: 2.5em;
+    top: 72px;
+  }
+
+  .ring {
+    height: var(--plane-size-lrg);
+    width: var(--plane-size-lrg);
+    transition: transform .5s;
+  }
+
+  .plane {
+    height: var(--plane-size-lrg);
+    width: var(--plane-size-lrg);
+    font-size: var(--plane-font-size-lrg);
+  }
+
+}
