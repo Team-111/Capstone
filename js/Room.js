@@ -5,35 +5,26 @@ import React, { Component } from 'react';
 import {StyleSheet} from 'react-native';
 
 import {
-  ViroARScene,
-  ViroText,
-  ViroConstants,
   ViroMaterials,
   ViroBox,
-  ViroARPlaneSelector,
   ViroNode,
 } from 'react-viro';
 
-export default class Room extends Component {
+const Room = props => {
+  return (
+    <ViroNode position={[0, 0, -4.6]}>
+      <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
+      <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
+      <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
+      <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} visible={props.entered} />
 
-  render() {
-    return (
-        <ViroARScene>
-          {/* <ViroNode> */}
-          {/* <ViroARPlaneSelector minHeight={.5} minWidth={.5} > */}
-            <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
-            <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
-            <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
-            <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
-
-            <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
-            <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
-          {/* </ViroARPlaneSelector> */}
-          {/* </ViroNode> */}
-        </ViroARScene>
-    );
-  }
+      <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
+      <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
+    </ViroNode>
+  );
 }
+
+export default Room;
 
 ViroMaterials.createMaterials({
     cabinWall: {
