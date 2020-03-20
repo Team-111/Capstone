@@ -11,6 +11,7 @@ import {
   ViroMaterials,
   ViroBox,
   ViroARPlaneSelector,
+  ViroNode,
 } from 'react-viro';
 
 export default class Room extends Component {
@@ -18,7 +19,8 @@ export default class Room extends Component {
   render() {
     return (
         <ViroARScene>
-          <ViroARPlaneSelector minHeight={.5} minWidth={.5} >
+          {/* <ViroNode> */}
+          {/* <ViroARPlaneSelector minHeight={.5} minWidth={.5} > */}
             <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
             <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
             <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
@@ -26,7 +28,8 @@ export default class Room extends Component {
 
             <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
             <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
-          </ViroARPlaneSelector>
+          {/* </ViroARPlaneSelector> */}
+          {/* </ViroNode> */}
         </ViroARScene>
     );
   }
