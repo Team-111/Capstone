@@ -22,6 +22,9 @@ import {
   ViroARSceneNavigator
 } from 'react-viro';
 
+import {getUsers} from './server/api/users'
+
+getUsers()
 /*
  TODO: Insert your API key below
  */
@@ -91,6 +94,7 @@ export default class ViroSample extends Component {
 
             <Text style={localStyles.buttonText}>VR</Text>
           </TouchableHighlight>
+
         </View>
       </View>
     );
@@ -103,7 +107,7 @@ export default class ViroSample extends Component {
         initialScene={{scene: InitialARScene}} />
     );
   }
-  
+
   // Returns the ViroSceneNavigator which will start the VR experience
   _getVRNavigator() {
     return (
