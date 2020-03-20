@@ -1,5 +1,6 @@
-import * as firebase from 'firebase';
-import 'firebase/firebase-firestore'
+// import * as firebase from 'firebase';
+import * as firebase from 'firebase'
+import 'firebase/firebase-firestore';
 const config = {
   apiKey: 'AIzaSyBUvLq-PhCJ-cr4FUMkMJUzk4TI5qS8ftY',
   authDomain: 'team-111-escape-room.firebaseapp.com',
@@ -11,7 +12,7 @@ const config = {
 
 };
 firebase.initializeApp(config);
-const db = firebase.firestore();
+let db = firebase.firestore();
 db.settings = {timestampsInSnapshots: true};
 
 export default db;
