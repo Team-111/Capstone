@@ -16,6 +16,7 @@ import {
   ViroBox,
   Text,
   TouchableHighlight,
+  ViroNode,
 } from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
@@ -25,10 +26,26 @@ export default class HelloWorldSceneAR extends Component {
     // Set initial state here
     this.state = {
       text: 'Initializing AR ...',
+      entered: false
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
+    this.enterPortal = this.enterPortal.bind(this);
+    this.exitPortal = this.exitPortal.bind(this);
+  }
+
+  enterPortal() {
+    this.setState({
+      entered: true
+    })
+  }
+
+  // Exit just exists for testing purposes, can probably delete in final code
+  exitPortal() {
+    this.setState({
+      entered: false
+    })
   }
 
   render() {
@@ -39,6 +56,8 @@ export default class HelloWorldSceneAR extends Component {
         <ViroPortalScene
           passable={true}
           dragType="FixedDistance"
+          onPortalEnter={this.enterPortal}
+          onPortalExit={this.exitPortal}
           onDrag={() => {}}>
           <ViroPortal position={[0, -1, -1.1]} scale={[0.7, 1.4, 0.08]}>
             <Viro3DObject
@@ -51,13 +70,7 @@ export default class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
-            <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
-            <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]}/>
-            <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
-            <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
-
-            <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
-            <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
+          <Room entered={this.state.entered} />
         </ViroPortalScene>
         {/* <Viro360Image source={require("./portal_res/360_island.jpg")} /> */}
         <ViroText
