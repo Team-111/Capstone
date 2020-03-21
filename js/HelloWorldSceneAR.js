@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
-// import Room from './Room'
+import Room from './Room'
 
 import {
   ViroARScene,

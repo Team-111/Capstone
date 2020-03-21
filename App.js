@@ -6,7 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-
+import {decode, encode} from 'base-64'
+if (!global.btoa) {  global.btoa = encode }
+if (!global.atob) { global.atob = decode }
 import React, {Component} from 'react';
 import {
   AppRegistry,
@@ -21,8 +23,7 @@ import {
   ViroARSceneNavigator
 } from 'react-viro';
 
-import {getUsers} from './server/api/users'
-
+import {getScores} from './server/api/scores'
 
 /*
  TODO: Insert your API key below
@@ -50,16 +51,13 @@ export default class ViroSample extends Component {
 
     this.state = {
       navigatorType: defaultNavigatorType,
-      sharedProps: sharedProps,
+      sharedProps: sharedProps
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
     this._getScoreNavigator = this._getScoreNavigator.bind(this);
     this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
     this._exitViro = this._exitViro.bind(this);
-  }
-  componentDidMount() {
-    getUsers()
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -92,7 +90,7 @@ export default class ViroSample extends Component {
             onPress={this._getExperienceButtonOnPress(SCORE_NAVIGATOR_TYPE)}
             underlayColor={'#68a0ff'} >
 
-            <Text style={localStyles.buttonText}>VR</Text>
+          <Text style={localStyles.buttonText}>Highscores</Text>
           </TouchableHighlight>
 
         </View>
@@ -116,6 +114,7 @@ export default class ViroSample extends Component {
     return (
       <View style={localStyles.titleText}>
           <Text>High Scores:</Text>
+      <Text>PLACEHOLDER</Text>
           <TouchableHighlight style={localStyles.buttons}
         onPress={this._getExperienceButtonOnPress(UNSET)}
         underlayColor={'#68a0ff'} >
