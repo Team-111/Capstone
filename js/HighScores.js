@@ -6,6 +6,7 @@ import {  AppRegistry,
   Text,
   View,
   StyleSheet,
+  Button,
   PixelRatio,
   TouchableHighlight,} from 'react-native';
 
@@ -41,8 +42,9 @@ export default class HighScores extends Component {
           {this.state.hiScores.map(element => {
             return (<View key={element.id}><Text>{element.user}, {(element.score).toString()}</Text></View>)
           })}
-
+          <Button title="back">Back</Button>
         </View>
+
 
     );
   }

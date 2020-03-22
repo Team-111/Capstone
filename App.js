@@ -18,13 +18,13 @@ import {
   StyleSheet,
   PixelRatio,
   TouchableHighlight,
+  Button
 } from 'react-native';
 
 import {
   ViroARSceneNavigator
 } from 'react-viro';
 
-import {getScores} from './server/api/scores'
 
 /*
  TODO: Insert your API key below
@@ -113,8 +113,8 @@ export default class ViroSample extends Component {
   // Returns the ViroSceneNavigator which will start the VR experience
   _getScoreNavigator() {
     return (
-     <InitialVRScene />
 
+     <InitialVRScene {...this.state.sharedProps}/>
 
         // initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
     );
