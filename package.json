@@ -11,9 +11,16 @@
     "watchmanStart": "watchman watch-del-all && rm -rf node_modules/ && yarn cache clean && yarn install && yarn start -- --reset-cache"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
+    "firebase": "^7.8.2",
     "react": "16.9.0",
     "react-native": "0.59.9",
-    "react-viro": "2.17.0"
+    "react-native-firebase": "^5.6.0",
+    "react-redux": "^7.2.0",
+    "react-redux-firebase": "^3.3.0",
+    "react-viro": "2.17.0",
+    "redux": "^4.0.5",
+    "redux-firestore": "^0.13.0"
   },
   "devDependencies": {
     "@babel/core": "7.8.7",

@@ -10,8 +10,10 @@ import {
   ViroNode,
 } from 'react-viro';
 
+
 const Room = props => {
   return (
+
     <ViroNode position={[0, 0, -4.6]}>
       <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
       <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
@@ -21,6 +23,7 @@ const Room = props => {
       <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
       <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
     </ViroNode>
+
   );
 }
 
