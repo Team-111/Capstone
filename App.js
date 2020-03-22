@@ -35,7 +35,7 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/HelloWorldSceneAR');
-var InitialVRScene = require('./js/HelloWorldScene');
+var InitialVRScene = require('./js/HighScores');
 var Room = require('./js/Room');
 
 var UNSET = "UNSET";
@@ -113,17 +113,7 @@ export default class ViroSample extends Component {
   // Returns the ViroSceneNavigator which will start the VR experience
   _getScoreNavigator() {
     return (
-      <View style={localStyles.titleText}>
-          <Text>High Scores:</Text>
-      <Text>PLACEHOLDER</Text>
-          <TouchableHighlight style={localStyles.buttons}
-        onPress={this._getExperienceButtonOnPress(UNSET)}
-        underlayColor={'#68a0ff'} >
-
-        <Text style={localStyles.buttonText}>Return to Start</Text>
-      </TouchableHighlight>
-        </View>
-
+     <InitialVRScene />
 
 
         // initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
