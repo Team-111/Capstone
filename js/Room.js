@@ -13,6 +13,7 @@ import {
   ViroText,
 } from 'react-viro';
 import HighScores from './HighScores';
+import RoomCamera from './roomCameraHUD';
 
 class Room extends Component {
   constructor() {
@@ -47,6 +48,7 @@ class Room extends Component {
   render() {
     return (
       <ViroNode position={[0, 0, -4.6]}>
+        <RoomCamera isActive={this.props.entered} />
         <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
