@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "react-native run-android --host=10.0.0.39:8081",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -11,9 +11,10 @@
     "watchmanStart": "watchman watch-del-all && rm -rf node_modules/ && yarn cache clean && yarn install && yarn start -- --reset-cache"
   },
   "dependencies": {
+    "ngrok": "^3.2.7",
     "react": "16.9.0",
     "react-native": "0.59.9",
-    "react-viro": "2.17.0"
+    "react-viro": "^2.17.0"
   },
   "devDependencies": {
     "@babel/core": "7.8.7",
