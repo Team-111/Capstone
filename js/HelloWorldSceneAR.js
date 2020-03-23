@@ -71,11 +71,8 @@ export default class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
-
           <Room entered={this.state.entered} />
-
         </ViroPortalScene>
-        {/* <Viro360Image source={require("./portal_res/360_island.jpg")} /> */}
         <ViroText
           text={this.state.text}
           scale={[0.5, 0.5, 0.5]}

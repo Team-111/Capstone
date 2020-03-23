@@ -14,12 +14,10 @@ import {
 
 const RoomCamera = props => {
   return (
-    <ViroCamera position={[0,0,0]} active={true} >
-    <ViroBox position={[0, 0, -5]} />
+    <ViroCamera position={[0,0,0]} active={props.isActive} >
+      <ViroBox position={[0, 0, -5]} />
     </ViroCamera>
   )
-
 }
 
-
-module.exports = RoomCamera
+export default RoomCamera;
