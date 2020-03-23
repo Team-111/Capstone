@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, ImageBackground} from 'react-native';
+import {ViroScene, ViroText, ViroImage} from 'react-viro';
 
 const styles = StyleSheet.create({
   body: {
@@ -27,13 +28,15 @@ const styles = StyleSheet.create({
 export default class ClockComponent extends Component {
   render() {
     return (
-      <View style={styles.body}>
-        <ImageBackground
-          source={'./images/tubeclockbase.png'}
+      <ViroScene style={styles.body}>
+        <ViroImage
+          height={2}
+          width={2}
+          source={{uri: './images/tubeclockbase.png'}}
           styles={styles.tubeclock}>
           <time styles={styles.h1}>00:00:00</time>
-        </ImageBackground>
-      </View>
+        </ViroImage>
+      </ViroScene>
     );
   }
 }
