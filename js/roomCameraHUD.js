@@ -11,11 +11,12 @@ import {
   ViroCamera,
   ViroImage
 } from 'react-viro';
+import TimerComponent from '../js/timer/timerComponent'
 
 const RoomCamera = props => {
   return (
     <ViroCamera position={[0,0,0]} active={props.isActive} >
-      <ViroBox position={[0, 0, -5]} />
+      <TimerComponent />
     </ViroCamera>
   )
 }
