@@ -2,29 +2,6 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {ViroNode, ViroText, ViroImage} from 'react-viro';
 
-// const styles = StyleSheet.create({
-//   body: {
-//     backgroundColor: '#191919',
-//   },
-
-//   tubeclock: {
-//     height: 300,
-//     width: 560,
-//     color: 'rgba(50, 50, 50, 0.35)',
-//     flex: 1,
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//     margin: 10,
-//     textAlign: 'center',
-//   },
-
-//   h1: {
-//     color: 'rgba(241, 196, 112)',
-//     textShadowOffset: {width: 1, height: 1},
-//     opacity: 0.7,
-//   },
-// });
-
 export default class TimerComponent extends Component {
   constructor() {
     super();
@@ -72,9 +49,11 @@ export default class TimerComponent extends Component {
           text={`${this.state.hours}:${this.state.minutes}:${
             this.state.seconds
           }`}
-          position={[0.15, -1.3, 2]}
+          position={[0.15, -1.3, 2.1]}
           width={1}
           height={1}
+          color="#F5B041"
+          style={{fontFamily: 'Arial', fontSize: 20}}
         />
       </ViroNode>
     );
