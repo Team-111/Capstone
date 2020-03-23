@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
 import Room from './Room'
+import RoomCamera from './roomCameraHUD'
 
 import {
   ViroARScene,
@@ -70,7 +71,9 @@ export default class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
+
           <Room entered={this.state.entered} />
+
         </ViroPortalScene>
         {/* <Viro360Image source={require("./portal_res/360_island.jpg")} /> */}
         <ViroText

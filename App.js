@@ -6,6 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
+import {decode, encode} from 'base-64'
+if (!global.btoa) {  global.btoa = encode }
+if (!global.atob) { global.atob = decode }
 
 import React, {Component} from 'react';
 import {
@@ -15,9 +18,13 @@ import {
   StyleSheet,
   PixelRatio,
   TouchableHighlight,
+  Button
 } from 'react-native';
 
-import {ViroVRSceneNavigator, ViroARSceneNavigator} from 'react-viro';
+import {
+  ViroARSceneNavigator
+} from 'react-viro';
+
 
 /*
  TODO: Insert your API key below
@@ -28,12 +35,12 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/HelloWorldSceneAR');
-var InitialVRScene = require('./js/HelloWorldScene');
+var InitialVRScene = require('./js/HighScores');
 var Room = require('./js/Room');
 
-var UNSET = 'UNSET';
-var VR_NAVIGATOR_TYPE = 'VR';
-var AR_NAVIGATOR_TYPE = 'AR';
+var UNSET = "UNSET";
+var SCORE_NAVIGATOR_TYPE = "VR";
+var AR_NAVIGATOR_TYPE = "AR";
 
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
@@ -45,14 +52,12 @@ export default class ViroSample extends Component {
 
     this.state = {
       navigatorType: defaultNavigatorType,
-      sharedProps: sharedProps,
+      sharedProps: sharedProps
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
-    this._getVRNavigator = this._getVRNavigator.bind(this);
-    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
-      this,
-    );
+    this._getScoreNavigator = this._getScoreNavigator.bind(this);
+    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
     this._exitViro = this._exitViro.bind(this);
   }
 
@@ -61,8 +66,8 @@ export default class ViroSample extends Component {
   render() {
     if (this.state.navigatorType == UNSET) {
       return this._getExperienceSelector();
-    } else if (this.state.navigatorType == VR_NAVIGATOR_TYPE) {
-      return this._getVRNavigator();
+    } else if (this.state.navigatorType == SCORE_NAVIGATOR_TYPE) {
+      return this._getScoreNavigator();
     } else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
       return this._getARNavigator();
     }
@@ -82,12 +87,13 @@ export default class ViroSample extends Component {
             <Text style={localStyles.buttonText}>Start</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight
-            style={localStyles.buttons}
-            // onPress={this._getExperienceButtonOnPress(VR_NAVIGATOR_TYPE)}
-            underlayColor={'#68a0ff'}>
-            <Text style={localStyles.buttonText}>High Scores</Text>
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={this._getExperienceButtonOnPress(SCORE_NAVIGATOR_TYPE)}
+            underlayColor={'#68a0ff'} >
+
+          <Text style={localStyles.buttonText}>Highscores</Text>
           </TouchableHighlight>
+
         </View>
       </View>
     );
@@ -105,13 +111,12 @@ export default class ViroSample extends Component {
   }
 
   // Returns the ViroSceneNavigator which will start the VR experience
-  _getVRNavigator() {
+  _getScoreNavigator() {
     return (
-      <ViroVRSceneNavigator
-        {...this.state.sharedProps}
-        initialScene={{scene: InitialVRScene}}
-        onExitViro={this._exitViro}
-      />
+
+     <InitialVRScene {...this.state.sharedProps}/>
+
+        // initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
     );
   }
 
