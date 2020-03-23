@@ -17,7 +17,7 @@ import {
   ViroBox,
   Text,
   TouchableHighlight,
-  ViroNode,
+  ViroImage,
 } from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
