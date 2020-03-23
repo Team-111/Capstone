@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
 
@@ -13,6 +13,7 @@ import {
   ViroText,
 } from 'react-viro';
 import HighScores from './HighScores';
+
 import RoomCamera from './roomCameraHUD';
 
 class Room extends Component {
@@ -21,7 +22,7 @@ class Room extends Component {
     this.state = {
       displayDoorText: false,
       displayHighScores: false,
-      keyPossessed: false
+      keyPossessed: false,
     };
 
     this.doorInteract = this.doorInteract.bind(this);
@@ -33,15 +34,14 @@ class Room extends Component {
 
     if (!this.state.keyPossessed) {
       setTimeout(() => this.setState({displayDoorText: false}), 4000);
-    }
-    else {
+    } else {
       this.setState({displayHighScores: true});
     }
   }
 
   getKey() {
     this.setState({
-      keyPossessed: true
+      keyPossessed: true,
     });
   }
 
@@ -55,27 +55,50 @@ class Room extends Component {
         <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} visible={this.props.entered} />
         <ViroImage 
           source={require('./res/cabindoor.jpg')}
-          position={[0, -.92, 3.48]}
-          scale={[.8, 3.2, 1]}
+          position={[0, -0.92, 3.48]}
+          scale={[0.8, 3.2, 1]}
           rotation={[0, 180, 0]}
           visible={this.props.entered}
           onClick={this.doorInteract}
-          />
-        <ViroBox 
-          position={[0,0,-2]} 
-          scale={[.5, .5, .5]} 
-          materials={["grid"]} 
-          onClick={this.getKey} 
-          visible={!this.state.keyPossessed}/>
+        />
 
-        {this.props.entered && <ViroSound source={require("./sounds/doorlock.wav")} loop={false} />}
+        <ViroBox
+          position={[0, 0, -2]}
+          scale={[0.5, 0.5, 0.5]}
+          materials={['grid']}
+          onClick={this.getKey}
+          visible={!this.state.keyPossessed}
+        />
+
+        {this.props.entered && (
+          <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
+        )}
         {this.state.displayDoorText &&
-          ( this.state.displayHighScores
-          ? <ViroText text="You escaped!" color="yellow" position={[0, -0.5, 3.46]} rotation={[0, 180, 0]}/>
-          : <ViroText text="The door is locked! Find a key!" color="yellow" position={[0, -0.5, 3.46]} rotation={[0, 180, 0]}/> )
-        }
-        <ViroBox position={[0, 3.5, 0]} scale={[8, .1, 8]} materials={["cabinWall"]} />
-        <ViroBox position={[0, -3.6, 0]} scale={[8, .1, 8]} materials={["cabinFloor"]} />
+          (this.state.displayHighScores ? (
+            <ViroText
+              text="You escaped!"
+              color="yellow"
+              position={[0, -0.5, 3.46]}
+              rotation={[0, 180, 0]}
+            />
+          ) : (
+            <ViroText
+              text="The door is locked! Find a key!"
+              color="yellow"
+              position={[0, -0.5, 3.46]}
+              rotation={[0, 180, 0]}
+            />
+          ))}
+        <ViroBox
+          position={[0, 3.5, 0]}
+          scale={[8, 0.1, 8]}
+          materials={['cabinWall']}
+        />
+        <ViroBox
+          position={[0, -3.6, 0]}
+          scale={[8, 0.1, 8]}
+          materials={['cabinFloor']}
+        />
       </ViroNode>
     );
   }
@@ -84,15 +107,15 @@ class Room extends Component {
 export default Room;
 
 ViroMaterials.createMaterials({
-    grid: {
-      diffuseTexture: require('./res/grid_bg.jpg')
-    },
-    cabinWall: {
-      diffuseTexture: require('./res/cabin_wall_sample.jpg'),
-    },
-    cabinFloor: {
-      diffuseTexture: require('./res/cabin_floor_sample.jpg'),
-    }
-  });
+  grid: {
+    diffuseTexture: require('./res/grid_bg.jpg'),
+  },
+  cabinWall: {
+    diffuseTexture: require('./res/cabin_wall_sample.jpg'),
+  },
+  cabinFloor: {
+    diffuseTexture: require('./res/cabin_floor_sample.jpg'),
+  },
+});
 
 module.exports = Room;
