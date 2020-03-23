@@ -1,5 +1,3 @@
-/* https://webkit.org/blog-files/3d-transforms/morphing-cubes.html */
-
 :root {
   --num-rings: 7;
   --ring-spacing: 30px;
@@ -39,9 +37,7 @@ body {
   height: 60%;
   transition: transform 2s;
   transform-style: preserve-3d;
-  /* background-image: url(./images/texture.png);
-  background-position: bottom;
-  background-size: cover; */
+
 }
 
 #code {
@@ -73,9 +69,6 @@ body {
   top: 50%;
   width: calc(var(--ring-spacing) * var(--num-rings));
   margin: 0 auto;
-  /* background-image: url(./images/texture.png);
-  background-position: center;
-  background-size: cover; */
 }
 
 .ring {
@@ -124,123 +117,10 @@ body {
   color: red;
 }
 
-/* .ring.backfaces .plane {
-  backface-visibility: visible;
-}
-
-.ring {
-  animation: spin 12s infinite linear;
-} */
-
 @keyframes spin {
   from { transform: rotateX(0); }
   to   { transform: rotateX(-360deg); }
 }
-
-/* ---------- ring styles ------------- */
-/* .ring > .a {
-  transform: rotateX(360deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .b {
-  transform: rotateX(350deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .c {
-  transform: rotateX(340deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .d {
-  transform: rotateX(330deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .e {
-  transform: rotateX(320deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .f {
-  transform: rotateX(310deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .g {
-  transform: rotateX(300deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .h {
-  transform: rotateX(290deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .i {
-  transform: rotateX(280deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .j {
-  transform: rotateX(270deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .k {
-  transform: rotateX(260deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .l {
-  transform: rotateX(250deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .m {
-  transform: rotateX(240deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .n {
-  transform: rotateX(230deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .o {
-  transform: rotateX(220deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .p {
-  transform: rotateX(210deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .q {
-  transform: rotateX(200deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .r {
-  transform: rotateX(190deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .s {
-  transform: rotateX(180deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .t {
-  transform: rotateX(170deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .u {
-  transform: rotateX(160deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .v {
-  transform: rotateX(150deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .w {
-  transform: rotateX(140deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .x {
-  transform: rotateX(130deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .y {
-  transform: rotateX(120deg) translateZ(var(--plane-transform-x));
-}
-
-.ring > .z {
-  transform: rotateX(110deg) translateZ(var(--plane-transform-x));
-} */
 
 .ring > .zero {
   transform: rotateX(360deg) translateZ(var(--plane-transform-x));
@@ -289,11 +169,6 @@ body {
 #ring5 { left: calc(var(--ring-spacing) * 4); }
 #ring6 { left: calc(var(--ring-spacing) * 5); }
 #ring7 { left: calc(var(--ring-spacing) * 6); }
-/* #ring8 { left: calc(var(--ring-spacing) * 7); } */
-/* #ring9 { left: calc(var(--ring-spacing) * 8); }
-#ring10 { left: calc(var(--ring-spacing) * 9); }
-#ring11 { left: calc(var(--ring-spacing) * 10); }
-#ring12 { left: calc(var(--ring-spacing) * 11); } */
 
 @media (min-width: 750px) {
 
