@@ -53,18 +53,19 @@ class Room extends Component {
   }
 
   render() {
+    console.log('These are props on Room', this.props);
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
           isActive={this.props.entered}
           hudText={this.state.hudText}
-          puzzle={this.state.puzzle} 
+          puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle} />
         <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
         <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} visible={this.props.entered} />
-        <ViroImage 
+        <ViroImage
           source={require('./res/cabindoor.jpg')}
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}

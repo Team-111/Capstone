@@ -1,7 +1,8 @@
 //import firebase from 'react-native-firebase';
 // import * as firebase from 'firebase'
-const firebase = require('firebase')
-require('firebase/firestore')
+const firebase = require('firebase');
+require('firebase/firestore');
+
 const config = {
   apiKey: 'AIzaSyBUvLq-PhCJ-cr4FUMkMJUzk4TI5qS8ftY',
   authDomain: 'team-111-escape-room.firebaseapp.com',
@@ -13,8 +14,9 @@ const config = {
 
 };
 // console.log(firebase)
-firebase.initializeApp(config)
+firebase.initializeApp(config);
 const db = firebase.firestore();
+const auth = firebase.auth();
 // async function checkConsole() {
 //   console.log(await db.collection('users').get())
 // }
@@ -31,4 +33,4 @@ db.settings = {timestampsInSnapshots: true};
 // let setDoc = db.collection('cities').doc('LA').set(data);
 
 
-module.exports = db;
+module.exports = {db,auth};
