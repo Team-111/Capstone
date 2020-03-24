@@ -10,8 +10,10 @@ import {
   ViroNode,
   ViroCamera,
   ViroImage,
+  ViroText,
+  ViroFlexView,
 } from 'react-viro';
-
+import PuzzleColoredSquares from './PuzzleColoredSquares';
 import TimerComponent from '../js/timer/timerComponent';
 import InventoryContainer from '../js/Inventory/inventoryContainer'
 
@@ -59,6 +61,23 @@ class RoomCamera extends Component {
     return (
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
         <TimerComponent />
+      <ViroText
+        position={[0, 0, -1]}
+        text={props.hudText}
+        textAlign="center"
+        scale={[0.5, 0.5, 0.5]}
+        textClipMode="ClipToBounds"
+        width={1} />
+      {props.puzzle && 
+        <ViroFlexView
+          style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}} 
+          backgroundColor="white"
+          width={2}
+          height={2}
+          position={[0, 0, -1.1]}
+          onClick={props.showPuzzle}>
+          <PuzzleColoredSquares />
+        </ViroFlexView>}
         <ViroNode position={[0, -0.5, -1.5]} scale={[.5, .5, .5]}>
         <InventoryContainer currPage = {this.state.inventory[this.state.currentInventoryPage]}/>
         </ViroNode>

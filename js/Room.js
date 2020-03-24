@@ -20,22 +20,22 @@ class Room extends Component {
   constructor() {
     super();
     this.state = {
-      displayDoorText: false,
-      displayHighScores: false,
       keyPossessed: false,
+      hudText: '',
+      puzzle: false,
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getKey = this.getKey.bind(this);
+    this.showPuzzle = this.showPuzzle.bind(this);
   }
 
   doorInteract() {
-    this.setState({displayDoorText: true});
-
     if (!this.state.keyPossessed) {
-      setTimeout(() => this.setState({displayDoorText: false}), 4000);
+      this.setState({hudText: 'The door is locked! Find a key!'});
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
-      this.setState({displayHighScores: true});
+      this.setState({hudText: "You've escaped the room!"});
     }
   }
 
@@ -45,10 +45,21 @@ class Room extends Component {
     });
   }
 
+  showPuzzle() {
+    const puzzleState = this.state.puzzle;
+    this.setState({
+      puzzle: !puzzleState,
+    });
+  }
+
   render() {
     return (
       <ViroNode position={[0, 0, -4.6]}>
-        <RoomCamera isActive={this.props.entered} />
+        <RoomCamera
+          isActive={this.props.entered}
+          hudText={this.state.hudText}
+          puzzle={this.state.puzzle} 
+          showPuzzle={this.showPuzzle} />
         <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
@@ -66,29 +77,14 @@ class Room extends Component {
           position={[0, 0, -2]}
           scale={[0.5, 0.5, 0.5]}
           materials={['grid']}
-          onClick={this.getKey}
+          onClick={this.showPuzzle}
           visible={!this.state.keyPossessed}
         />
 
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
-        {this.state.displayDoorText &&
-          (this.state.displayHighScores ? (
-            <ViroText
-              text="You escaped!"
-              color="yellow"
-              position={[0, -0.5, 3.46]}
-              rotation={[0, 180, 0]}
-            />
-          ) : (
-            <ViroText
-              text="The door is locked! Find a key!"
-              color="yellow"
-              position={[0, -0.5, 3.46]}
-              rotation={[0, 180, 0]}
-            />
-          ))}
+
         <ViroBox
           position={[0, 3.5, 0]}
           scale={[8, 0.1, 8]}
