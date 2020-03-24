@@ -9,13 +9,20 @@ import {
   ViroBox,
   ViroNode,
   ViroCamera,
-  ViroImage
+  ViroImage,
+  ViroText
 } from 'react-viro';
 
 const RoomCamera = props => {
   return (
     <ViroCamera position={[0,0,0]} active={props.isActive} >
-      <ViroBox position={[0, 0, -5]} />
+      <ViroText
+        position={[0, 0, -1]}
+        text={props.hudText}
+        textAlign="center"
+        scale={[0.5, 0.5, 0.5]}
+        textClipMode="ClipToBounds"
+        width={1} />
     </ViroCamera>
   )
 }
