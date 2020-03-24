@@ -63,19 +63,19 @@ class RoomCamera extends Component {
         <TimerComponent />
       <ViroText
         position={[0, 0, -1]}
-        text={props.hudText}
+        text={this.props.hudText}
         textAlign="center"
         scale={[0.5, 0.5, 0.5]}
         textClipMode="ClipToBounds"
         width={1} />
-      {props.puzzle && 
+      {this.props.puzzle &&
         <ViroFlexView
-          style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}} 
+          style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}
           backgroundColor="white"
           width={2}
           height={2}
           position={[0, 0, -1.1]}
-          onClick={props.showPuzzle}>
+          onClick={this.props.showPuzzle}>
           <PuzzleColoredSquares />
         </ViroFlexView>}
         <ViroNode position={[0, -0.5, -1.5]} scale={[.5, .5, .5]}>

@@ -26,7 +26,7 @@ import {
 } from 'react-native';
 
 import {ViroARSceneNavigator} from 'react-viro';
-
+import {auth} from './server/db/firebase';
 /*
  TODO: Insert your API key below
  */
@@ -37,11 +37,13 @@ var sharedProps = {
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/HelloWorldSceneAR');
 var InitialVRScene = require('./js/HighScores');
-var SignUp = require('./js/loginForm/SignUp')
+var SignUp = require('./js/loginForm/SignUp');
+var Login = require('./js/loginForm/Login');
 
 var UNSET = 'UNSET';
 var SCORE_NAVIGATOR_TYPE = 'VR';
-var LOGIN_NAVIGATOR_TYPE = 'LOGIN'
+var LOGIN_NAVIGATOR_TYPE = 'LOGIN';
+var SIGNUP_NAVIGATOR_TYPE = 'SIGNUP';
 var AR_NAVIGATOR_TYPE = 'AR';
 
 // This determines which type of experience to launch in, or UNSET, if the user should
@@ -59,7 +61,7 @@ export default class ViroSample extends Component {
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
     this._getScoreNavigator = this._getScoreNavigator.bind(this);
-    this._getLoginNavigator = this._getLoginNavigator.bind(this);
+    this._getSignUpNavigator = this._getSignUpNavigator.bind(this);
     this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
     this._exitViro = this._exitViro.bind(this);
   }
@@ -73,13 +75,16 @@ export default class ViroSample extends Component {
       return this._getScoreNavigator();
     } else if (this.state.navigatorType === AR_NAVIGATOR_TYPE) {
       return this._getARNavigator();
-    } else if (this.state.navigatorType === LOGIN_NAVIGATOR_TYPE) {
+    } else if (this.state.navigatorType === SIGNUP_NAVIGATOR_TYPE) {
+      return this._getSignUpNavigator();
+    } else if (this.state.navigatorType === LOGIN_NAVIGATOR_TYPE){
       return this._getLoginNavigator();
     }
   }
 
   // Presents the user with a choice of an AR or VR experience
   _getExperienceSelector() {
+    console.log('Auth=', auth.currentUser);
     return (
       <View style={localStyles.outer}>
         <View style={localStyles.inner}>
@@ -100,10 +105,17 @@ export default class ViroSample extends Component {
           </TouchableHighlight>
 
           <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(LOGIN_NAVIGATOR_TYPE)}
+            onPress={this._getExperienceButtonOnPress(SIGNUP_NAVIGATOR_TYPE)}
             underlayColor={'#68a0ff'} >
 
           <Text style={localStyles.buttonText}>Sign up!</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={this._getExperienceButtonOnPress(LOGIN_NAVIGATOR_TYPE)}
+            underlayColor={'#68a0ff'} >
+
+          <Text style={localStyles.buttonText}>Log In!</Text>
           </TouchableHighlight>
 
         </View>
@@ -131,6 +143,12 @@ export default class ViroSample extends Component {
   }
 
   _getLoginNavigator() {
+    return (
+      <Login {...this.state.sharedProps} exitViro={this._exitViro} />
+    )
+  }
+
+  _getSignUpNavigator() {
     return(
       <SignUp {...this.state.sharedProps} exitViro={this._exitViro} />
     )
