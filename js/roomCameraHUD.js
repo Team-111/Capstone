@@ -25,16 +25,6 @@ const RoomCamera = props => {
         scale={[0.5, 0.5, 0.5]}
         textClipMode="ClipToBounds"
         width={1} />
-      {props.puzzle && 
-        <ViroFlexView
-          style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}} 
-          backgroundColor="white"
-          width={2}
-          height={2}
-          position={[0, 0, -1.1]}
-          onClick={props.showPuzzle}>
-          <PuzzleColoredSquares />
-        </ViroFlexView>}
     </ViroCamera>
   )
 }
