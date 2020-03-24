@@ -1,4 +1,4 @@
-const db = require('../db/firebase');
+const {db} = require('../db/firebase');
 
 export async function getScores(callbackFunc) {
   let allScores = db.collection('scores');

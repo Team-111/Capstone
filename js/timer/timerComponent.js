@@ -3,8 +3,8 @@ import {StyleSheet, View, Text} from 'react-native';
 import {ViroNode, ViroText, ViroImage} from 'react-viro';
 
 export default class TimerComponent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       hours: 0,
@@ -38,18 +38,19 @@ export default class TimerComponent extends Component {
 
   render() {
     return (
-      <ViroNode>
+      <ViroNode position={[0,0,0]}>
         <ViroImage
           source={require('./images/tubeclockbase.png')}
-          position={[0, -0.92, 2]}
-          scale={[1, 1, 1]}
+          position={[0, 0.8, -1.5]}
+          scale={[0.4, 0.4, 0.4]}
         />
 
         <ViroText
           text={`${this.state.hours}:${this.state.minutes}:${
             this.state.seconds
           }`}
-          position={[0.15, -1.3, 2.1]}
+          position={[0.1, 0.6, -1.4]}
+          scale={[0.4, 0.4, 0.4]}
           width={1}
           height={1}
           color="#F5B041"
