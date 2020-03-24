@@ -22,10 +22,12 @@ class Room extends Component {
     this.state = {
       keyPossessed: false,
       hudText: '',
+      puzzle: false,
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getKey = this.getKey.bind(this);
+    this.showPuzzle = this.showPuzzle.bind(this);
   }
 
   doorInteract() {
@@ -43,10 +45,21 @@ class Room extends Component {
     });
   }
 
+  showPuzzle() {
+    const puzzleState = this.state.puzzle;
+    this.setState({
+      puzzle: !puzzleState,
+    });
+  }
+
   render() {
     return (
       <ViroNode position={[0, 0, -4.6]}>
-        <RoomCamera isActive={this.props.entered} hudText={this.state.hudText} />
+        <RoomCamera
+          isActive={this.props.entered}
+          hudText={this.state.hudText}
+          puzzle={this.state.puzzle} 
+          showPuzzle={this.showPuzzle} />
         <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
@@ -64,7 +77,7 @@ class Room extends Component {
           position={[0, 0, -2]}
           scale={[0.5, 0.5, 0.5]}
           materials={['grid']}
-          onClick={this.getKey}
+          onClick={this.showPuzzle}
           visible={!this.state.keyPossessed}
         />
 
