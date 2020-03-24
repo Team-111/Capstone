@@ -21,7 +21,8 @@
     "react-redux-firebase": "^3.3.0",
     "react-viro": "2.17.0",
     "redux": "^4.0.5",
-    "redux-firestore": "^0.13.0"
+    "redux-firestore": "^0.13.0",
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
     "@babel/core": "7.8.7",
