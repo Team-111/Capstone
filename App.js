@@ -126,11 +126,13 @@ export default class ViroSample extends Component {
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
     return (
-      <ViroARSceneNavigator
-        {...this.state.sharedProps}
-        initialScene={{scene: InitialARScene}}
-        onExitViro={this._exitViro}
-      />
+      <View style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, width: "100%", height:"100%" }}>
+        <ViroARSceneNavigator
+          {...this.state.sharedProps}
+          initialScene={{scene: InitialARScene}}
+          exitViro={this._exitViro}
+        />
+      </View>
     );
   }
 
