@@ -3,8 +3,9 @@
 import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
-import Room from './Room'
-import RoomCamera from './roomCameraHUD'
+import Room from './Room';
+import RoomCamera from './roomCameraHUD';
+import createGame from '../server/db/firebase';
 
 import {
   ViroARScene,
@@ -27,7 +28,7 @@ export default class HelloWorldSceneAR extends Component {
     // Set initial state here
     this.state = {
       text: 'Initializing AR ...',
-      entered: false
+      entered: false,
     };
 
     // bind 'this' to functions
@@ -38,23 +39,32 @@ export default class HelloWorldSceneAR extends Component {
 
   enterPortal() {
     this.setState({
-      entered: true
+      entered: true,
     })
   }
 
   // Exit just exists for testing purposes, can probably delete in final code
   exitPortal() {
     this.setState({
-      entered: false
+      entered: false,
     })
   }
 
   render() {
-    // console.log('These are the props on HelloWorldAr', this.props);
+    console.log('These are the props on HelloWorldAr', this.props.arSceneNavigator.viroAppProps.user);
+    const currentUser = this.props.arSceneNavigator.viroAppProps.user;
+    const exitViro = this.props.arSceneNavigator.viroAppProps.exitViro;
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
+        <ViroText
+          text={this.state.text}
+          scale={[0.5, 0.5, 0.5]}
+          position={[0, 0, -1]}
+          style={styles.helloWorldTextStyle}
+        />
         <ViroAmbientLight color="#ffffff" intensity={200} />
-        <ViroPortalScene
+        {!currentUser ?
+          <ViroPortalScene
           passable={true}
           dragType="FixedDistance"
           onPortalEnter={this.enterPortal}
@@ -72,13 +82,16 @@ export default class HelloWorldSceneAR extends Component {
             />
           </ViroPortal>
           <Room entered={this.state.entered} />
-        </ViroPortalScene>
+        </ViroPortalScene> :
         <ViroText
-          text={this.state.text}
+          text={`Hello ${currentUser.email}`}
           scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
+          position={[0, 0, -0.8]}
           style={styles.helloWorldTextStyle}
+          onClick={createGame(currentUser.uid)}
         />
+        }
+
         {/* <TouchableHighlight
           // style={localStyles.buttons}
           onPress={this.props.exitViro}

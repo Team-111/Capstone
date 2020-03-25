@@ -84,10 +84,16 @@ export default class ViroSample extends Component {
 
   // Presents the user with a choice of an AR or VR experience
   _getExperienceSelector() {
-    console.log('Auth=', auth.currentUser);
+    //if (auth.currentUser) console.log('Auth=', auth.currentUser.uid);
     return (
       <View style={localStyles.outer}>
         <View style={localStyles.inner}>
+          {auth.currentUser ?
+            <Text style={localStyles.titleText}>
+              Welcome {`${auth.currentUser.email}`} to
+            </Text>
+            : null
+          }
           <Text style={localStyles.titleText}>Escape the Room AR</Text>
 
           <TouchableHighlight
@@ -125,12 +131,13 @@ export default class ViroSample extends Component {
 
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
+    if (auth.currentUser) console.log('Auth=', auth.currentUser);
     return (
       <View style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, width: "100%", height:"100%" }}>
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           initialScene={{scene: InitialARScene}}
-          exitViro={this._exitViro}
+          viroAppProps={{user: auth.currentUser, exitViro: this._exitViro}}
         />
       </View>
     );
