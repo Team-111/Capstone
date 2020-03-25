@@ -1,22 +1,59 @@
 import React, {Component} from 'react';
 
-import {ViroFlexView, ViroImage, ViroQuad, ViroMaterials} from 'react-viro';
+import {ViroFlexView, ViroImage, ViroQuad, ViroMaterials, ViroSound} from 'react-viro';
 
 class PuzzleSliding extends Component {
     constructor() {
         super();
         this.state = {
             solution: [[0, 1, 2], [3, 4, 5], [6, 7, 'Blank']],
-            gameBoard: [[0, 1, 2], [3, 4, 5], [6, 7, 'Blank']],
+            gameBoard: [],
             solved: false,
             secretCodeDigit: '9',
+            spookyPortrait: false,
         }
 
-        this.getTileString = this.getTileString.bind(this);
+        this.shuffle = this.shuffle.bind(this);
+        this.clickSquare = this.clickSquare.bind(this);
+        this.compareBoards = this.compareBoards.bind(this);
+        this.puzzleSolved = this.puzzleSolved.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
+        const arr = this.shuffle([0, 1, 2, 3, 4, 5, 6, 7, "Blank"]);
+        const newArr = [];
+        let row = [];
 
+        for (let i=0; i < arr.length; i++) {
+            row.push(arr[i]);
+            if (row.length === 3) {
+                newArr.push(row);
+                row = [];
+            }
+        }
+
+        this.setState({gameBoard: newArr});
+    }
+
+    shuffle(arr) {
+        let len = arr.length;
+        let temp;
+        let idx;
+
+        while (len) {
+            idx = Math.floor(Math.random() * len--);
+
+            temp = arr[len];
+            arr[len] = arr[idx];
+            arr[idx] = temp;
+        }
+
+        //One more switch to put Blank at last index
+        const blankIdx = arr.indexOf("Blank");
+        arr[blankIdx] = arr[arr.length-1];
+        arr[arr.length-1] = "Blank";
+
+        return arr;
     }
 
     clickSquare(r, c) {
@@ -43,9 +80,26 @@ class PuzzleSliding extends Component {
                 boardCopy[blankRow][blankCol] = boardCopy[r][c];
                 boardCopy[r][c] = 'Blank';
             }
-    
+            
             this.setState({gameBoard: boardCopy});
+            const playerWon = this.compareBoards(boardCopy, this.state.solution);
+            if (playerWon) this.puzzleSolved();
         }
+    }
+
+    compareBoards(arr1, arr2) {
+        for (let i=0; i < arr1.length; i++) {
+            for (let j=0; j < arr1[i].length; j++) {
+                if (arr1[i][j] !== arr2[i][j]) return false;
+            }
+        }
+
+        return true;
+    }
+
+    puzzleSolved() {
+        this.setState({solved: true});
+        setTimeout(() => this.setState({spookyPortrait: true}), 2000);
     }
 
     render() {
@@ -57,7 +111,8 @@ class PuzzleSliding extends Component {
                 height={0.94}
                 width={0.94}
             >
-                {this.state.gameBoard.map((row, rowIdx) => {
+                {!this.state.solved 
+                ? (this.state.gameBoard.map((row, rowIdx) => {
                     return (
                         <ViroFlexView
                             key={`row${rowIdx}`}
@@ -80,7 +135,17 @@ class PuzzleSliding extends Component {
                         </ViroFlexView>
                     )
                 }
+                ))
+                : (
+                    <ViroImage 
+                        source={!this.state.spookyPortrait 
+                            ? require('./res/SlidingPuzzle/portrait1.png')
+                            : require('./res/SlidingPuzzle/portrait2.png')}
+                        width={.94}
+                        height={.94}
+                    />
                 )}
+                {this.state.spookyPortrait && <ViroSound source={require('./sounds/horror_stab.mp3')} loop={false} /> }
             </ViroFlexView>
         )
     }
