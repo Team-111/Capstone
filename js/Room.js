@@ -17,6 +17,7 @@ import HighScores from './HighScores';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
 
 import RoomCamera from './roomCameraHUD';
+import PuzzleSliding from './PuzzleSliding';
 
 class Room extends Component {
   constructor() {
@@ -102,6 +103,8 @@ class Room extends Component {
         >
           <PuzzleColoredSquares />
         </ViroFlexView>
+
+        <PuzzleSliding />
       </ViroNode>
     );
   }

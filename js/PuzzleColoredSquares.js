@@ -11,11 +11,9 @@ class PuzzleColoredSquares extends Component {
                         [1,0,0,0,1],
                         [1,1,0,1,1],
                         [1,1,1,1,1]],
-            text: "Test"
         }
 
         this.clickSquare = this.clickSquare.bind(this);
-        this.setText = this.setText.bind(this);
     }
 
     clickSquare(r, c) {
@@ -30,10 +28,6 @@ class PuzzleColoredSquares extends Component {
     
             this.setState({gameBoard: boardCopy});
         }
-    }
-
-    setText(text) {
-        this.setState({text: text});
     }
     
     render() {
