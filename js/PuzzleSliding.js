@@ -129,7 +129,8 @@ class PuzzleSliding extends Component {
         return (
             <ViroFlexView
                 position={[0, 0, -2]}
-                style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}
+                style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', }}
+                backgroundColor="black"
                 rotation={[0, 0, 0]}
                 height={0.94}
                 width={0.94}

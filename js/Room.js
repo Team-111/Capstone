@@ -164,6 +164,7 @@ class Room extends Component {
           <PuzzleColoredSquares />
         </ViroFlexView>
 
+
         <PuzzleSliding />
       </ViroNode>
     );
