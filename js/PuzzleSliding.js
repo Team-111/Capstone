@@ -103,7 +103,7 @@ class PuzzleSliding extends Component {
                 boardCopy[blankRow][blankCol] = boardCopy[r][c];
                 boardCopy[r][c] = 'Blank';
             }
-            
+
             this.setState({gameBoard: boardCopy});
             const playerWon = this.compareBoards(boardCopy, this.state.solution);
             if (playerWon) this.puzzleSolved();
@@ -129,12 +129,13 @@ class PuzzleSliding extends Component {
         return (
             <ViroFlexView
                 position={[0, 0, -2]}
-                style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}
+                style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', }}
+                backgroundColor="black"
                 rotation={[0, 0, 0]}
                 height={0.94}
                 width={0.94}
             >
-                {!this.state.solved 
+                {!this.state.solved
                 ? (this.state.gameBoard.map((row, rowIdx) => {
                     return (
                         <ViroFlexView
@@ -145,8 +146,8 @@ class PuzzleSliding extends Component {
                         {
                             row.map((tile, colIdx) => {
                                 return (
-                                    <ViroQuad 
-                                        key={`tile${colIdx}`} 
+                                    <ViroQuad
+                                        key={`tile${colIdx}`}
                                         materials={[`grid${tile}`]}
                                         height={.3}
                                         width={.3}
@@ -160,8 +161,8 @@ class PuzzleSliding extends Component {
                 }
                 ))
                 : (
-                    <ViroImage 
-                        source={!this.state.spookyPortrait 
+                    <ViroImage
+                        source={!this.state.spookyPortrait
                             ? require('./res/SlidingPuzzle/portrait1.png')
                             : require('./res/SlidingPuzzle/portrait2.png')}
                         width={.94}
