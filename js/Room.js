@@ -15,6 +15,9 @@ import {
 } from 'react-viro';
 import HighScores from './HighScores';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
+import BaseItem from '../js/Objects/baseItem'
+
+
 
 import RoomCamera from './roomCameraHUD';
 
@@ -22,18 +25,19 @@ class Room extends Component {
   constructor() {
     super();
     this.state = {
-      keyPossessed: false,
       hudText: '',
       puzzle: false,
+      visibleItems: {key: true},
+      inventory: ['Empty']
     };
 
     this.doorInteract = this.doorInteract.bind(this);
-    this.getKey = this.getKey.bind(this);
+    this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
   }
 
   doorInteract() {
-    if (!this.state.keyPossessed) {
+    if (this.state.visibleItems.key) {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
@@ -41,10 +45,16 @@ class Room extends Component {
     }
   }
 
-  getKey() {
-    this.setState({
-      keyPossessed: true,
-    });
+  getItem(passedObj, inventoryIMG) {
+    // this.setState({
+    //   keyPossessed: true,
+    // });
+    let stateCopy = {...this.state.visibleItems}
+    stateCopy[passedObj] = false;
+    let updatedInventory = [...this.state.inventory]
+    updatedInventory.unshift(passedObj);
+    this.setState({visibleItems: stateCopy, inventory: updatedInventory})
+
   }
 
   showPuzzle() {
@@ -55,15 +65,20 @@ class Room extends Component {
   }
 
   render() {
-    console.log('These are props on Room', this.props);
+    // Initialize Objects
+    let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[0, 0, -4]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
+
+
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
           isActive={this.props.entered}
           hudText={this.state.hudText}
-          puzzle={this.state.puzzle} 
+          puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
+          inventory={this.state.inventory[0]}
         />
+
         <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
@@ -91,9 +106,12 @@ class Room extends Component {
           scale={[8, 0.1, 8]}
           materials={['cabinFloor']}
         />
+        {/* //Objects Here */}
+        {Key.mesh}
+
 
         <ViroFlexView
-          style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}} 
+          style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}}
           width={.7}
           height={.7}
           position={[-2, 0, 0]}
@@ -102,12 +120,15 @@ class Room extends Component {
         >
           <PuzzleColoredSquares />
         </ViroFlexView>
+
       </ViroNode>
     );
   }
 }
 
 export default Room;
+
+
 
 ViroMaterials.createMaterials({
   grid: {
