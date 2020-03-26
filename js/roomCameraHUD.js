@@ -70,7 +70,7 @@ class RoomCamera extends Component {
           width={1} />
 
         <ViroNode position={[0, -0.5, -1.5]} scale={[.5, .5, .5]}>
-        <InventoryContainer currPage = {this.state.inventory[this.state.currentInventoryPage]}/>
+          <InventoryContainer currPage = {this.state.inventory[this.state.currentInventoryPage]}/>
         </ViroNode>
       </ViroCamera>
     );

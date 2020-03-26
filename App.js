@@ -62,7 +62,9 @@ export default class ViroSample extends Component {
     this._getARNavigator = this._getARNavigator.bind(this);
     this._getScoreNavigator = this._getScoreNavigator.bind(this);
     this._getSignUpNavigator = this._getSignUpNavigator.bind(this);
-    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
+    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
+      this,
+    );
     this._exitViro = this._exitViro.bind(this);
   }
 
@@ -77,47 +79,69 @@ export default class ViroSample extends Component {
       return this._getARNavigator();
     } else if (this.state.navigatorType === SIGNUP_NAVIGATOR_TYPE) {
       return this._getSignUpNavigator();
-    } else if (this.state.navigatorType === LOGIN_NAVIGATOR_TYPE){
+    } else if (this.state.navigatorType === LOGIN_NAVIGATOR_TYPE) {
       return this._getLoginNavigator();
     }
   }
 
   // Presents the user with a choice of an AR or VR experience
   _getExperienceSelector() {
-    console.log('Auth=', auth.currentUser);
+    //if (auth.currentUser) console.log('Auth=', auth.currentUser.uid);
     return (
       <View style={localStyles.outer}>
         <View style={localStyles.inner}>
+          {auth.currentUser ?
+            <Text style={localStyles.titleText}>
+              Welcome {`${auth.currentUser.email}`} to
+            </Text>
+            : null
+          }
           <Text style={localStyles.titleText}>Escape the Room AR</Text>
+          {auth.currentUser ? (
+            <View>
+              <TouchableHighlight
+                style={localStyles.buttons}
+                onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
+                underlayColor={'#68a0ff'}>
+                <Text style={localStyles.buttonText}>Start</Text>
+              </TouchableHighlight>
 
-          <TouchableHighlight
-            style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
-            underlayColor={'#68a0ff'}>
-            <Text style={localStyles.buttonText}>Start</Text>
-          </TouchableHighlight>
+              <TouchableHighlight
+                style={localStyles.buttons}
+                onPress={this._getExperienceButtonOnPress(SCORE_NAVIGATOR_TYPE)}
+                underlayColor={'#68a0ff'}>
+                <Text style={localStyles.buttonText}>Highscores</Text>
+              </TouchableHighlight>
 
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(SCORE_NAVIGATOR_TYPE)}
-            underlayColor={'#68a0ff'} >
+              <TouchableHighlight
+                style={localStyles.buttons}
+                onPress={async () => {
+                  await auth.signOut();
+                  this._exitViro();
+                }}
+                underlayColor={'#68a0ff'}>
+                <Text style={localStyles.buttonText}>Log out</Text>
+              </TouchableHighlight>
+            </View>
+          ) : (
+            <View>
+              <TouchableHighlight
+                style={localStyles.buttons}
+                onPress={this._getExperienceButtonOnPress(
+                  SIGNUP_NAVIGATOR_TYPE,
+                )}
+                underlayColor={'#68a0ff'}>
+                <Text style={localStyles.buttonText}>Sign up!</Text>
+              </TouchableHighlight>
 
-          <Text style={localStyles.buttonText}>Highscores</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(SIGNUP_NAVIGATOR_TYPE)}
-            underlayColor={'#68a0ff'} >
-
-          <Text style={localStyles.buttonText}>Sign up!</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(LOGIN_NAVIGATOR_TYPE)}
-            underlayColor={'#68a0ff'} >
-
-          <Text style={localStyles.buttonText}>Log In!</Text>
-          </TouchableHighlight>
-
+              <TouchableHighlight
+                style={localStyles.buttons}
+                onPress={this._getExperienceButtonOnPress(LOGIN_NAVIGATOR_TYPE)}
+                underlayColor={'#68a0ff'}>
+                <Text style={localStyles.buttonText}>Log In!</Text>
+              </TouchableHighlight>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -125,35 +149,42 @@ export default class ViroSample extends Component {
 
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
+    if (auth.currentUser) console.log('Auth=', auth.currentUser);
     return (
-      <View style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, width: "100%", height:"100%" }}>
+      <View
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
+        }}>
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           initialScene={{scene: InitialARScene}}
-          exitViro={this._exitViro}
+          viroAppProps={{user: auth.currentUser, exitViro: this._exitViro}}
         />
       </View>
     );
   }
 
+
   // Returns the ViroSceneNavigator which will start the VR experience
   _getScoreNavigator() {
     return (
-     <InitialVRScene {...this.state.sharedProps} exitViro={this._exitViro}/>
-        // initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
+      <InitialVRScene {...this.state.sharedProps} exitViro={this._exitViro} />
+      // initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
     );
   }
 
   _getLoginNavigator() {
-    return (
-      <Login {...this.state.sharedProps} exitViro={this._exitViro} />
-    )
+    return <Login {...this.state.sharedProps} exitViro={this._exitViro} />;
   }
 
   _getSignUpNavigator() {
-    return(
-      <SignUp {...this.state.sharedProps} exitViro={this._exitViro} />
-    )
+    return <SignUp {...this.state.sharedProps} exitViro={this._exitViro} />;
   }
 
   // This function returns an anonymous/lambda function to be used
@@ -194,9 +225,10 @@ var localStyles = StyleSheet.create({
   titleText: {
     paddingTop: 30,
     paddingBottom: 20,
-    color: '#fff',
+    color: '#ff0000',
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 25
+    // fontFamily: 'CFNightofTerrorPERSONAL-Reg'
   },
   buttonText: {
     color: '#fff',
@@ -210,10 +242,11 @@ var localStyles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#68a0cf',
+    backgroundColor: '#ff0000',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#ae0000',
+    borderTopColor: '#ff5555'
   },
   exitButton: {
     height: 50,
@@ -222,10 +255,10 @@ var localStyles = StyleSheet.create({
     paddingBottom: 10,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#68a0cf',
+    backgroundColor: '#000000',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: '#000000',
   },
 });
 

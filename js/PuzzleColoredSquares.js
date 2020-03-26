@@ -60,6 +60,7 @@ class PuzzleColoredSquares extends Component {
         }
       }
     }
+    
     this.setState({solved: true});
   };
 
