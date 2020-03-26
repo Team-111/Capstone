@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {ViroText, ViroFlexView, ViroMaterials, ViroSound} from 'react-viro';
+import {ViroText, ViroFlexView, ViroMaterials, ViroSound, ViroNode} from 'react-viro';
 
 class Combo extends Component {
     constructor() {
@@ -50,42 +50,44 @@ class Combo extends Component {
 
     render() {
         return (
-            <ViroFlexView
-                backgroundColor = "black"
-                width={0.3}
-                height={1.2}
-                style={{flexDirection: "column", alignItems: "center", justifyContent: "space-between"}}
-                position={[0, -0.5, 3.2]}
-                rotation={[0, 180, 0]}
-            >
-            {
-                this.state.digits.map((digit, idx) => {
-                    return (
-                        <ViroFlexView
-                            backgroundColor="transparent"
-                            materials={["comboBg"]}
-                            width={0.3}
-                            height={0.3}
-                            style={{flexDirection: "row", alignItems: "center", justifyContent: "center", paddingTop: 0.1}}
-                            onClick={!this.state.solved
-                                    ? () => this.handleClick(idx)
-                                    : () => {}
-                                }
-                        >
-                            <ViroText
+            <ViroNode>
+                <ViroFlexView
+                    backgroundColor = "black"
+                    width={0.3}
+                    height={1.2}
+                    style={{flexDirection: "column", alignItems: "center", justifyContent: "space-between"}}
+                    position={[0, -0.5, 3.2]}
+                    rotation={[0, 180, 0]}
+                >
+                {
+                    this.state.digits.map((digit, idx) => {
+                        return (
+                            <ViroFlexView
                                 key={`digit${idx}`}
-                                color="red"
-                                height={0.2}
-                                width={0.2}
-                                textAlign="center"
-                                textAlignVertical="center"
-                                text={digit.toString()} />
-                        </ViroFlexView>
-                    )
-                })
-            }
-            {this.state.solved && <ViroSound source={require('./sounds/horror_stab.mp3')} loop={false} /> }
-            </ViroFlexView>
+                                backgroundColor="transparent"
+                                materials={["comboBg"]}
+                                width={0.3}
+                                height={0.3}
+                                style={{flexDirection: "row", alignItems: "center", justifyContent: "center", paddingTop: 0.1}}
+                                onClick={!this.state.solved
+                                        ? () => this.handleClick(idx)
+                                        : () => {}
+                                    }
+                            >
+                                <ViroText
+                                    color="red"
+                                    height={0.2}
+                                    width={0.2}
+                                    textAlign="center"
+                                    textAlignVertical="center"
+                                    text={digit.toString()} />
+                            </ViroFlexView>
+                        )
+                    })
+                }
+                </ViroFlexView>
+                {this.state.solved && <ViroSound source={require('./sounds/horror_stab.mp3')} loop={false} /> }
+            </ViroNode>
         )
     }
 }
