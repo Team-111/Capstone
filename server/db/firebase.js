@@ -33,4 +33,7 @@ db.settings = {timestampsInSnapshots: true};
 // let setDoc = db.collection('cities').doc('LA').set(data);
 
 
-module.exports = {db,auth};
+module.exports = {
+  db,
+  auth,
+};
