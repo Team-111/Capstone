@@ -198,7 +198,7 @@ class Room extends Component {
 
 
         <PuzzleSliding />
-        <Combo code={[1,2,3,4]} />
+        <Combo code={"2468"} getItem={this.getItem}/>
       </ViroNode>
     );
   }

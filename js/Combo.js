@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {ViroText, ViroFlexView, ViroMaterials} from 'react-viro';
+import {ViroText, ViroFlexView, ViroMaterials, ViroSound} from 'react-viro';
 
 class Combo extends Component {
     constructor() {
@@ -16,8 +16,11 @@ class Combo extends Component {
     }
 
     componentWillMount() {
+        let code = this.props.code.split('');
+        code = code.map(digit => +digit);
+
         this.setState({
-            solution: this.props.code.toString().split(''),
+            solution: code,
         })
     }
 
@@ -26,17 +29,22 @@ class Combo extends Component {
         digitsCopy[idx]++;
 
         if (digitsCopy[idx] > 9) digitsCopy[idx] = 0;
+        
+        const correctCode = this.checkMatch(digitsCopy);
 
         this.setState({
             digits: digitsCopy,
-            solved: this.checkMatch(),
+            solved: correctCode,
         });
     }
 
-    checkMatch() {
-        for (let i=0; i < this.state.digits; i++) {
-            if (this.state.digits[i] !== this.state.solution[i]) return false;
+    // If a match occurs, the player gets the key
+    checkMatch(digits) {
+        for (let i=0; i < digits.length; i++) {
+            if (digits[i] !== this.state.solution[i]) return false;
         }
+
+        this.props.getItem('key',require('../js/Inventory/images/key.png'), true)
         return true;
     }
 
@@ -59,7 +67,10 @@ class Combo extends Component {
                             width={0.3}
                             height={0.3}
                             style={{flexDirection: "row", alignItems: "center", justifyContent: "center", paddingTop: 0.1}}
-                            onClick={() => this.handleClick(idx)}
+                            onClick={!this.state.solved
+                                    ? () => this.handleClick(idx)
+                                    : () => {}
+                                }
                         >
                             <ViroText
                                 key={`digit${idx}`}
@@ -73,6 +84,7 @@ class Combo extends Component {
                     )
                 })
             }
+            {this.state.solved && <ViroSound source={require('./sounds/horror_stab.mp3')} loop={false} /> }
             </ViroFlexView>
         )
     }
