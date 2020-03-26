@@ -17,12 +17,19 @@ class PuzzleSliding extends Component {
         this.clickSquare = this.clickSquare.bind(this);
         this.compareBoards = this.compareBoards.bind(this);
         this.puzzleSolved = this.puzzleSolved.bind(this);
+        this.determineSolvability = this.determineSolvability.bind(this);
     }
 
     componentWillMount() {
-        const arr = this.shuffle([0, 1, 2, 3, 4, 5, 6, 7, "Blank"]);
+        let arr = [];
         const newArr = [];
         let row = [];
+        let isSolvable = false;
+
+        while (!isSolvable) {
+            arr = this.shuffle([0, 1, 2, 3, 4, 5, 6, 7, "Blank"]);
+            isSolvable = this.determineSolvability(arr);
+        }
 
         for (let i=0; i < arr.length; i++) {
             row.push(arr[i]);
@@ -54,6 +61,22 @@ class PuzzleSliding extends Component {
         arr[arr.length-1] = "Blank";
 
         return arr;
+    }
+
+    // Makes sure the puzzle is solvable by calculating the number of inversions
+    // See https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
+    // for details about how to see whether a sliding puzzle is solvable
+    determineSolvability(arr) {
+        let inversions = 0;
+
+        for (let i=0; i < arr.length-1; i++) {
+            for (let j=i+1; j < arr.length; j++) {
+                if (arr[j] !== "Blank" && arr[i] > arr[j]) inversions++;
+            }
+        }
+
+        if (inversions % 2 === 0) return true;
+        return false;
     }
 
     clickSquare(r, c) {
