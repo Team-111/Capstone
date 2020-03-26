@@ -15,27 +15,30 @@ import {
 } from 'react-viro';
 import HighScores from './HighScores';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
+import BaseItem from '../js/Objects/baseItem'
+
+
 
 import RoomCamera from './roomCameraHUD';
 import PuzzleSliding from './PuzzleSliding';
 
 function objIsEquivalent(a,b){
-  //base case
-  if (a === b) return true;
+    //base case
+    if (a === b) return true;
 
-  if (a === null || typeof a !== "object" ||
-      b === null || typeof b !== "object") return false;
+    if (a === null || typeof a !== "object" ||
+        b === null || typeof b !== "object") return false;
 
-  let keysA = Object.keys(a);
-  let keysB = Object.keys(b);
+    let keysA = Object.keys(a);
+    let keysB = Object.keys(b);
 
-  if (keysA.length !== keysB.length) return false;
+    if (keysA.length !== keysB.length) return false;
 
-  for (let key of keysA) {
-    if (!keysB.includes(key) || !objIsEquivalent(a[key], b[key])) return false;
-  }
+    for (let key of keysA) {
+      if (!keysB.includes(key) || !objIsEquivalent(a[key], b[key])) return false;
+    }
 
-  return true;
+    return true;
 }
 
 
@@ -43,18 +46,17 @@ class Room extends Component {
   constructor() {
     super();
     this.state = {
-      keyPossessed: false,
       hudText: '',
       puzzle: false,
+      visibleItems: {key: true},
+      inventory: ['Empty'],
       currGame: {},
     };
 
     this.doorInteract = this.doorInteract.bind(this);
-    this.getKey = this.getKey.bind(this);
+    this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
     this.getCurrentGame = this.getCurrentGame.bind(this);
-    this.gotHint = this.gotHint.bind(this);
-    // this.saveGame = this.saveGame.bind(this);
   }
 
 
@@ -68,9 +70,6 @@ class Room extends Component {
     }
   }
 
-  // saveGame(){
-
-  // }
 
   getCurrentGame() {
     this.setState({currGame: this.props.currentGame});
@@ -86,7 +85,7 @@ class Room extends Component {
   }
 
   doorInteract() {
-    if (!this.state.keyPossessed) {
+    if (this.state.visibleItems.key) {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
@@ -94,10 +93,16 @@ class Room extends Component {
     }
   }
 
-  getKey() {
-    this.setState({
-      keyPossessed: true,
-    });
+  getItem(passedObj, inventoryIMG) {
+    // this.setState({
+    //   keyPossessed: true,
+    // });
+    let stateCopy = {...this.state.visibleItems}
+    stateCopy[passedObj] = false;
+    let updatedInventory = [...this.state.inventory]
+    updatedInventory.unshift(passedObj);
+    this.setState({visibleItems: stateCopy, inventory: updatedInventory})
+
   }
 
   showPuzzle() {
@@ -108,9 +113,11 @@ class Room extends Component {
   }
 
   render() {
-    // console.log('This in Room',this)
     console.log('Render - State in Room=', this.state);
     console.log('Render - Props in Room=', this.props);
+    // Initialize Objects
+    let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[4, 0, 0]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
+
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
@@ -118,8 +125,9 @@ class Room extends Component {
           hudText={this.state.hudText}
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
-          saveGame={this.props.saveGame}
+          inventory={this.state.inventory[0]}
         />
+
         <ViroBox
           position={[-4, 0, 0]}
           scale={[8, 7, 0.1]}
@@ -143,6 +151,7 @@ class Room extends Component {
           materials={['cabinWall']}
           visible={this.props.entered}
         />
+
         <ViroImage
           source={require('./res/cabindoor.jpg')}
           position={[0, -0.92, 3.48]}
@@ -151,7 +160,6 @@ class Room extends Component {
           visible={this.props.entered}
           onClick={this.doorInteract}
         />
-
         {!!this.state.currGame.hintsLeft && (
           <ViroNode position={[0, 0, -0.3]}>
             <ViroText
@@ -163,7 +171,6 @@ class Room extends Component {
             />
           </ViroNode>
         )}
-
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
@@ -178,6 +185,9 @@ class Room extends Component {
           scale={[8, 0.1, 8]}
           materials={['cabinFloor']}
         />
+        {/* //Objects Here */}
+        {Key.mesh}
+
 
         <ViroFlexView
           style={{
@@ -194,6 +204,7 @@ class Room extends Component {
           <PuzzleColoredSquares />
         </ViroFlexView>
 
+
         <PuzzleSliding />
       </ViroNode>
     );
@@ -201,6 +212,16 @@ class Room extends Component {
 }
 
 export default Room;
+
+var styles = StyleSheet.create({
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontSize: 40,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+});
 
 ViroMaterials.createMaterials({
   grid: {
@@ -211,16 +232,6 @@ ViroMaterials.createMaterials({
   },
   cabinFloor: {
     diffuseTexture: require('./res/cabin_floor_sample.jpg'),
-  },
-});
-
-var styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 40,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
   },
 });
 

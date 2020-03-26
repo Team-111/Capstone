@@ -11,9 +11,10 @@ class SingleItem extends Component {
   }
   render() {
     return(
-      <ViroFlexView style={{flexDirection:'row', padding: .1}} width={1} height={.8}>
-        <ViroImage source={require('../Inventory/images/key.png')} style={{flex:.5}}/>
-      </ViroFlexView>
+      // <ViroFlexView style={{flexDirection:'row', padding: .1}} width={1} height={.8}>
+      //   <ViroImage source={require('../Inventory/images/key.png')} style={{flex:.5}}/>
+      // </ViroFlexView>
+    <ViroText>{this.props.item}</ViroText>
     )
   }
 }
