@@ -21,6 +21,7 @@ import BaseItem from '../js/Objects/baseItem'
 
 import RoomCamera from './roomCameraHUD';
 import PuzzleSliding from './PuzzleSliding';
+import Combo from './Combo';
 
 function objIsEquivalent(a,b){
   const objAproperties = Object.getOwnPropertyNames(a);
@@ -190,6 +191,7 @@ class Room extends Component {
 
 
         <PuzzleSliding />
+        <Combo code={[1,2,3,4]} />
       </ViroNode>
     );
   }
