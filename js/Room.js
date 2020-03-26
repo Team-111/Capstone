@@ -104,10 +104,29 @@ class Room extends Component {
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
         />
-        <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
-        <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
-        <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
-        <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} visible={this.props.entered} />
+        <ViroBox
+          position={[-4, 0, 0]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+          rotation={[0, 90, 0]}
+        />
+        <ViroBox
+          position={[4, 0, 0]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+          rotation={[0, 90, 0]}
+        />
+        <ViroBox
+          position={[0, 0, -4]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+        />
+        <ViroBox
+          position={[0, 0, 4]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+          visible={this.props.entered}
+        />
         <ViroImage
           source={require('./res/cabindoor.jpg')}
           position={[0, -0.92, 3.48]}
@@ -139,13 +158,17 @@ class Room extends Component {
         />
 
         <ViroFlexView
-          style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}}
-          width={.7}
-          height={.7}
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          width={0.7}
+          height={0.7}
+
           position={[-2, 0, 0]}
-          rotation={[0,90,0]}
-          backgroundColor="transparent"
-        >
+          rotation={[0, 90, 0]}
+          backgroundColor="transparent">
           <PuzzleColoredSquares />
         </ViroFlexView>
 
