@@ -58,8 +58,8 @@ class Room extends Component {
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
-      console.log('Here is the current props=', this.props.currentGame);
-      console.log('Here are the previous props', prevProps.currentGame);
+      // console.log('Here is the current props=', this.props.currentGame);
+      // console.log('Here are the previous props', prevProps.currentGame);
       this.getCurrentGame();
       // console.log('Here is the State after get currentGame', this.state);
     }
@@ -93,8 +93,8 @@ class Room extends Component {
   }
 
   render() {
-    console.log('This in Room',this)
-    console.log('Render - State in Room=', this.state);
+    // console.log('This in Room',this)
+    // console.log('Render - State in Room=', this.state);
     // console.log('Render - Props in Room=', this.props);
     return (
       <ViroNode position={[0, 0, -4.6]}>
