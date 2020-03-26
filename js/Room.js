@@ -19,20 +19,21 @@ import PuzzleColoredSquares from './PuzzleColoredSquares';
 import RoomCamera from './roomCameraHUD';
 
 function objIsEquivalent(a,b){
-  const objAproperties = Object.getOwnPropertyNames(a);
-  const objBproperties = Object.getOwnPropertyNames(b);
+  //base case
+  if (a === b) return true;
 
-  if (objAproperties.length !== objBproperties.length) {
-    return false;
+  if (a === null || typeof a !== "object" ||
+      b === null || typeof b !== "object") return false;
+
+  let keysA = Object.keys(a);
+  let keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) return false;
+
+  for (let key of keysA) {
+    if (!keysB.includes(key) || !objIsEquivalent(a[key], b[key])) return false;
   }
 
-  for (let i = 0; i < objAproperties.length; i++) {
-    let objAprop = objAproperties[i]
-
-    if (a[objAprop] !== b[objAprop]) {
-      return false;
-    }
-  }
   return true;
 }
 
@@ -51,22 +52,36 @@ class Room extends Component {
     this.getKey = this.getKey.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
     this.getCurrentGame = this.getCurrentGame.bind(this);
+    this.gotHint = this.gotHint.bind(this);
+    // this.saveGame = this.saveGame.bind(this);
   }
 
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
-      console.log('Here is the current props=', this.props.currentGame);
-      console.log('Here are the previous props', prevProps.currentGame);
+      // console.log('Here is the current props=', this.props.currentGame);
+      // console.log('Here are the previous props', prevProps.currentGame);
       this.getCurrentGame();
       // console.log('Here is the State after get currentGame', this.state);
     }
   }
 
+  // saveGame(){
+
+  // }
 
   getCurrentGame() {
     this.setState({currGame: this.props.currentGame});
+  }
+
+  gotHint() {
+    let currentHints = this.state.currGame.hintsLeft;
+    if (currentHints > 0) {
+      this.setState({
+        currGame: {...this.state.currGame, hintsLeft: currentHints - 1},
+      });
+    }
   }
 
   doorInteract() {
@@ -92,9 +107,9 @@ class Room extends Component {
   }
 
   render() {
-    console.log('This in Room',this)
+    // console.log('This in Room',this)
     console.log('Render - State in Room=', this.state);
-    // console.log('Render - Props in Room=', this.props);
+    console.log('Render - Props in Room=', this.props);
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
@@ -102,6 +117,7 @@ class Room extends Component {
           hudText={this.state.hudText}
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
+          saveGame={this.props.saveGame}
         />
         <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
         <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
@@ -115,13 +131,19 @@ class Room extends Component {
           visible={this.props.entered}
           onClick={this.doorInteract}
         />
+
         {!!this.state.currGame.hintsLeft && (
-          <ViroText
-            text={`Hints = ${this.state.currGame.hintsLeft}`}
-            scale={[0.5, 0.5, 0.5]}
-            position={[0, 0, -1]}
-          />
+          <ViroNode position={[0, 0, -0.3]}>
+            <ViroText
+              text={`Hints = ${this.state.currGame.hintsLeft}`}
+              style={styles.helloWorldTextStyle}
+              // scale={[0.5, 0.5, 0.5]}
+              position={[0, 0, -1]}
+              onClick={this.gotHint}
+            />
+          </ViroNode>
         )}
+
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
@@ -163,6 +185,16 @@ ViroMaterials.createMaterials({
   },
   cabinFloor: {
     diffuseTexture: require('./res/cabin_floor_sample.jpg'),
+  },
+});
+
+var styles = StyleSheet.create({
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontSize: 40,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
   },
 });
 
