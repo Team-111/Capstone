@@ -6,7 +6,7 @@ class PuzzleColoredSquares extends Component {
   constructor() {
     super();
     this.state = {
-      gameBoard: this.makeBoard(5, 5),
+      gameBoard: this.makeBoard(6, 6),
       solved: false,
       secretCodeDigit: 1,
     };
@@ -22,7 +22,7 @@ class PuzzleColoredSquares extends Component {
       for (let j = 0; j < width; j++) {
         let sqr = Math.round(Math.random());
 
-        row.push(sqr); //need code to guard against board being comlpeted
+        row.push(sqr); //need code to guard against board being comlpeted at start
       }
       newBoard.push(row);
     }
@@ -56,7 +56,7 @@ class PuzzleColoredSquares extends Component {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
         if (board[i][j] === 0) {
-          continue;
+          return false;
         }
       }
     }
@@ -84,7 +84,12 @@ class PuzzleColoredSquares extends Component {
                     width={0.1}
                     height={0.1}
                     materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
-                    onClick={this.clickSquare(rowIdx, colIdx).bind(this)} //add ternary to check if this.state.solved is true or false, onClick={this.state.solved--
+                    onClick={
+                      this.state.solved === true
+                        ? null
+                        : this.clickSquare(rowIdx, colIdx).bind(this)
+                    }
+                    //add ternary to check if this.state.solved is true or false, onClick={this.state.solved--
                     // ? null
                     // : this.clickSquare(rowIdx, colIdx).bind(this)} or maybe () => {} may work
                   />
