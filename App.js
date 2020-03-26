@@ -149,7 +149,7 @@ export default class ViroSample extends Component {
 
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
-    if (auth.currentUser) console.log('Auth=', auth.currentUser);
+    // if (auth.currentUser) console.log('Auth=', auth.currentUser);
     return (
       <View
         style={{
