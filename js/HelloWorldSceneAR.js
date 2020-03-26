@@ -3,8 +3,9 @@
 import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
-import Room from './Room'
-import RoomCamera from './roomCameraHUD'
+import Room from './Room';
+import RoomCamera from './roomCameraHUD';
+import {getSingleGame} from '../server/api/games';
 
 import {
   ViroARScene,
@@ -27,7 +28,8 @@ export default class HelloWorldSceneAR extends Component {
     // Set initial state here
     this.state = {
       text: 'Initializing AR ...',
-      entered: false
+      entered: false,
+      game: {},
     };
 
     // bind 'this' to functions
@@ -36,25 +38,41 @@ export default class HelloWorldSceneAR extends Component {
     this.exitPortal = this.exitPortal.bind(this);
   }
 
+  async componentDidMount() {
+    await getSingleGame(
+      gameFound => this.setState({game: gameFound}),
+      this.props.arSceneNavigator.viroAppProps.user.uid,
+    );
+  }
+
   enterPortal() {
     this.setState({
-      entered: true
+      entered: true,
     })
   }
 
   // Exit just exists for testing purposes, can probably delete in final code
   exitPortal() {
     this.setState({
-      entered: false
+      entered: false,
     })
   }
 
   render() {
-    // console.log('These are the props on HelloWorldAr', this.props);
+    // console.log('state in HelloWorldSceneAR =', this.state);
+    // console.log('props on HelloWorldAr=', this.props.arSceneNavigator.viroAppProps.user);
+    const currentUser = this.props.arSceneNavigator.viroAppProps.user;
+    const exitViro = this.props.arSceneNavigator.viroAppProps.exitViro;
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
+        <ViroText
+          text={this.state.text}
+          scale={[0.5, 0.5, 0.5]}
+          position={[0, 0, -1]}
+          style={styles.helloWorldTextStyle}
+        />
         <ViroAmbientLight color="#ffffff" intensity={200} />
-        <ViroPortalScene
+          <ViroPortalScene
           passable={true}
           dragType="FixedDistance"
           onPortalEnter={this.enterPortal}
@@ -71,14 +89,9 @@ export default class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
-          <Room entered={this.state.entered} />
+          <Room entered={this.state.entered} currentGame={this.state.game} />
         </ViroPortalScene>
-        <ViroText
-          text={this.state.text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
-          style={styles.helloWorldTextStyle}
-        />
+
         {/* <TouchableHighlight
           // style={localStyles.buttons}
           onPress={this.props.exitViro}

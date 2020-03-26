@@ -20,6 +20,26 @@ import BaseItem from '../js/Objects/baseItem'
 
 
 import RoomCamera from './roomCameraHUD';
+import PuzzleSliding from './PuzzleSliding';
+
+function objIsEquivalent(a,b){
+  const objAproperties = Object.getOwnPropertyNames(a);
+  const objBproperties = Object.getOwnPropertyNames(b);
+
+  if (objAproperties.length !== objBproperties.length) {
+    return false;
+  }
+
+  for (let i = 0; i < objAproperties.length; i++) {
+    let objAprop = objAproperties[i]
+
+    if (a[objAprop] !== b[objAprop]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 
 class Room extends Component {
   constructor() {
@@ -29,11 +49,29 @@ class Room extends Component {
       puzzle: false,
       visibleItems: {key: true},
       inventory: ['Empty']
+      currGame: {},
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
+    this.getCurrentGame = this.getCurrentGame.bind(this);
+  }
+
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
+      console.log('Here is the current props=', this.props.currentGame);
+      console.log('Here are the previous props', prevProps.currentGame);
+      this.getCurrentGame();
+      // console.log('Here is the State after get currentGame', this.state);
+    }
+  }
+
+
+  getCurrentGame() {
+    this.setState({currGame: this.props.currentGame});
   }
 
   doorInteract() {
@@ -68,7 +106,6 @@ class Room extends Component {
     // Initialize Objects
     let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[0, 0, -4]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
 
-
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
@@ -91,7 +128,13 @@ class Room extends Component {
           visible={this.props.entered}
           onClick={this.doorInteract}
         />
-
+        {!!this.state.currGame.hintsLeft && (
+          <ViroText
+            text={`Hints = ${this.state.currGame.hintsLeft}`}
+            scale={[0.5, 0.5, 0.5]}
+            position={[0, 0, -1]}
+          />
+        )}
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
@@ -121,6 +164,7 @@ class Room extends Component {
           <PuzzleColoredSquares />
         </ViroFlexView>
 
+        <PuzzleSliding />
       </ViroNode>
     );
   }
