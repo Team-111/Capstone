@@ -38,11 +38,11 @@ export default class TimerComponent extends Component {
 
   render() {
     return (
-      <ViroNode position={[0,0,0]}>
+      <ViroNode position={[0, 0, 0]}>
         <ViroImage
-          source={require('./images/tubeclockbase.png')}
-          position={[0, 0.8, -1.5]}
-          scale={[0.4, 0.4, 0.4]}
+          source={require('./images/digitalclock.png')}
+          position={[0, 0.74, -1.5]}
+          scale={[0.4, 0.2, 0.4]}
         />
 
         <ViroText

@@ -62,8 +62,8 @@ class Room extends Component {
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
-      console.log('Here is the current props=', this.props.currentGame);
-      console.log('Here are the previous props', prevProps.currentGame);
+      // console.log('Here is the current props=', this.props.currentGame);
+      // console.log('Here are the previous props', prevProps.currentGame);
       this.getCurrentGame();
       // console.log('Here is the State after get currentGame', this.state);
     }
@@ -116,10 +116,30 @@ class Room extends Component {
           inventory={this.state.inventory[0]}
         />
 
-        <ViroBox position={[-4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
-        <ViroBox position={[4, 0, 0]} scale={[8, 7, .1]} materials={["cabinWall"]} rotation={[0, 90, 0]} />
-        <ViroBox position={[0, 0, -4]} scale={[8, 7, .1]} materials={["cabinWall"]} />
-        <ViroBox position={[0, 0, 4]} scale={[8, 7, .1]} materials={["cabinWall"]} visible={this.props.entered} />
+        <ViroBox
+          position={[-4, 0, 0]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+          rotation={[0, 90, 0]}
+        />
+        <ViroBox
+          position={[4, 0, 0]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+          rotation={[0, 90, 0]}
+        />
+        <ViroBox
+          position={[0, 0, -4]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+        />
+        <ViroBox
+          position={[0, 0, 4]}
+          scale={[8, 7, 0.1]}
+          materials={['cabinWall']}
+          visible={this.props.entered}
+        />
+
         <ViroImage
           source={require('./res/cabindoor.jpg')}
           position={[0, -0.92, 3.48]}
@@ -154,13 +174,17 @@ class Room extends Component {
 
 
         <ViroFlexView
-          style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}}
-          width={.7}
-          height={.7}
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          width={0.7}
+          height={0.7}
+
           position={[-2, 0, 0]}
-          rotation={[0,90,0]}
-          backgroundColor="transparent"
-        >
+          rotation={[0, 90, 0]}
+          backgroundColor="transparent">
           <PuzzleColoredSquares />
         </ViroFlexView>
 
