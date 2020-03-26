@@ -21,9 +21,26 @@ class RoomCamera extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedItem : this.props.inventory
+      selectedItem : 0
     }
+    // this.changeItem = this.changeItem.bind(this)
 
+  }
+  // changeItem() {
+  //   if(!this.props.inventory[this.props.inventory.length]) {
+  //     this.setState({selectedItem: 0})
+  //   } else {
+  //     this.setState({selectedItem: this.state.selectedItem + 1})
+  //   }
+  // }
+  _onSwipe(swipeState, source) {
+    if(swipeState == 4) {
+      if(!this.props.inventory[this.props.inventory.length]) {
+        this.setState({selectedItem: 0})
+      } else {
+        this.setState({selectedItem: this.state.selectedItem + 1})
+      }
+    }
   }
 
 
@@ -38,9 +55,8 @@ class RoomCamera extends Component {
           scale={[0.5, 0.5, 0.5]}
           textClipMode="ClipToBounds"
           width={1} />
-        <ViroNode position={[0, -0.5, -1.5]} scale={[.5, .5, .5]}>
-
-          <ViroText text={this.props.inventory}/>
+        <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
+          <ViroImage source={this.props.inventory[this.state.selectedItem].itemIMG} onSwipe={this._onSwipe}/>
         </ViroNode>
 
       </ViroCamera>
