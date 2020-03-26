@@ -34,13 +34,13 @@ class PuzzleColoredSquares extends Component {
       const boardCopy = [...this.state.gameBoard];
 
       boardCopy[r][c] = boardCopy[r][c] ? 0 : 1;
-      if (c < 4) {
+      if (c < 5) {
         boardCopy[r][c + 1] = boardCopy[r][c + 1] ? 0 : 1;
       }
       if (c > 0) {
         boardCopy[r][c - 1] = boardCopy[r][c - 1] ? 0 : 1;
       }
-      if (r < 4) {
+      if (r < 5) {
         boardCopy[r + 1][c] = boardCopy[r + 1][c] ? 0 : 1;
       }
       if (r > 0) {
