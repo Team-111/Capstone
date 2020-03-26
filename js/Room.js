@@ -15,8 +15,6 @@ import {
 } from 'react-viro';
 import HighScores from './HighScores';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
-import BaseItem from '../js/Objects/baseItem'
-
 
 
 import RoomCamera from './roomCameraHUD';
@@ -47,8 +45,8 @@ class Room extends Component {
     this.state = {
       hudText: '',
       puzzle: false,
-      visibleItems: {key: true},
-      inventory: ['Empty'],
+      visibleItems: {key: true, bucket: true, desk: true},
+      inventory: [{name: 'Empty', imgURL: ''}],
       currGame: {},
     };
 
@@ -83,15 +81,21 @@ class Room extends Component {
     }
   }
 
-  getItem(passedObj, inventoryIMG) {
+  getItem(passedObj, inventoryIMG, isCollectable, itemText = '') {
     // this.setState({
     //   keyPossessed: true,
     // });
-    let stateCopy = {...this.state.visibleItems}
-    stateCopy[passedObj] = false;
-    let updatedInventory = [...this.state.inventory]
-    updatedInventory.unshift(passedObj);
-    this.setState({visibleItems: stateCopy, inventory: updatedInventory})
+    if(isCollectable) {
+      let stateCopy = {...this.state.visibleItems}
+      stateCopy[passedObj] = false;
+      let updatedInventory = [...this.state.inventory]
+      updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
+      this.setState({visibleItems: stateCopy, inventory: updatedInventory})
+    } else {
+      this.setState({hudText: itemText});
+      setTimeout(() => this.setState({hudText: ''}), 4000);
+    }
+
 
   }
 
@@ -104,7 +108,9 @@ class Room extends Component {
 
   render() {
     // Initialize Objects
-    let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[4, 0, 0]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
+    let Key = <ViroBox height={.4} length={.4} width={.4} position={[4, 0, 0]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)}/>
+    let Desk = <ViroBox height={3} length={3} width={2} position={[-4,-3,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} />
+
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
@@ -113,7 +119,7 @@ class Room extends Component {
           hudText={this.state.hudText}
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
-          inventory={this.state.inventory[0]}
+          inventory={this.state.inventory}
         />
 
         <ViroBox
@@ -170,7 +176,8 @@ class Room extends Component {
           materials={['cabinFloor']}
         />
         {/* //Objects Here */}
-        {Key.mesh}
+        {Key}
+        {Desk}
 
 
         <ViroFlexView
