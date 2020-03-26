@@ -104,7 +104,7 @@ class Room extends Component {
 
   render() {
     // Initialize Objects
-    let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[0, 0, -4]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
+    let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[4, 0, 0]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
