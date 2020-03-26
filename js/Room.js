@@ -48,7 +48,7 @@ class Room extends Component {
       hudText: '',
       puzzle: false,
       visibleItems: {key: true},
-      inventory: ['Empty']
+      inventory: ['Empty'],
       currGame: {},
     };
 
