@@ -128,13 +128,13 @@ class Room extends Component {
           visible={this.props.entered}
           onClick={this.doorInteract}
         />
-        {!!this.state.currGame.hintsLeft && (
+        {/* {!!this.state.currGame.hintsLeft && (
           <ViroText
             text={`Hints = ${this.state.currGame.hintsLeft}`}
             scale={[0.5, 0.5, 0.5]}
             position={[0, 0, -1]}
           />
-        )}
+        )} */}
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
