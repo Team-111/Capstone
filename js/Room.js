@@ -46,7 +46,7 @@ class Room extends Component {
       hudText: '',
       puzzle: false,
       visibleItems: {key: true, bucket: true, desk: true},
-      inventory: [{name: 'Empty', imgURL: ''}],
+      inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
       currGame: {},
     };
 
