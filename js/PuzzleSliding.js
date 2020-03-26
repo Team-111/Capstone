@@ -142,7 +142,8 @@ class PuzzleSliding extends Component {
                             key={`row${rowIdx}`}
                             style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}
                             height={.3}
-                            width={0.94}>
+                            width={0.94}
+                            backgroundColor="black">
                         {
                             row.map((tile, colIdx) => {
                                 return (

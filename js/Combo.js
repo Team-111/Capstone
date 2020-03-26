@@ -62,6 +62,7 @@ class Combo extends Component {
                 this.state.digits.map((digit, idx) => {
                     return (
                         <ViroFlexView
+                            key={`digit${idx}`}
                             backgroundColor="transparent"
                             materials={["comboBg"]}
                             width={0.3}
@@ -73,7 +74,6 @@ class Combo extends Component {
                                 }
                         >
                             <ViroText
-                                key={`digit${idx}`}
                                 color="red"
                                 height={0.2}
                                 width={0.2}
