@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {ViroFlexView, ViroImage, ViroQuad, ViroMaterials, ViroSound} from 'react-viro';
+import {ViroFlexView, ViroImage, ViroQuad, ViroMaterials, ViroSound, ViroNode} from 'react-viro';
 
 class PuzzleSliding extends Component {
     constructor() {
@@ -127,51 +127,53 @@ class PuzzleSliding extends Component {
 
     render() {
         return (
-            <ViroFlexView
-                position={[0, 0, -2]}
-                style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', }}
-                backgroundColor="black"
-                rotation={[0, 0, 0]}
-                height={0.94}
-                width={0.94}
-            >
-                {!this.state.solved
-                ? (this.state.gameBoard.map((row, rowIdx) => {
-                    return (
-                        <ViroFlexView
-                            key={`row${rowIdx}`}
-                            style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}
-                            height={.3}
-                            width={0.94}
-                            backgroundColor="black">
-                        {
-                            row.map((tile, colIdx) => {
-                                return (
-                                    <ViroQuad
-                                        key={`tile${colIdx}`}
-                                        materials={[`grid${tile}`]}
-                                        height={.3}
-                                        width={.3}
-                                        onClick={this.clickSquare(rowIdx, colIdx).bind(this)}
-                                    />
-                                )
-                            })
-                        }
-                        </ViroFlexView>
-                    )
-                }
-                ))
-                : (
-                    <ViroImage
-                        source={!this.state.spookyPortrait
-                            ? require('./res/SlidingPuzzle/portrait1.png')
-                            : require('./res/SlidingPuzzle/portrait2.png')}
-                        width={.94}
-                        height={.94}
-                    />
-                )}
+            <ViroNode>
+                <ViroFlexView
+                    position={[0, 0, -2]}
+                    style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', }}
+                    backgroundColor="black"
+                    rotation={[0, 0, 0]}
+                    height={0.94}
+                    width={0.94}
+                >
+                    {!this.state.solved
+                    ? (this.state.gameBoard.map((row, rowIdx) => {
+                        return (
+                            <ViroFlexView
+                                key={`row${rowIdx}`}
+                                style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}
+                                height={.3}
+                                width={0.94}
+                                backgroundColor="black">
+                            {
+                                row.map((tile, colIdx) => {
+                                    return (
+                                        <ViroQuad
+                                            key={`tile${colIdx}`}
+                                            materials={[`grid${tile}`]}
+                                            height={.3}
+                                            width={.3}
+                                            onClick={this.clickSquare(rowIdx, colIdx).bind(this)}
+                                        />
+                                    )
+                                })
+                            }
+                            </ViroFlexView>
+                        )
+                    }
+                    ))
+                    : (
+                        <ViroImage
+                            source={!this.state.spookyPortrait
+                                ? require('./res/SlidingPuzzle/portrait1.png')
+                                : require('./res/SlidingPuzzle/portrait2.png')}
+                            width={.94}
+                            height={.94}
+                        />
+                    )}
+                </ViroFlexView>
                 {this.state.spookyPortrait && <ViroSound source={require('./sounds/horror_stab.mp3')} loop={false} /> }
-            </ViroFlexView>
+            </ViroNode>
         )
     }
 }
