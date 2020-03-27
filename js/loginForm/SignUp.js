@@ -18,25 +18,30 @@ const Form = t.form.Form;
 t.form.Form.stylesheet.textbox.normal.color = '#ff0000';
 t.form.Form.stylesheet.textbox.normal.borderColor = '#ff0000';
 t.form.Form.stylesheet.controlLabel.normal.color = '#ff0000';
+t.form.Form.stylesheet.textbox.error.color = '#FF8C00';
+t.form.Form.stylesheet.textbox.error.borderColor = '#FF8C00';
+t.form.Form.stylesheet.controlLabel.error.color = '#FF8C00';
+t.form.Form.stylesheet.errorBlock.color = '#FF8C00';
+
+// Username validation
+const UsernameValidation = t.refinement(t.String, username => !(/\W/.test(username)));
+const PasswordValidation = t.refinement(t.String, password => password.length > 5);
 
 const Signup = t.struct({
-  username: t.String,
-  password: t.String,
+  username: UsernameValidation,
+  password: PasswordValidation,
 });
 
 const options = {
   fields: {
     username: {
-      error: 'Username must be valid'
+      error: 'Invalid username'
     },
     password: {
       error: 'Must be at least 6 Characters long'
     },
   },
 };
-
-// Username validation
-const checkUsernameValidity = username => !(/\W/.test(username));
 
 export default class SignUp extends Component {
   constructor() {
@@ -49,11 +54,9 @@ export default class SignUp extends Component {
     try {
       const {username, password} = this._form.getValue();
 
-      if (checkUsernameValidity(username)) {
         const convertedName = this.convertUsername(username);
         await auth.createUserWithEmailAndPassword(convertedName, password);
         this.props.exitViro();
-      }
     } catch (error) {
       console.log('error', error);
     }
