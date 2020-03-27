@@ -22,8 +22,37 @@ class RoomCamera extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItem: this.props.inventory,
-    };
+      selectedItem : 0
+    }
+    this.changeItem = this.changeItem.bind(this)
+
+  }
+  // changeItem() {
+  //   if(!this.props.inventory[this.props.inventory.length]) {
+  //     this.setState({selectedItem: 0})
+  //   } else {
+  //     this.setState({selectedItem: this.state.selectedItem + 1})
+  //   }
+  // }
+  changeItem(direction) {
+    if(direction === "right") {
+      if(this.state.selectedItem === (this.props.inventory.length -1)) {
+        this.setState({selectedItem: 0})
+      } else {
+        let newNum = this.state.selectedItem;
+        newNum += 1;
+        this.setState({selectedItem: newNum})
+      }
+    }
+    if(direction === "left") {
+      if (this.state.selectedItem === 0) {
+        this.setState({selectedItem: this.props.inventory.length -1})
+      } else {
+        let newNum = this.state.selectedItem;
+        newNum -= 1;
+        this.setState({selectedItem: newNum})
+      }
+    }
   }
 
   render() {
@@ -58,11 +87,14 @@ class RoomCamera extends Component {
           textAlign="center"
           scale={[0.5, 0.5, 0.5]}
           textClipMode="ClipToBounds"
-          width={1}
-        />
-        <ViroNode position={[0, -0.5, -1.5]} scale={[0.5, 0.5, 0.5]}>
-          <ViroText text={this.props.inventory} />
+          width={1} />
+        <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
+          <ViroImage source={this.props.inventory[this.state.selectedItem].itemIMG} />
+          {/* <ViroText text={this.props.inventory[this.state.selectedItem].name}/> */}
         </ViroNode>
+        <ViroImage position={[.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_right.png')} onClick={() => {this.changeItem('right')}}/>
+        <ViroImage position={[-.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_left.png')} onClick={() => {this.changeItem('left')}}/>
+
       </ViroCamera>
     );
   }
