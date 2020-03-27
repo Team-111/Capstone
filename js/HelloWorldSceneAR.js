@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import Room from './Room';
 import RoomCamera from './roomCameraHUD';
-import {getSingleGame} from '../server/api/games';
+import {getSingleGame, updateGame} from '../server/api/games';
 
 import {
   ViroARScene,
@@ -89,7 +89,13 @@ export default class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
-          <Room entered={this.state.entered} currentGame={this.state.game} />
+          <Room
+            entered={this.state.entered}
+            currentGame={this.state.game}
+            saveGame={updateGame}
+            currentUser={currentUser}
+            exitViro={exitViro}
+          />
         </ViroPortalScene>
 
         {/* <TouchableHighlight

@@ -6,11 +6,11 @@ export default class TimerComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    };
+    // this.state = {
+    //   hours: 0,
+    //   minutes: 0,
+    //   seconds: 0,
+    // };
   }
 
   componentDidMount = () => {
@@ -18,25 +18,32 @@ export default class TimerComponent extends Component {
   };
 
   timer = () => {
-    if (this.state.seconds < 60) {
-      this.setState({
-        seconds: this.state.seconds + 1,
-      });
-    } else if (this.state.minutes < 60) {
-      this.setState({
-        seconds: 0,
-        minutes: this.state.minutes + 1,
-      });
-    } else {
-      this.setState({
-        seconds: 0,
-        minutes: 0,
-        hours: this.state.hours + 1,
-      });
+    let minutes = this.props.time.min;
+    let seconds = this.props.time.sec;
+    if (seconds < 60) {
+      // this.setState({
+      //   seconds: this.state.seconds + 1,
+      // });
+      this.props.updateTime(minutes, seconds + 1);
+    } else if (minutes < 60) {
+      // this.setState({
+      //   seconds: 0,
+      //   minutes: this.state.minutes + 1,
+      // });
+      this.props.updateTime(minutes + 1, 0);
     }
+    //else {
+    //   // this.setState({
+    //   //   seconds: 0,
+    //   //   minutes: 0,
+    //   //   hours: this.state.hours + 1,
+    //   // });
+    //   this.props.updateTime(this.state.minutes, this.state.seconds)
+    // }
   };
 
   render() {
+    console.log('props in timerComponent', this.props)
     return (
       <ViroNode position={[0, 0, 0]}>
         <ViroImage
@@ -46,14 +53,13 @@ export default class TimerComponent extends Component {
         />
 
         <ViroText
-          text={`${this.state.hours}:${this.state.minutes}:${
-            this.state.seconds
-          }`}
+          text={`00:${this.props.time.min}:${this.props.time.sec}`}
           position={[0.1, 0.6, -1.4]}
           scale={[0.4, 0.4, 0.4]}
           width={1}
           height={1}
           color="#F5B041"
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{fontFamily: 'Arial', fontSize: 20}}
         />
       </ViroNode>

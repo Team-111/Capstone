@@ -22,21 +22,22 @@ import PuzzleSliding from './PuzzleSliding';
 import Combo from './Combo';
 
 function objIsEquivalent(a,b){
-  const objAproperties = Object.getOwnPropertyNames(a);
-  const objBproperties = Object.getOwnPropertyNames(b);
+   //base case
+   if (a === b) return true;
 
-  if (objAproperties.length !== objBproperties.length) {
-    return false;
-  }
+   if (a === null || typeof a !== "object" ||
+       b === null || typeof b !== "object") return false;
 
-  for (let i = 0; i < objAproperties.length; i++) {
-    let objAprop = objAproperties[i]
+   let keysA = Object.keys(a);
+   let keysB = Object.keys(b);
 
-    if (a[objAprop] !== b[objAprop]) {
-      return false;
-    }
-  }
-  return true;
+   if (keysA.length !== keysB.length) return false;
+
+   for (let key of keysA) {
+     if (!keysB.includes(key) || !objIsEquivalent(a[key], b[key])) return false;
+   }
+
+   return true;
 }
 
 
@@ -49,14 +50,20 @@ class Room extends Component {
       visibleItems: {key: true, bucket: true, desk: true},
       inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
       currGame: {},
+      time: {
+        min: 0,
+        sec: 0,
+      }
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
     this.getCurrentGame = this.getCurrentGame.bind(this);
+    this.saveGame = this.saveGame.bind(this);
+    this.updateTime = this.updateTime.bind(this);
+    this.gotHint = this.gotHint.bind(this);
   }
-
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
@@ -70,7 +77,44 @@ class Room extends Component {
 
 
   getCurrentGame() {
-    this.setState({currGame: this.props.currentGame});
+    this.setState({
+      currGame: this.props.currentGame,
+      time: this.props.currentGame.currentTime,
+    });
+  }
+
+  saveGame() {
+    this.setState({
+      currGame: {
+        ...this.state.currGame,
+        currentTime: {
+          min: this.state.time.min,
+          sec: this.state.time.sec,
+        },
+      }
+    });
+    //console.log('Here is state after setting in saveGame', this.state)
+    this.props.saveGame(this.props.currentUser.uid, this.state.currGame);
+    //this.props.exitViro();
+    //console.log('successfully saved game')
+  }
+
+  updateTime(min, sec) {
+    this.setState({
+      time: {
+        min,
+        sec,
+      },
+    });
+  }
+
+  gotHint() {
+    let currentHints = this.state.currGame.hintsLeft;
+    if (currentHints > 0) {
+      this.setState({
+        currGame: {...this.state.currGame, hintsLeft: currentHints - 1},
+      });
+    }
   }
 
   doorInteract() {
@@ -87,11 +131,11 @@ class Room extends Component {
     //   keyPossessed: true,
     // });
     if(isCollectable) {
-      let stateCopy = {...this.state.visibleItems}
+      let stateCopy = {...this.state.visibleItems};
       stateCopy[passedObj] = false;
-      let updatedInventory = [...this.state.inventory]
+      let updatedInventory = [...this.state.inventory];
       updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
-      this.setState({visibleItems: stateCopy, inventory: updatedInventory})
+      this.setState({visibleItems: stateCopy, inventory: updatedInventory});
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -121,6 +165,11 @@ class Room extends Component {
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
           inventory={this.state.inventory}
+          hintsLeft={this.state.currGame.hintsLeft}
+          updateTime={this.updateTime}
+          time={this.state.time}
+          saveGame={this.saveGame}
+          gotHint={this.gotHint}
         />
 
         <ViroBox

@@ -17,7 +17,7 @@ export async function getGames(callbackFunc) {
   }
 }
 
-export async function getSingleGame (callbackFunc, gameId) {
+export async function getSingleGame(callbackFunc, gameId) {
   try {
     let singleGame = await db
       .collection('games')
@@ -32,6 +32,14 @@ export async function getSingleGame (callbackFunc, gameId) {
         .set({
           hintsLeft: 3,
           currentTime: {min: 0, sec: 0},
+          inventory: {},
+          levelName: 'spookyCabin',
+          lockCombo: '1234',
+          puzzles: {
+            eastWall: 'lockBox',
+            northWall: 'colorBlock',
+            westWall: 'slidingPuzzle',
+          },
         });
       let newGame = await db
         .collection('games')
@@ -39,6 +47,16 @@ export async function getSingleGame (callbackFunc, gameId) {
         .get();
       callbackFunc(newGame.data());
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateGame(userId, currentGame) {
+  try {
+    let gamesDocRef = await db.collection('games').doc(`${userId}`);
+    await gamesDocRef.set({...currentGame}, {merge: true});
+    //console.log('Successfully updated game');
   } catch (error) {
     console.log(error);
   }
@@ -57,3 +75,5 @@ export async function createGame(userId) {
     console.log(error);
   }
 }
+
+// udpateGame('2dA2La6CAsTaK4I7fBx53iofQnF3', {hintsLeft: 2, currentTime: {min: 1, sec: 0}});
