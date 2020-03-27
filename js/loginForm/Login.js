@@ -21,25 +21,57 @@ t.form.Form.stylesheet.controlLabel.normal.color = '#ff0000';
 
 
 const login = t.struct({
-  email: t.String,
+  username: t.String,
   password: t.String,
 });
-
 
 export default class Login extends Component {
   constructor() {
     super();
+    this.state = {
+      options: {
+        fields: {
+          username: {
+            error: 'Invalid username',
+          },
+          password: {
+            secureTextEntry: true,
+            error: 'Invalid password',
+          },
+        },
+      },
+    }
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.convertUsername = this.convertUsername.bind(this);
   }
 
   async handleSubmit() {
     try {
-      const {email, password} = this._form.getValue();
-      await auth.signInWithEmailAndPassword(email, password);
+      let {username, password} = this._form.getValue();
+      if (!username.includes('@')) username = this.convertUsername(username);
+      await auth.signInWithEmailAndPassword(username, password);
       this.props.exitViro();
     } catch (error) {
-      console.log('error', error);
+      this.setState({
+        options: {
+          fields: {
+            username: {
+              error: 'Invalid username',
+            },
+            password: {
+              secureTextEntry: true,
+              hasError: true,
+              error: 'Invalid password',
+            },
+          },
+        },
+      })
     }
+  }
+
+  convertUsername(username) {
+    return `${username}@team111EscapeRoom.com`;
   }
 
   render() {
@@ -47,9 +79,15 @@ export default class Login extends Component {
       <View style={styles.otherStyle}>
       <View style={styles.container}>
         <Text style={styles.otherStyle}>Welcome back...</Text>
-        <Form ref={c => this._form = c} type={login} />
+        <Form ref={c => this._form = c} type={login} options={this.state.options} />
         <Button title="submit" onPress={this.handleSubmit} style={styles.otherStyle}>
           Submit
+        </Button>
+
+        <View style={styles.separator} />
+
+        <Button title="Back" onPress={this.props.exitViro} style={styles.otherStyle}>
+          Back
         </Button>
       </View>
       </View>
@@ -71,6 +109,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     paddingBottom: 10,
+  },
+  separator: {
+    marginVertical: 8,
   }
 });
 
