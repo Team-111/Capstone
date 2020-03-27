@@ -62,8 +62,8 @@ class Room extends Component {
     this.getCurrentGame = this.getCurrentGame.bind(this);
     this.saveGame = this.saveGame.bind(this);
     this.updateTime = this.updateTime.bind(this);
+    this.gotHint = this.gotHint.bind(this);
   }
-
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
@@ -131,11 +131,11 @@ class Room extends Component {
     //   keyPossessed: true,
     // });
     if(isCollectable) {
-      let stateCopy = {...this.state.visibleItems}
+      let stateCopy = {...this.state.visibleItems};
       stateCopy[passedObj] = false;
-      let updatedInventory = [...this.state.inventory]
+      let updatedInventory = [...this.state.inventory];
       updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
-      this.setState({visibleItems: stateCopy, inventory: updatedInventory})
+      this.setState({visibleItems: stateCopy, inventory: updatedInventory});
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
