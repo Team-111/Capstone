@@ -21,7 +21,7 @@ t.form.Form.stylesheet.controlLabel.normal.color = '#ff0000';
 
 
 const login = t.struct({
-  email: t.String,
+  username: t.String,
   password: t.String,
 });
 
@@ -30,16 +30,22 @@ export default class Login extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.convertUsername = this.convertUsername.bind(this);
   }
 
   async handleSubmit() {
     try {
-      const {email, password} = this._form.getValue();
-      await auth.signInWithEmailAndPassword(email, password);
+      let {username, password} = this._form.getValue();
+      if (!username.includes('@')) username = this.convertUsername(username);
+      await auth.signInWithEmailAndPassword(username, password);
       this.props.exitViro();
     } catch (error) {
       console.log('error', error);
     }
+  }
+
+  convertUsername(username) {
+    return `${username}@team111EscapeRoom.com`;
   }
 
   render() {

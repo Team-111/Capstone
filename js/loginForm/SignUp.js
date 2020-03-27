@@ -20,14 +20,14 @@ t.form.Form.stylesheet.textbox.normal.borderColor = '#ff0000';
 t.form.Form.stylesheet.controlLabel.normal.color = '#ff0000';
 
 const Signup = t.struct({
-  email: t.String,
+  username: t.String,
   password: t.String,
 });
 
 const options = {
   fields: {
-    email: {
-      error: 'Register Email'
+    username: {
+      error: 'Username must be valid'
     },
     password: {
       error: 'Must be at least 6 Characters long'
@@ -35,21 +35,32 @@ const options = {
   },
 };
 
+// Username validation
+const checkUsernameValidity = username => !(/\W/.test(username));
 
 export default class SignUp extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.convertUsername = this.convertUsername.bind(this);
   }
 
   async handleSubmit() {
     try {
-      const {email, password} = this._form.getValue();
-      await auth.createUserWithEmailAndPassword(email, password);
-      this.props.exitViro();
+      const {username, password} = this._form.getValue();
+
+      if (checkUsernameValidity(username)) {
+        const convertedName = this.convertUsername(username);
+        await auth.createUserWithEmailAndPassword(convertedName, password);
+        this.props.exitViro();
+      }
     } catch (error) {
       console.log('error', error);
     }
+  }
+
+  convertUsername(username) {
+    return `${username}@team111EscapeRoom.com`;
   }
 
   render() {
