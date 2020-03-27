@@ -29,7 +29,7 @@ class Combo extends Component {
         digitsCopy[idx]++;
 
         if (digitsCopy[idx] > 9) digitsCopy[idx] = 0;
-        
+
         const correctCode = this.checkMatch(digitsCopy);
 
         this.setState({
@@ -64,7 +64,7 @@ class Combo extends Component {
                         return (
                             <ViroFlexView
                                 key={`digit${idx}`}
-                                backgroundColor="transparent"
+
                                 materials={["comboBg"]}
                                 width={0.3}
                                 height={0.3}
@@ -76,8 +76,8 @@ class Combo extends Component {
                             >
                                 <ViroText
                                     color="red"
-                                    height={0.2}
-                                    width={0.2}
+                                    height={0.3}
+                                    width={0.3}
                                     textAlign="center"
                                     textAlignVertical="center"
                                     text={digit.toString()} />
