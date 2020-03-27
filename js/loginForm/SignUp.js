@@ -32,20 +32,22 @@ const Signup = t.struct({
   password: PasswordValidation,
 });
 
-const options = {
-  fields: {
-    username: {
-      error: 'Invalid username'
-    },
-    password: {
-      error: 'Must be at least 6 Characters long'
-    },
-  },
-};
-
 export default class SignUp extends Component {
   constructor() {
     super();
+    this.state = {
+      options: {
+        fields: {
+          username: {
+            error: 'Username invalid or taken',
+          },
+          password: {
+            secureTextEntry: true,
+            error: 'Must be at least 6 Characters long',
+          },
+        },
+      }
+    }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.convertUsername = this.convertUsername.bind(this);
   }
@@ -58,7 +60,20 @@ export default class SignUp extends Component {
         await auth.createUserWithEmailAndPassword(convertedName, password);
         this.props.exitViro();
     } catch (error) {
-      console.log('error', error);
+      this.setState({
+        options: {
+          fields: {
+            username: {
+              hasError: true,
+              error: 'Username invalid or taken',
+            },
+            password: {
+              secureTextEntry: true,
+              error: 'Invalid password',
+            },
+          },
+        },
+      })
     }
   }
 
@@ -71,9 +86,15 @@ export default class SignUp extends Component {
       <View style={styles.otherStyle}>
       <View style={styles.container}>
         <Text style={styles.otherStyle}>Register...If you dare...</Text>
-        <Form ref={c => this._form = c} type={Signup} options={options}/>
+        <Form ref={c => this._form = c} type={Signup} options={this.state.options}/>
         <Button title="Register" onPress={this.handleSubmit} style={styles.otherStyle}>
           Register
+        </Button>
+
+        <View style={styles.separator} />
+
+        <Button title="Back" onPress={this.props.exitViro} style={styles.otherStyle}>
+          Back
         </Button>
       </View>
       </View>
@@ -95,6 +116,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     paddingBottom: 10,
+  },
+  separator: {
+    marginVertical: 8,
   }
 });
 
