@@ -25,8 +25,11 @@ import {
   Button,
 } from 'react-native';
 
+import {connect} from 'react-redux'
+
 import {ViroARSceneNavigator} from 'react-viro';
 import {auth} from './server/db/firebase';
+
 /*
  TODO: Insert your API key below
  */
@@ -50,7 +53,7 @@ var AR_NAVIGATOR_TYPE = 'AR';
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
 
-export default class ViroSample extends Component {
+class ViroSample extends Component {
   constructor() {
     super();
 
@@ -88,14 +91,14 @@ export default class ViroSample extends Component {
   _getExperienceSelector() {
     //if (auth.currentUser) console.log('Auth=', auth.currentUser.uid);
     return (
+
       <View style={localStyles.outer}>
         <View style={localStyles.inner}>
-          {auth.currentUser ?
+          {/* {auth.currentUser ??
             <Text style={localStyles.titleText}>
               Welcome {`${auth.currentUser.email}`} to
             </Text>
-            : null
-          }
+          } */}
           <Text style={localStyles.titleText}>Escape the Room AR</Text>
           {auth.currentUser ? (
             <View>
@@ -175,16 +178,15 @@ export default class ViroSample extends Component {
   _getScoreNavigator() {
     return (
       <InitialVRScene {...this.state.sharedProps} exitViro={this._exitViro} />
-      // initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
     );
   }
 
   _getLoginNavigator() {
-    return <Login {...this.state.sharedProps} exitViro={this._exitViro} />;
+    return (<Login {...this.state.sharedProps} exitViro={this._exitViro} />);
   }
 
   _getSignUpNavigator() {
-    return <SignUp {...this.state.sharedProps} exitViro={this._exitViro} />;
+    return (<SignUp {...this.state.sharedProps} exitViro={this._exitViro} />);
   }
 
   // This function returns an anonymous/lambda function to be used
@@ -262,4 +264,14 @@ var localStyles = StyleSheet.create({
   },
 });
 
-module.exports = ViroSample;
+const mapStateToProps = state => {
+  return {wow: 'cool'};
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {getScores: () => dispatch(getAllScores()) };
+// }
+
+export default connect(mapStateToProps)(ViroSample)
+
+// module.exports = ViroSample;
