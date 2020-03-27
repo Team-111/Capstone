@@ -15,14 +15,12 @@ import {
 } from 'react-viro';
 import HighScores from './HighScores';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
-import BaseItem from '../js/Objects/baseItem'
-
-
+import BaseItem from '../js/Objects/baseItem';
 
 import RoomCamera from './roomCameraHUD';
 import PuzzleSliding from './PuzzleSliding';
 
-function objIsEquivalent(a,b){
+function objIsEquivalent(a, b) {
     //base case
     if (a === b) return true;
 
@@ -51,14 +49,20 @@ class Room extends Component {
       visibleItems: {key: true},
       inventory: ['Empty'],
       currGame: {},
+      time: {
+        min: 0,
+        sec: 0,
+      }
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
     this.getCurrentGame = this.getCurrentGame.bind(this);
+    this.gotHint = this.gotHint.bind(this);
+    this.saveGame = this.saveGame.bind(this);
+    this.updateTime = this.updateTime.bind(this);
   }
-
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
@@ -70,9 +74,36 @@ class Room extends Component {
     }
   }
 
-
   getCurrentGame() {
-    this.setState({currGame: this.props.currentGame});
+    this.setState({
+      currGame: this.props.currentGame,
+      time: this.props.currentGame.currentTime,
+    });
+  }
+
+  saveGame() {
+    this.setState({
+      currGame: {
+        ...this.state.currGame,
+        currentTime: {
+          min: this.state.time.min,
+          sec: this.state.time.sec,
+        },
+      }
+    });
+    //console.log('Here is state after setting in saveGame', this.state)
+    this.props.saveGame(this.props.currentUser.uid, this.state.currGame);
+    //this.props.exitViro();
+    //console.log('successfully saved game')
+  }
+
+  updateTime(min, sec) {
+    this.setState({
+      time: {
+        min,
+        sec,
+      },
+    });
   }
 
   gotHint() {
@@ -97,12 +128,11 @@ class Room extends Component {
     // this.setState({
     //   keyPossessed: true,
     // });
-    let stateCopy = {...this.state.visibleItems}
+    let stateCopy = {...this.state.visibleItems};
     stateCopy[passedObj] = false;
-    let updatedInventory = [...this.state.inventory]
+    let updatedInventory = [...this.state.inventory];
     updatedInventory.unshift(passedObj);
-    this.setState({visibleItems: stateCopy, inventory: updatedInventory})
-
+    this.setState({visibleItems: stateCopy, inventory: updatedInventory});
   }
 
   showPuzzle() {
@@ -113,10 +143,24 @@ class Room extends Component {
   }
 
   render() {
-    console.log('Render - State in Room=', this.state);
-    console.log('Render - Props in Room=', this.props);
+    //console.log('Render - State in Room=', this.state);
+    // console.log('Render - Props in Room=', this.props);
     // Initialize Objects
-    let Key = new BaseItem('key', 'a small key', <ViroBox height={.4} length={.4} width={.4} position={[4, 0, 0]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key', 'placeholder')}/>, true)
+    let Key = new BaseItem(
+      'key',
+      'a small key',
+      (
+        <ViroBox
+          height={0.4}
+          length={0.4}
+          width={0.4}
+          position={[4, 0, 0]}
+          visible={this.state.visibleItems.key}
+          onClick={() => this.getItem('key', 'placeholder')}
+        />
+      ),
+      true,
+    );
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
@@ -126,6 +170,11 @@ class Room extends Component {
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
           inventory={this.state.inventory[0]}
+          hintsLeft={this.state.currGame.hintsLeft}
+          updateTime={this.updateTime}
+          time={this.state.time}
+          saveGame={this.saveGame}
+          gotHint={this.gotHint}
         />
 
         <ViroBox
@@ -160,17 +209,17 @@ class Room extends Component {
           visible={this.props.entered}
           onClick={this.doorInteract}
         />
-        {!!this.state.currGame.hintsLeft && (
+        {/* {!!this.state.currGame.hintsLeft && (
           <ViroNode position={[0, 0, -0.3]}>
             <ViroText
               text={`Hints = ${this.state.currGame.hintsLeft}`}
               style={styles.helloWorldTextStyle}
               // scale={[0.5, 0.5, 0.5]}
-              position={[0, 0, -1]}
+              position={[0, 0.3, -0.2]}
               onClick={this.gotHint}
             />
           </ViroNode>
-        )}
+        )} */}
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
@@ -188,8 +237,8 @@ class Room extends Component {
         {/* //Objects Here */}
         {Key.mesh}
 
-
         <ViroFlexView
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             flexDirection: 'column',
             justifyContent: 'center',
@@ -204,7 +253,6 @@ class Room extends Component {
           <PuzzleColoredSquares />
         </ViroFlexView>
 
-
         <PuzzleSliding />
       </ViroNode>
     );
@@ -212,16 +260,6 @@ class Room extends Component {
 }
 
 export default Room;
-
-var styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 40,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
-});
 
 ViroMaterials.createMaterials({
   grid: {

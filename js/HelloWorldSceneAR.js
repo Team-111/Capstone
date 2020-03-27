@@ -94,6 +94,7 @@ export default class HelloWorldSceneAR extends Component {
             currentGame={this.state.game}
             saveGame={updateGame}
             currentUser={currentUser}
+            exitViro={exitViro}
           />
         </ViroPortalScene>
 

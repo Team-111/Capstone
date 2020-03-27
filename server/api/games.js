@@ -56,7 +56,7 @@ export async function updateGame(userId, currentGame) {
   try {
     let gamesDocRef = await db.collection('games').doc(`${userId}`);
     await gamesDocRef.set({...currentGame}, {merge: true});
-    console.log('Successfully updated game');
+    //console.log('Successfully updated game');
   } catch (error) {
     console.log(error);
   }
