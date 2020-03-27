@@ -157,9 +157,9 @@ class Room extends Component {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
     let Key = <Viro3DObject source={require('../js/Objects/models/key/worn_key.obj')}
     resources={[require('./Objects/models/key/worn_key.mtl'),
-              require('./Objects/models/key/t_worn_key.png')]} highAccuracyEvents={true} type="OBJ" position={[0,-3,-1]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)}/>
+              require('./Objects/models/key/t_worn_key.png')]} highAccuracyEvents={true} type="OBJ" position={[0,-3,-1]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)} materials={['key']}/>
 
-    let Desk = <Viro3DObject source={require('./Objects/models/desk/desk.obj')} resources={[require('./Objects/models/desk/desk_texture.png')]} highAccuracyEvents={true} type="OBJ" position={[-4,-3,0]} scale={[.02,.02,.02]} rotation={[0,90,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} />
+    let Desk = <Viro3DObject source={require('./Objects/models/desk/desk.obj')} highAccuracyEvents={true} type="OBJ" position={[-4,-3,0]} scale={[.03,.03,.03]} rotation={[0,90,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} materials={['desk']}/>
 
 
     return (
@@ -272,6 +272,12 @@ ViroMaterials.createMaterials({
   cabinFloor: {
     diffuseTexture: require('./res/cabin_floor_sample.jpg'),
   },
+  desk: {
+    diffuseTexture: require('./Objects/models/desk/desk_texture.png')
+  },
+  key: {
+    diffuseTexture: require('./Objects/models/key/t_worn_key.png')
+  }
 });
 
 module.exports = Room;
