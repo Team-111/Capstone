@@ -16,5 +16,14 @@ export async function getScores(callbackFunc) {
     console.log(error);
   }
 }
-
+export async function setNewHighScore(callbackFunc, user, level, score) {
+  try {
+    await db
+      .collection('scores')
+      .doc()
+      .set({level: level, score: score, user: user});
+  } catch (error) {
+    console.error(error);
+  }
+}
 // module.exports = getScores

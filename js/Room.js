@@ -14,32 +14,36 @@ import {
   ViroFlexView,
 } from 'react-viro';
 import HighScores from './HighScores';
+import {setNewHighScore, getScores} from '../server/api/scores';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
-
-
+import {auth} from '../server/db/firebase';
 import RoomCamera from './roomCameraHUD';
 import PuzzleSliding from './PuzzleSliding';
 import Combo from './Combo';
 
-function objIsEquivalent(a,b){
-   //base case
-   if (a === b) return true;
+function objIsEquivalent(a, b) {
+  //base case
+  if (a === b) return true;
 
-   if (a === null || typeof a !== "object" ||
-       b === null || typeof b !== "object") return false;
+  if (
+    a === null ||
+    typeof a !== 'object' ||
+    b === null ||
+    typeof b !== 'object'
+  )
+    return false;
 
-   let keysA = Object.keys(a);
-   let keysB = Object.keys(b);
+  let keysA = Object.keys(a);
+  let keysB = Object.keys(b);
 
-   if (keysA.length !== keysB.length) return false;
+  if (keysA.length !== keysB.length) return false;
 
-   for (let key of keysA) {
-     if (!keysB.includes(key) || !objIsEquivalent(a[key], b[key])) return false;
-   }
+  for (let key of keysA) {
+    if (!keysB.includes(key) || !objIsEquivalent(a[key], b[key])) return false;
+  }
 
-   return true;
+  return true;
 }
-
 
 class Room extends Component {
   constructor() {
@@ -48,12 +52,17 @@ class Room extends Component {
       hudText: '',
       puzzle: false,
       visibleItems: {key: true, bucket: true, desk: true},
-      inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
+      inventory: [
+        {
+          name: 'Empty',
+          itemIMG: require('../js/Inventory/images/icon_close.png'),
+        },
+      ],
       currGame: {},
       time: {
         min: 0,
         sec: 0,
-      }
+      },
     };
 
     this.doorInteract = this.doorInteract.bind(this);
@@ -75,7 +84,6 @@ class Room extends Component {
     }
   }
 
-
   getCurrentGame() {
     this.setState({
       currGame: this.props.currentGame,
@@ -91,7 +99,7 @@ class Room extends Component {
           min: this.state.time.min,
           sec: this.state.time.sec,
         },
-      }
+      },
     });
     //console.log('Here is state after setting in saveGame', this.state)
     this.props.saveGame(this.props.currentUser.uid, this.state.currGame);
@@ -122,7 +130,8 @@ class Room extends Component {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
-      this.setState({hudText: "You've escaped the room!"});
+      setNewHighScore(auth.user.email, 'spookyCabin', '21:12');
+      return <HighScores />;
     }
   }
 
@@ -130,7 +139,7 @@ class Room extends Component {
     // this.setState({
     //   keyPossessed: true,
     // });
-    if(isCollectable) {
+    if (isCollectable) {
       let stateCopy = {...this.state.visibleItems};
       stateCopy[passedObj] = false;
       let updatedInventory = [...this.state.inventory];
@@ -140,8 +149,6 @@ class Room extends Component {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
-
-
   }
 
   showPuzzle() {
@@ -153,9 +160,29 @@ class Room extends Component {
 
   render() {
     // Initialize Objects
-    let Key = <ViroBox height={.4} length={.4} width={.4} position={[4, 0, 0]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)}/>
-    let Desk = <ViroBox height={3} length={3} width={2} position={[-4,-3,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} />
-
+    let Key = (
+      <ViroBox
+        height={0.4}
+        length={0.4}
+        width={0.4}
+        position={[4, 0, 0]}
+        visible={this.state.visibleItems.key}
+        onClick={() =>
+          this.getItem('key', require('../js/Inventory/images/key.png'), true)
+        }
+      />
+    );
+    let Desk = (
+      <ViroBox
+        height={3}
+        length={3}
+        width={2}
+        position={[-4, -3, 0]}
+        onClick={() =>
+          this.getItem('desk', 'noIMG', false, 'A sturdy wooden desk.')
+        }
+      />
+    );
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
@@ -229,7 +256,6 @@ class Room extends Component {
         {Key}
         {Desk}
 
-
         <ViroFlexView
           style={{
             flexDirection: 'column',
@@ -238,24 +264,20 @@ class Room extends Component {
           }}
           width={0.7}
           height={0.7}
-
           position={[-2, 0, 0]}
           rotation={[0, 90, 0]}
           backgroundColor="transparent">
           <PuzzleColoredSquares />
         </ViroFlexView>
 
-
         <PuzzleSliding />
-        <Combo code={"2468"} getItem={this.getItem}/>
+        <Combo code={'2468'} getItem={this.getItem} />
       </ViroNode>
     );
   }
 }
 
 export default Room;
-
-
 
 ViroMaterials.createMaterials({
   grid: {
