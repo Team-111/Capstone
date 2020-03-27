@@ -23,7 +23,7 @@ class RoomCamera extends Component {
     this.state = {
       selectedItem : 0
     }
-    // this.changeItem = this.changeItem.bind(this)
+    this.changeItem = this.changeItem.bind(this)
 
   }
   // changeItem() {
@@ -33,12 +33,23 @@ class RoomCamera extends Component {
   //     this.setState({selectedItem: this.state.selectedItem + 1})
   //   }
   // }
-  _onSwipe(swipeState, source) {
-    if(swipeState == 4) {
-      if(!this.props.inventory[this.props.inventory.length]) {
+  changeItem(direction) {
+    if(direction === "right") {
+      if(this.state.selectedItem === (this.props.inventory.length -1)) {
         this.setState({selectedItem: 0})
       } else {
-        this.setState({selectedItem: this.state.selectedItem + 1})
+        let newNum = this.state.selectedItem;
+        newNum += 1;
+        this.setState({selectedItem: newNum})
+      }
+    }
+    if(direction === "left") {
+      if (this.state.selectedItem === 0) {
+        this.setState({selectedItem: this.props.inventory.length -1})
+      } else {
+        let newNum = this.state.selectedItem;
+        newNum -= 1;
+        this.setState({selectedItem: newNum})
       }
     }
   }
@@ -56,8 +67,11 @@ class RoomCamera extends Component {
           textClipMode="ClipToBounds"
           width={1} />
         <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
-          <ViroImage source={this.props.inventory[this.state.selectedItem].itemIMG} onSwipe={this._onSwipe}/>
+          <ViroImage source={this.props.inventory[this.state.selectedItem].itemIMG} />
+          {/* <ViroText text={this.props.inventory[this.state.selectedItem].name}/> */}
         </ViroNode>
+        <ViroImage position={[.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_right.png')} onClick={() => {this.changeItem('right')}}/>
+        <ViroImage position={[-.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_left.png')} onClick={() => {this.changeItem('left')}}/>
 
       </ViroCamera>
     );
