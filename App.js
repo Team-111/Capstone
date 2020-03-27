@@ -92,7 +92,7 @@ export default class ViroSample extends Component {
         <View style={localStyles.inner}>
           {auth.currentUser ?
             <Text style={localStyles.titleText}>
-              Welcome {`${auth.currentUser.email}`} to
+              Welcome {`${auth.currentUser.email.split('@')[0]}`} to
             </Text>
             : null
           }
