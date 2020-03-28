@@ -1,6 +1,8 @@
 'use strict';
 
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getAllScores} from '../store/scoreReducer'
 
 import {
   AppRegistry,
@@ -15,41 +17,43 @@ import {
 
 import {ViroARScene, ViroText, ViroFlexView, Viro360Image} from 'react-viro';
 
-import {getScores} from '../server/api/scores';
+// import {getScores} from '../server/api/scores';
 
-export default class HighScores extends Component {
+class HighScores extends Component {
   constructor() {
     super();
-
-    this.state = {
-      hiScores: [],
-    }; // Set initial state here
   }
   componentDidMount() {
     //callback func for getScores takes in the mapped array of objects from api/scores
-    getScores(inputArr => {
-      this.setState({hiScores: inputArr});
-    });
+    // getScores(inputArr => {
+    //   this.setState({hiScores: inputArr});
+    // });
+    this.props.getAllScores()
   }
 
   render() {
-    return (
-      <View style={styles.highScoreStyle}>
-        <Text style={styles.hsTitle}>High Scores</Text>
-        {this.state.hiScores.map(element => {
-          return (
-            <View key={element.id}>
-              <Text style={styles.score}>
-                {element.user} {element.score.toString()}
-              </Text>
-            </View>
-          );
-        })}
-        <Button title="back" onPress={() => this.props.exitViro()}>
-          Back
-        </Button>
-      </View>
-    );
+    if(this.props.highScores.length) {
+      return (
+        <View style={styles.highScoreStyle}>
+          <Text style={styles.hsTitle}>High Scores</Text>
+          {this.props.highScores.map(element => {
+            return (
+              <View key={element.id}>
+                <Text style={styles.score}>
+                  {element.user} {element.score.toString()}
+                </Text>
+              </View>
+            );
+          })}
+          <Button title="back" onPress={() => this.props.exitViro()}>
+            Back
+          </Button>
+        </View>
+      );
+    } else {
+      <Text>Ew</Text>
+    }
+
   }
 }
 
@@ -74,4 +78,12 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = HighScores;
+const mapStateToProps = state => {
+  return {highScores: state.score.allScores};
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {getScores: () => dispatch(getAllScores()) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HighScores)

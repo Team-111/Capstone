@@ -1,34 +1,16 @@
-// //src/redux/store.js
-// import { createStore, compose } from 'redux'
-// import { reactReduxFirebase } from 'react-redux-firebase'
-// import { reduxFirestore } from 'redux-firestore'
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+import thunkMiddleware from 'redux-thunk'
+// import {composeWithDevTools} from 'redux-devtools-extension'
+//import individual reducers here
+import scoreReducer from '../store/scoreReducer'
 
-
-// import {db} from '../server/db'
-
-// import { initialState, rootReducer } from './reducers'
-
-// const enhancers = [
-//   reduxFirestore(db),
-//   // reactReduxFirebase(db, {
-//   //   userProfile: 'users',
-//   //   useFirestoreForProfile: true,
-//   // })
-// ]
-
-// const reduxDevToolsExtension = window.devToolsExtension
-// if (
-//   process.env.NODE_ENV === "development" &&
-//   typeof reduxDevToolsExtension === "function"
-// ) {
-//   enhancers.push(reduxDevToolsExtension())
-// }
-
-// const composedEnhancers = compose(
-//   ...enhancers
+const reducer = combineReducers({
+  score : scoreReducer
+})
+// const middleware = composeWithDevTools(
+//   applyMiddleware(thunkMiddleware)
 // )
+const store = createStore(reducer, applyMiddleware(thunkMiddleware))
 
-// const store = createStore(rootReducer, initialState, composedEnhancers)
-
-
-// export default store
+export default store
+export * from './scoreReducer'

@@ -22,8 +22,8 @@
     "react-viro": "2.17.0",
     "redux": "^4.0.5",
     "redux-firestore": "^0.13.0",
-    "tcomb-form-native": "^0.6.20",
-    "tcomb-validation": "^3.4.1"
+    "redux-thunk": "^2.3.0",
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
     "@babel/core": "7.8.7",
