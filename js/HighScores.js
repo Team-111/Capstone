@@ -83,8 +83,9 @@ const mapStateToProps = state => {
   return {highScores: state.score.allScores};
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {getScores: () => dispatch(getAllScores()) };
+
+const mapDispatchToProps = dispatch => {
+  return {getScores: () => dispatch(getAllScores())};
 }
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(HighScores)
