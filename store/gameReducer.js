@@ -1,8 +1,19 @@
-import {getSingleGame} from '../server/api/games'
+import {getSingleGame, updateGame} from '../server/api/games'
 
 // Initial State
 const initialState = {
-  currentGame: {}
+  currentGame: {
+    hintsLeft: 3,
+    currentTime: {min: 0, sec: 0},
+    inventory: {},
+    levelName: 'spookyCabin',
+    lockCombo: '1234',
+    puzzles: {
+      eastWall: 'lockBox',
+      northWall: 'colorBlock',
+      westWall: 'slidingPuzzle',
+    }
+  }
 }
 
 // Action Types
@@ -23,6 +34,16 @@ export const fetchGame = gameID => {
       let data = {};
       await getSingleGame(((gameFound) => data = {...gameFound}), gameID)
       dispatch(gotGame(data))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const saveGame = (gameID, updatedGame) => {
+  return async dispatch => {
+    try {
+
     } catch (error) {
       console.error(error)
     }
