@@ -132,13 +132,13 @@ var styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {currentGame: state.game.currentGame};
+  return {currentGame: state.game};
 }
 
 
 const mapDispatchToProps = dispatch => {
   return {
-    getGame: (userID) => dispatch(fetchGame(userID))
+    getGame: userID => dispatch(fetchGame(userID)),
   };
 }
 

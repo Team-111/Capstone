@@ -2,17 +2,15 @@ import {getSingleGame, updateGame} from '../server/api/games'
 
 // Initial State
 const initialState = {
-  currentGame: {
-    hintsLeft: 3,
-    currentTime: {min: 0, sec: 0},
-    inventory: {},
-    levelName: 'spookyCabin',
-    lockCombo: '1234',
-    puzzles: {
-      eastWall: 'lockBox',
-      northWall: 'colorBlock',
-      westWall: 'slidingPuzzle',
-    }
+  hintsLeft: 3,
+  currentTime: {min: 0, sec: 0},
+  inventory: {},
+  levelName: 'spookyCabin',
+  lockCombo: '1234',
+  puzzles: {
+    eastWall: 'lockBox',
+    northWall: 'colorBlock',
+    westWall: 'slidingPuzzle',
   }
 }
 
@@ -28,10 +26,9 @@ const gotGame = info => {
   }
 }
 
-const useHint = info => {
+export const useHint = () => {
   return {
     type: UPDATE_HINT,
-    info
   }
 }
 
@@ -60,6 +57,7 @@ export const saveGameThunk = (gameID, updatedGame) => {
   return async dispatch => {
     try {
       let data = {}
+      updatedGame = {...updatedGame, hintsLeft: 1}
       await updateGame((gameID, updatedGame))
       await getSingleGame(((gameFound) => data = {...gameFound}), gameID)
       dispatch(gotGame(data))
@@ -74,12 +72,12 @@ export const saveGameThunk = (gameID, updatedGame) => {
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_GAME:
-      return {...state, currentGame: action.info}
+      return action.info;
     case UPDATE_HINT:
-      return {...state.currentGame, hintsLeft: action.info}
+      return {...state, hintsLeft: state.hintsLeft - 1}
     default:
-      return state
+      return state;
   }
 }
 
-export default gameReducer
+export default gameReducer;

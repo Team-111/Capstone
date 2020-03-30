@@ -287,7 +287,7 @@ ViroMaterials.createMaterials({
 });
 
 const mapStateToProps = state => {
-  return {currentGame: state.game.currentGame};
+  return {currentGame: state.game};
 }
 
 
