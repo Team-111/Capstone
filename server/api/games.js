@@ -62,18 +62,21 @@ export async function updateGame(userId, currentGame) {
   }
 }
 
-export async function createGame(userId) {
-  try {
-    await db
-      .collection('games')
-      .doc(`${userId}`)
-      .set({
-        hintsLeft: 3,
-      });
-    // scores.forEach(doc => callbackFunc(doc.data()))
-  } catch (error) {
-    console.log(error);
-  }
-}
+//thunk to update Hints in a Game
+// export async function updateHint(userId, hintCount)
+
+// export async function createGame(userId) {
+//   try {
+//     await db
+//       .collection('games')
+//       .doc(`${userId}`)
+//       .set({
+//         hintsLeft: 3,
+//       });
+//     // scores.forEach(doc => callbackFunc(doc.data()))
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 // udpateGame('2dA2La6CAsTaK4I7fBx53iofQnF3', {hintsLeft: 2, currentTime: {min: 1, sec: 0}});

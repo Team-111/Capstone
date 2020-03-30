@@ -28,11 +28,11 @@ class HighScores extends Component {
     // getScores(inputArr => {
     //   this.setState({hiScores: inputArr});
     // });
-    this.props.getAllScores()
+    this.props.getScores()
   }
 
   render() {
-    if(this.props.highScores.length) {
+    if(this.props.highScores[0]) {
       return (
         <View style={styles.highScoreStyle}>
           <Text style={styles.hsTitle}>High Scores</Text>
@@ -51,7 +51,8 @@ class HighScores extends Component {
         </View>
       );
     } else {
-      <Text>Ew</Text>
+      return (
+      <Text>Ew</Text>)
     }
 
   }
@@ -82,8 +83,9 @@ const mapStateToProps = state => {
   return {highScores: state.score.allScores};
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {getScores: () => dispatch(getAllScores()) };
+
+const mapDispatchToProps = dispatch => {
+  return {getScores: () => dispatch(getAllScores())};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HighScores)
+module.exports = connect(mapStateToProps, mapDispatchToProps)(HighScores)

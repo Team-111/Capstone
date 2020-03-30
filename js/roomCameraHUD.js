@@ -3,6 +3,9 @@
 import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
+import {connect} from 'react-redux'
+import {saveGameThunk} from '../store/gameReducer'
+import {auth} from '../server/db/firebase'
 
 import {
   ViroMaterials,
@@ -73,12 +76,18 @@ class RoomCamera extends Component {
         </ViroNode>
         <ViroNode position={[-0.25, 0.6, -1.5]} scale={[0.38, 0.38, 0.38]}>
           <ViroText
-            text={`Hints = ${this.props.hintsLeft}`}
+            text={`Hints = ${this.props.currentGame.hintsLeft}`}
             width={1}
             height={1}
             color="#F5B041"
             style={{fontFamily: 'Arial', fontSize: 15}}
-            onClick={this.props.gotHint}
+            onClick={() => {
+              let gameClone = {...this.props.currentGame}
+              let currHint = this.props.currentGame.hintsLeft;
+              currHint -= 1;
+              gameClone.hintsLeft = currHint;
+              this.props.updateGame(this.props.currentUserID, gameClone);
+            }}
           />
         </ViroNode>
         <ViroText
@@ -100,4 +109,15 @@ class RoomCamera extends Component {
   }
 }
 
-export default RoomCamera;
+const mapStateToProps = state => {
+  return {currentGame: state.game.currentGame};
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame))
+  };
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(RoomCamera)

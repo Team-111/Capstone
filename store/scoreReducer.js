@@ -20,7 +20,8 @@ const gotAllScores = info => {
 export const getAllScores = () => {
   return async dispatch => {
     try {
-      const data = await getScores(inputArr => inputArr)
+      let data = [];
+      await getScores((inputArr) => {data = [...inputArr]})
       dispatch(gotAllScores(data))
     } catch (error) {
       console.error(error)
