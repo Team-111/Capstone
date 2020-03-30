@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux'
-import {saveGameThunk} from '../store/gameReducer'
+import {saveGameThunk, useHint} from '../store/gameReducer'
 import {auth} from '../server/db/firebase'
 
 import {
@@ -81,13 +81,7 @@ class RoomCamera extends Component {
             height={1}
             color="#F5B041"
             style={{fontFamily: 'Arial', fontSize: 15}}
-            onClick={() => {
-              let gameClone = {...this.props.currentGame}
-              let currHint = this.props.currentGame.hintsLeft;
-              currHint -= 1;
-              gameClone.hintsLeft = currHint;
-              this.props.updateGame(this.props.currentUserID, gameClone);
-            }}
+            onClick={() => this.props.useHint()}
           />
         </ViroNode>
         <ViroText
@@ -110,13 +104,14 @@ class RoomCamera extends Component {
 }
 
 const mapStateToProps = state => {
-  return {currentGame: state.game.currentGame};
+  return {currentGame: state.game};
 }
 
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame))
+    updateGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame)),
+    useHint: () => dispatch(useHint()),
   };
 }
 

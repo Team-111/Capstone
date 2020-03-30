@@ -21,14 +21,14 @@ export async function getSingleGame(callbackFunc, gameId) {
   try {
     let singleGame = await db
       .collection('games')
-      .doc(`${gameId}`)
+      .doc(gameId)
       .get();
     if (singleGame.exists) {
       callbackFunc(singleGame.data());
     } else {
       await db
         .collection('games')
-        .doc(`${gameId}`)
+        .doc(gameId)
         .set({
           hintsLeft: 3,
           currentTime: {min: 0, sec: 0},
@@ -54,7 +54,7 @@ export async function getSingleGame(callbackFunc, gameId) {
 
 export async function updateGame(userId, currentGame) {
   try {
-    let gamesDocRef = await db.collection('games').doc(`${userId}`);
+    let gamesDocRef = await db.collection('games').doc(userId);
     await gamesDocRef.set({...currentGame}, {merge: true});
     //console.log('Successfully updated game');
   } catch (error) {
