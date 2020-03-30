@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux'
 import {saveGameThunk} from '../store/gameReducer'
+import {auth} from '../server/db/firebase'
 
 import {
   ViroMaterials,
@@ -85,7 +86,7 @@ class RoomCamera extends Component {
               let currHint = this.props.currentGame.hintsLeft;
               currHint -= 1;
               gameClone.hintsLeft = currHint;
-              this.props.updateGame(this.props.currentUser.uid, gameClone);
+              this.props.updateGame(this.props.currentUserID, gameClone);
             }}
           />
         </ViroNode>

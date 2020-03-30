@@ -18,6 +18,8 @@ import {
 import {connect} from 'react-redux'
 import {fetchGame, hintThunk} from '../store/gameReducer'
 
+import {auth} from '../server/db/firebase'
+
 import PuzzleColoredSquares from './PuzzleColoredSquares';
 
 
@@ -173,7 +175,7 @@ class Room extends Component {
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
           inventory={this.state.inventory}
-          currentUser={this.props.currentUser}
+          currentUserID={this.props.currentUser.uid}
           // hintsLeft={this.state.currGame.hintsLeft}
           updateTime={this.updateTime}
           time={this.state.time}

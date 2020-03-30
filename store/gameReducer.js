@@ -49,12 +49,12 @@ export const fetchGame = gameID => {
   }
 }
 
-// export const hintThunk = (oldHintCount) => {
-//   return dispatch => {
-//     let currHint = oldHintCount - 1;
-//     dispatch(useHint(currHint))
-//   }
-// }
+export const hintThunk = (oldHintCount) => {
+  return dispatch => {
+    let currHint = oldHintCount - 1;
+    dispatch(useHint(currHint))
+  }
+}
 
 export const saveGameThunk = (gameID, updatedGame) => {
   return async dispatch => {
