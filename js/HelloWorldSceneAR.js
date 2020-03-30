@@ -4,8 +4,9 @@ import React, {Component} from 'react';
 
 import {StyleSheet} from 'react-native';
 import Room from './Room';
-import RoomCamera from './roomCameraHUD';
+import {connect} from 'react-redux';
 import {getSingleGame, updateGame} from '../server/api/games';
+import {fetchGame} from '../store/gameReducer'
 
 import {
   ViroARScene,
@@ -21,7 +22,7 @@ import {
   ViroImage,
 } from 'react-viro';
 
-export default class HelloWorldSceneAR extends Component {
+class HelloWorldSceneAR extends Component {
   constructor() {
     super();
 
@@ -39,10 +40,11 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   async componentDidMount() {
-    await getSingleGame(
-      gameFound => this.setState({game: gameFound}),
-      this.props.arSceneNavigator.viroAppProps.user.uid,
-    );
+    // await getSingleGame(
+    //   gameFound => this.setState({game: gameFound}),
+    //   this.props.arSceneNavigator.viroAppProps.user.uid,
+    // );
+    this.props.getGame(this.props.arSceneNavigator.viroAppProps.user.uid)
   }
 
   enterPortal() {
@@ -91,8 +93,8 @@ export default class HelloWorldSceneAR extends Component {
           </ViroPortal>
           <Room
             entered={this.state.entered}
-            currentGame={this.state.game}
-            saveGame={updateGame}
+            // currentGame={this.state.game}
+            // saveGame={updateGame}
             currentUser={currentUser}
             exitViro={exitViro}
           />
@@ -129,4 +131,15 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = HelloWorldSceneAR;
+const mapStateToProps = state => {
+  return {currentGame: state.game.currentGame};
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getGame: (userID) => dispatch(fetchGame(userID))
+  };
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(HelloWorldSceneAR)

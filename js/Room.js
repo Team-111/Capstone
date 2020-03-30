@@ -15,7 +15,9 @@ import {
   ViroFlexView,
   ViroAmbientLight
 } from 'react-viro';
-import HighScores from './HighScores';
+import {connect} from 'react-redux'
+import {fetchGame, hintThunk} from '../store/gameReducer'
+
 import PuzzleColoredSquares from './PuzzleColoredSquares';
 
 
@@ -61,29 +63,30 @@ class Room extends Component {
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
-    this.getCurrentGame = this.getCurrentGame.bind(this);
+    // this.getCurrentGame = this.getCurrentGame.bind(this);
     this.saveGame = this.saveGame.bind(this);
     this.updateTime = this.updateTime.bind(this);
-    this.gotHint = this.gotHint.bind(this);
+    // this.gotHint = this.gotHint.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-    if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
-      // console.log('Here is the current props=', this.props.currentGame);
-      // console.log('Here are the previous props', prevProps.currentGame);
-      this.getCurrentGame();
-      // console.log('Here is the State after get currentGame', this.state);
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   // Typical usage (don't forget to compare props):
+  //   if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
+  //     // console.log('Here is the current props=', this.props.currentGame);
+  //     // console.log('Here are the previous props', prevProps.currentGame);
+  //     this.getCurrentGame();
+  //     // console.log('Here is the State after get currentGame', this.state);
+  //   }
+  // }
 
 
-  getCurrentGame() {
-    this.setState({
-      currGame: this.props.currentGame,
-      time: this.props.currentGame.currentTime,
-    });
-  }
+  // getCurrentGame() {
+  //   // this.setState({
+  //   //   currGame: this.props.currentGame,
+  //   //   time: this.props.currentGame.currentTime,
+  //   // });
+  //   this.props.currentGame;
+  // }
 
   saveGame() {
     this.setState({
@@ -110,14 +113,14 @@ class Room extends Component {
     });
   }
 
-  gotHint() {
-    let currentHints = this.state.currGame.hintsLeft;
-    if (currentHints > 0) {
-      this.setState({
-        currGame: {...this.state.currGame, hintsLeft: currentHints - 1},
-      });
-    }
-  }
+  // gotHint() {
+  //   let currentHints = this.state.currGame.hintsLeft;
+  //   if (currentHints > 0) {
+  //     this.setState({
+  //       currGame: {...this.state.currGame, hintsLeft: currentHints - 1},
+  //     });
+  //   }
+  // }
 
   doorInteract() {
     if (this.state.visibleItems.key) {
@@ -170,11 +173,12 @@ class Room extends Component {
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
           inventory={this.state.inventory}
-          hintsLeft={this.state.currGame.hintsLeft}
+          currentUser={this.props.currentUser}
+          // hintsLeft={this.state.currGame.hintsLeft}
           updateTime={this.updateTime}
           time={this.state.time}
-          saveGame={this.saveGame}
-          gotHint={this.gotHint}
+          // saveGame={this.saveGame}
+          // gotHint={this.gotHint}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox
@@ -280,4 +284,15 @@ ViroMaterials.createMaterials({
   }
 });
 
-module.exports = Room;
+const mapStateToProps = state => {
+  return {currentGame: state.game.currentGame};
+}
+
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     getHint: () => dispatch(hintThunk())
+//   };
+// }
+
+module.exports = connect(mapStateToProps, null)(Room)

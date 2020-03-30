@@ -18,6 +18,7 @@ const initialState = {
 
 // Action Types
 const GOT_GAME = 'GOT_GAME'
+const UPDATE_HINT = 'UPDATE_HINT'
 
 // Action Creator
 const gotGame = info => {
@@ -26,6 +27,14 @@ const gotGame = info => {
     info
   }
 }
+
+const useHint = info => {
+  return {
+    type: UPDATE_HINT,
+    info
+  }
+}
+
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -40,10 +49,20 @@ export const fetchGame = gameID => {
   }
 }
 
-export const saveGame = (gameID, updatedGame) => {
+// export const hintThunk = (oldHintCount) => {
+//   return dispatch => {
+//     let currHint = oldHintCount - 1;
+//     dispatch(useHint(currHint))
+//   }
+// }
+
+export const saveGameThunk = (gameID, updatedGame) => {
   return async dispatch => {
     try {
-
+      let data = {}
+      await updateGame((gameID, updatedGame))
+      await getSingleGame(((gameFound) => data = {...gameFound}), gameID)
+      dispatch(gotGame(data))
     } catch (error) {
       console.error(error)
     }
@@ -56,6 +75,8 @@ const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_GAME:
       return {...state, currentGame: action.info}
+    case UPDATE_HINT:
+      return {...state.currentGame, hintsLeft: action.info}
     default:
       return state
   }
