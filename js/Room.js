@@ -99,6 +99,18 @@ class Room extends Component {
       />
     );
 
+    const Knife = (
+      <Viro3DObject
+        source={require('./Objects/models/knife/knife.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[-3.1, -0.9, 0]}
+        scale={[0.01, 0.01, 0.01]}
+        rotation={[90, 110, 0]}
+        onClick={() => this.getItem('knife', 'noIMG', false, 'A bloody knife')}
+        materials={['knife']}
+      />
+    );
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
@@ -158,6 +170,7 @@ class Room extends Component {
         {Key}
         {Desk}
         {Cot}
+        {Knife}
 
         <ViroFlexView
           style={{
@@ -172,7 +185,6 @@ class Room extends Component {
           backgroundColor="transparent">
           <PuzzleColoredSquares />
         </ViroFlexView>
-
 
         <Pallindrome />
         <PuzzleSliding />
@@ -202,6 +214,9 @@ ViroMaterials.createMaterials({
   },
   cot: {
     diffuseTexture: require('./Objects/models/cot/M_bed_BaseColor.png')
+  },
+  knife: {
+    diffuseTexture: require('./Objects/models/knife/knife_D.jpg'),
   },
 });
 

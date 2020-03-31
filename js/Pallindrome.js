@@ -102,7 +102,7 @@ export default class Pallindrome extends Component {
                   !this.state.solved ? () => this.handleClick1(idx) : () => {}
                 }>
                 <ViroText
-                  color="cc6600"
+                  color="#cc6600"
                   height={0.3}
                   width={0.3}
                   textAlign="center"
