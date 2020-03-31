@@ -21,7 +21,19 @@ export const getAllScores = () => {
   return async dispatch => {
     try {
       let data = [];
-      await getScores((inputArr) => {data = [...inputArr]})
+      await getScores((inputArr) => {
+        let arrInTime = inputArr.map(element => {
+          let timeMilliseconds = element.score;
+          let totalTimeinSeconds = timeMilliseconds / 1000;
+          let minutes = Math.floor(totalTimeinSeconds / 60);
+          let seconds = totalTimeinSeconds - (minutes * 60);
+
+          let dupElement = {...element}
+          dupElement.score = `${minutes}:${seconds}`;
+          return dupElement;
+        })
+        data = [...arrInTime]
+      })
       dispatch(gotAllScores(data))
     } catch (error) {
       console.error(error)
@@ -30,12 +42,9 @@ export const getAllScores = () => {
 }
 
 export const newScoreThunk = (leaderboardName, time) => {
-  return async dispatch => {
+  return async () => {
     try {
       await newHighScore(leaderboardName, time)
-      let data = [];
-      await getScores((inputArr) => {data = [...inputArr]})
-      dispatch(gotAllScores(data))
     } catch (error) {
       console.error(error)
     }
