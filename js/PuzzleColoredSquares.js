@@ -60,7 +60,7 @@ class PuzzleColoredSquares extends Component {
         }
       }
     }
-    
+
     this.setState({solved: true});
   };
 
@@ -68,8 +68,8 @@ class PuzzleColoredSquares extends Component {
     return (
       <ViroFlexView
         style={{flexDirection: 'column', alignSelf: 'center'}}
-        width={0.5}
-        height={0.5}
+        width={0.6}
+        height={0.6}
         backgroundColor="transparent">
         {this.state.gameBoard.map((row, rowIdx) => {
           return (

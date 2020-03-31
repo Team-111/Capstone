@@ -1,17 +1,23 @@
 import React, {Component} from 'react';
-import {ViroNode, ViroText, ViroImage, ViroFlexView} from 'react-viro';
+import {
+  ViroNode,
+  ViroText,
+  ViroImage,
+  ViroFlexView,
+  ViroQuad,
+  ViroMaterials,
+  ViroSound,
+} from 'react-viro';
 
 export default class Pallindrome extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
+      solution1: '0959',
+      solution2: '1001',
+      guess1: [0, 0, 0, 0],
+      guess2: [0, 0, 0, 0],
       solved: false,
-      solution1: [9, 59],
-      solution2: [10, 1],
-      answer1: [],
-      answer2: [],
-      // riddle:
-      //   'A pallindrome is a word, phrase or sequence that reads the same backward as forward. On a digital clock, an example of a pallindrome is 12:21. What is the shortest interval between two pallindromic times? e.g. 11:11 and 12:21 has an interval of 1 hour and 10 minutes. Enter your answers below.',
     };
 
     this.handleClick1 = this.handleClick1.bind(this);
@@ -20,57 +26,138 @@ export default class Pallindrome extends Component {
   }
 
   handleClick1(idx) {
-    const a1Copy = [...this.state.answer1];
-    a1Copy[idx]++;
+    const digitsCopy = [...this.state.guess1];
+    digitsCopy[idx]++;
 
-    if (a1Copy[idx] > 9) {
-      a1Copy[idx] = 0;
+    if (digitsCopy[idx] > 9) {
+      digitsCopy[idx] = 0;
     }
 
-    this.checkSolved();
-
     this.setState({
-      answer1: a1Copy,
+      guess1: digitsCopy,
     });
+    this.checkSolved();
   }
-  handleClick2(idx) {
-    const a2Copy = [...this.state.answer2];
-    a2Copy[idx]++;
 
-    if (a2Copy[idx] > 9) {
-      a2Copy[idx] = 0;
+  handleClick2(idx) {
+    const digitsCopy = [...this.state.guess2];
+    digitsCopy[idx]++;
+
+    if (digitsCopy[idx] > 9) {
+      digitsCopy[idx] = 0;
     }
 
-    this.checkSolved();
-
     this.setState({
-      answer2: a2Copy,
+      guess2: digitsCopy,
     });
+    this.checkSolved();
   }
 
   checkSolved() {
-    let a1 = this.state.answer1;
-    let a2 = this.state.answer2;
+    let g1 = this.state.guess1.join('');
+    let g2 = this.state.guess2.join('');
     let s1 = this.state.solution1;
     let s2 = this.state.solution2;
 
-    if ((a1 === s1 && a2 === s2) || (a1 === s2 && a2 === s1)) {
+    if ((s1 === g1 && s2 === g2) || (s1 === g2 && s2 === g1)) {
       this.setState({solved: true});
     }
   }
 
   render() {
     return (
-      <ViroNode
-        background={'black'}
-        position={[2, 0, 0]}
-        rotation={[0, 270, 0]}>
+      <ViroNode>
         <ViroImage
           source={require('../images/1221.jpeg')}
-          heigth={4}
-          width={1}
+          position={[2, 0.4, 0]}
+          width={0.7}
+          height={0.75}
+          rotation={[0, 270, 0]}
         />
+        <ViroFlexView
+          backgroundColor="black"
+          materials={['input']}
+          width={1}
+          height={0.4}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+          position={[2, -0.4, 0]}
+          rotation={[0, 270, 0]}>
+          {this.state.guess1.map((digit, idx) => {
+            return (
+              <ViroFlexView
+                key={`digit${idx}`}
+                width={0.2}
+                height={0.2}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingTop: 0.1,
+                }}
+                onClick={
+                  !this.state.solved ? () => this.handleClick1(idx) : () => {}
+                }>
+                <ViroText
+                  color="cc6600"
+                  height={0.3}
+                  width={0.3}
+                  textAlign="center"
+                  textAlignVertical="center"
+                  text={digit.toString()}
+                />
+              </ViroFlexView>
+            );
+          })}
+        </ViroFlexView>
+        <ViroFlexView
+          backgroundColor="black"
+          materials={['input']}
+          width={1}
+          height={0.3}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+          position={[2, -0.7, 0]}
+          rotation={[0, 270, 0]}>
+          {this.state.guess2.map((digit, idx) => {
+            return (
+              <ViroFlexView
+                key={`digit${idx}`}
+                width={0.2}
+                height={0.2}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingTop: 0.1,
+                }}
+                onClick={
+                  !this.state.solved ? () => this.handleClick2(idx) : () => {}
+                }>
+                <ViroText
+                  color="#cc6600"
+                  height={0.3}
+                  width={0.3}
+                  textAlign="center"
+                  textAlignVertical="center"
+                  text={digit.toString()}
+                />
+              </ViroFlexView>
+            );
+          })}
+        </ViroFlexView>
       </ViroNode>
     );
   }
 }
+ViroMaterials.createMaterials({
+  input: {
+    diffuseTexture: require('./res/input.jpg'),
+  },
+});
