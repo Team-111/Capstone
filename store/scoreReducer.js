@@ -1,4 +1,4 @@
-import {getScores} from '../server/api/scores'
+import {getScores, newHighScore} from '../server/api/scores'
 
 // Initial State
 const initialState = {
@@ -26,6 +26,20 @@ export const getAllScores = () => {
     } catch (error) {
       console.error(error)
     }
+  }
+}
+
+export const newScoreThunk = (leaderboardName, time) => {
+  return async dispatch => {
+    try {
+      await newHighScore(leaderboardName, time)
+      let data = [];
+      await getScores((inputArr) => {data = [...inputArr]})
+      dispatch(gotAllScores(data))
+    } catch (error) {
+      console.error(error)
+    }
+
   }
 }
 

@@ -42,6 +42,7 @@ var sharedProps = {
 var InitialVRScene = require('./js/HighScores');
 var SignUp = require('./js/reactNativeForms/SignUp');
 var Login = require('./js/reactNativeForms/Login');
+var Winner = require('./js/reactNativeForms/Winner')
 
 var UNSET = 'UNSET';
 var SCORE_NAVIGATOR_TYPE = 'VR';
@@ -216,6 +217,10 @@ class ViroSample extends Component {
     } else if (navType === 'youWin') {
       this.setState({
         navigatorType: WINNER_NAVIGATOR_TYPE,
+      })
+    } else if (navType === 'highScores') {
+      this.setState({
+        navigatorType: SCORE_NAVIGATOR_TYPE,
       })
     }
 
