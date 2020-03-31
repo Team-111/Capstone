@@ -1,8 +1,10 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {saveGameThunk, useHint} from '../store/gameReducer';
+
+import {StyleSheet} from 'react-native';
+import {connect} from 'react-redux'
+import {saveGameThunk, useHint, selectItemThunk} from '../store/gameReducer'
 import TimerComponent from '../js/timer/timerComponent';
 
 import {
@@ -14,32 +16,29 @@ import {
 } from 'react-viro';
 
 class RoomCamera extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedItem: 0,
-    };
+  constructor(props) {
+    super(props);
+    this.changeItem = this.changeItem.bind(this)
 
-    this.changeItem = this.changeItem.bind(this);
   }
 
   changeItem(direction) {
-    if (direction === 'right') {
-      if (this.state.selectedItem === this.props.inventory.length - 1) {
-        this.setState({selectedItem: 0});
+    if(direction === "right") {
+      if(this.props.currentGame.selectedItemIndex === (this.props.currentGame.inventory.length -1)) {
+        this.props.selectItem(0);
       } else {
-        let newNum = this.state.selectedItem;
+        let newNum = this.props.currentGame.selectedItemIndex;
         newNum += 1;
-        this.setState({selectedItem: newNum});
+        this.props.selectItem(newNum)
       }
     }
-    if (direction === 'left') {
-      if (this.state.selectedItem === 0) {
-        this.setState({selectedItem: this.props.inventory.length - 1});
+    if(direction === "left") {
+      if (this.props.currentGame.selectedItemIndex === 0) {
+        this.props.selectItem(this.props.currentGame.inventory.length - 1)
       } else {
-        let newNum = this.state.selectedItem;
+        let newNum = this.props.currentGame.selectedItemIndex;
         newNum -= 1;
-        this.setState({selectedItem: newNum});
+        this.props.selectItem(newNum)
       }
     }
   }
@@ -47,10 +46,7 @@ class RoomCamera extends Component {
   render() {
     return (
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
-        <TimerComponent
-          time={this.props.time}
-          updateTime={this.props.updateTime}
-        />
+        <TimerComponent />
         <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.35, 0.8, -1.5]}>
           <ViroButton
             source={require('./res/firewood-clipart-20-original.png')}
@@ -77,7 +73,7 @@ class RoomCamera extends Component {
           textClipMode="ClipToBounds"
           width={1} />
         <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
-          <ViroImage source={this.props.inventory[this.state.selectedItem].itemIMG} />
+          <ViroImage source={this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].itemIMG} />
           {/* <ViroText text={this.props.inventory[this.state.selectedItem].name}/> */}
         </ViroNode>
         <ViroImage position={[.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_right.png')} onClick={() => {this.changeItem('right')}}/>
@@ -97,6 +93,7 @@ const mapDispatchToProps = dispatch => {
   return {
     saveGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame)),
     useHint: () => dispatch(useHint()),
+    selectItem: newIndex => dispatch(selectItemThunk(newIndex)),
   };
 };
 

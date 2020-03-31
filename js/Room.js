@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import PuzzleColoredSquares from './PuzzleColoredSquares';
 import RoomCamera from './roomCameraHUD';
 import PuzzleSliding from './PuzzleSliding';
@@ -18,6 +18,11 @@ import {
   ViroFlexView,
   ViroAmbientLight,
 } from 'react-viro';
+import {
+  itemVisibleThunk,
+  addToInventoryThunk,
+  selectItemThunk,
+} from '../store/gameReducer';
 
 class Room extends Component {
   constructor() {
@@ -25,9 +30,6 @@ class Room extends Component {
     this.state = {
       hudText: '',
       puzzle: false,
-      visibleItems: {key: true, bucket: true, desk: true},
-      inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
-      currGame: {},
       time: {
         min: 0,
         sec: 0,
@@ -36,20 +38,10 @@ class Room extends Component {
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
-    this.updateTime = this.updateTime.bind(this);
-  }
-
-  updateTime(min, sec) {
-    this.setState({
-      time: {
-        min,
-        sec,
-      },
-    });
   }
 
   doorInteract() {
-    if (this.state.visibleItems.key) {
+    if (this.props.currentGame.visibleInRoom.key) {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
@@ -59,11 +51,10 @@ class Room extends Component {
 
   getItem(passedObj, inventoryIMG, isCollectable, itemText = '') {
     if (isCollectable) {
-      let stateCopy = {...this.state.visibleItems};
-      stateCopy[passedObj] = false;
-      let updatedInventory = [...this.state.inventory];
-      updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
-      this.setState({visibleItems: stateCopy, inventory: updatedInventory});
+      this.props.visibleItems(passedObj);
+      this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG});
+      //Sets the selectedItem Index to 0 whenever you get a new item
+      this.props.selectItem(0);
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -72,17 +63,20 @@ class Room extends Component {
 
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
-    const Key = (
+    let Key = (
       <Viro3DObject
         source={require('../js/Objects/models/key/worn_key.obj')}
         resources={[
           require('./Objects/models/key/worn_key.mtl'),
           require('./Objects/models/key/t_worn_key.png'),
         ]}
-        highAccuracyEvents={true} type="OBJ" 
+        highAccuracyEvents={true}
+        type="OBJ"
         position={[0, -3, -1]}
-        visible={this.state.visibleItems.key} 
-        onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)} 
+        visible={this.props.currentGame.visibleInRoom.key}
+        onClick={() =>
+          this.getItem('key', require('../js/Inventory/images/key.png'), true)
+        }
         materials={['key']}
       />
     );
@@ -93,9 +87,11 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[-4, -3, 0]}
-        scale={[.03, .03, .03]}
+        scale={[0.03, 0.03, 0.03]}
         rotation={[0, 90, 0]}
-        onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")}
+        onClick={() =>
+          this.getItem('desk', 'noIMG', false, 'A sturdy wooden desk.')
+        }
         materials={['desk']}
       />
     );
@@ -105,9 +101,8 @@ class Room extends Component {
         <RoomCamera
           isActive={this.props.entered}
           hudText={this.state.hudText}
-          inventory={this.state.inventory}
-          updateTime={this.updateTime}
-          time={this.state.time}
+          puzzle={this.state.puzzle}
+          showPuzzle={this.showPuzzle}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox
@@ -161,7 +156,6 @@ class Room extends Component {
         {Key}
         {Desk}
 
-
         <ViroFlexView
           style={{
             flexDirection: 'column',
@@ -176,15 +170,14 @@ class Room extends Component {
           <PuzzleColoredSquares />
         </ViroFlexView>
 
-
         <PuzzleSliding />
-        <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem}/>
+        <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem} />
       </ViroNode>
     );
   }
 }
 
-export default Room;
+// export default Room;
 
 ViroMaterials.createMaterials({
   grid: {
@@ -197,15 +190,26 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./res/cabin_floor_sample.jpg'),
   },
   desk: {
-    diffuseTexture: require('./Objects/models/desk/desk_texture.png')
+    diffuseTexture: require('./Objects/models/desk/desk_texture.png'),
   },
   key: {
-    diffuseTexture: require('./Objects/models/key/t_worn_key.png')
-  }
+    diffuseTexture: require('./Objects/models/key/t_worn_key.png'),
+  },
 });
 
-const mapStateToProps = state => ({
-  currentGame: state.game,
-});
+const mapStateToProps = state => {
+  return {currentGame: state.game};
+};
 
-module.exports = connect(mapStateToProps)(Room)
+const mapDispatchToProps = dispatch => {
+  return {
+    visibleItems: itemKey => dispatch(itemVisibleThunk(itemKey)),
+    addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
+    selectItem: selectInd => dispatch(selectItemThunk(selectInd)),
+  };
+};
+
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Room);
