@@ -110,10 +110,10 @@ const gameReducer = (state = initialState, action) => {
     //CASES ADDED BY DANIELLE
     case UPDATE_VISIBLE_ITEMS:
       let itemKey = action.info;
-      let dupState = {...state};
-      dupState.visibleInRoom[itemKey] = false;
-      // console.log(dupState);
-      return {...state, visibleInRoom: dupState.visibleInRoom};
+      return {...state, visibleInRoom: {
+          ...state.visibleInRoom,
+          [itemKey]: false,
+      }};
     //END CASES ADDED BY DANIELLE
     default:
       return state;
