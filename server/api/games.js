@@ -41,7 +41,7 @@ export async function getSingleGame(callbackFunc, gameId) {
           ],
           selectedItemIndex: 0,
           levelName: 'spookyCabin',
-          lockCombo: '1234',
+          lockCombo: this.props.lockCombo,
           puzzles: {
             eastWall: 'lockBox',
             northWall: 'colorBlock',

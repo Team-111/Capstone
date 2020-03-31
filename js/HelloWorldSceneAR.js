@@ -60,8 +60,8 @@ class HelloWorldSceneAR extends Component {
   randomCode = () => {
     let min = 1000,
       max = 9999;
-    let code = Math.round(Math.random() * (max - min) + min);
-    this.setState({secretCode: code.toString()});
+    let random = Math.round(Math.random() * (max - min) + min);
+    this.setState({code: random.toString()});
   };
 
   render() {
