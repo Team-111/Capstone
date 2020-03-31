@@ -40,14 +40,15 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialVRScene = require('./js/HighScores');
-var SignUp = require('./js/loginForm/SignUp');
-var Login = require('./js/loginForm/Login');
+var SignUp = require('./js/reactNativeForms/SignUp');
+var Login = require('./js/reactNativeForms/Login');
 
 var UNSET = 'UNSET';
 var SCORE_NAVIGATOR_TYPE = 'VR';
 var LOGIN_NAVIGATOR_TYPE = 'LOGIN';
 var SIGNUP_NAVIGATOR_TYPE = 'SIGNUP';
 var AR_NAVIGATOR_TYPE = 'AR';
+var WINNER_NAVIGATOR_TYPE = 'WINNER';
 
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
@@ -68,6 +69,7 @@ class ViroSample extends Component {
     this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
       this,
     );
+    this._getWinner = this._getWinner.bind(this)
     this._exitViro = this._exitViro.bind(this);
   }
 
@@ -84,6 +86,8 @@ class ViroSample extends Component {
       return this._getSignUpNavigator();
     } else if (this.state.navigatorType === LOGIN_NAVIGATOR_TYPE) {
       return this._getLoginNavigator();
+    } else if (this.state.navigatorType === WINNER_NAVIGATOR_TYPE) {
+      return this._getWinner();
     }
   }
 
@@ -189,6 +193,10 @@ class ViroSample extends Component {
     return (<SignUp {...this.state.sharedProps} exitViro={this._exitViro} />);
   }
 
+  _getWinner() {
+    return (<Winner {...this.state.sharedProps} exitViro={this._exitViro} />)
+  }
+
   // This function returns an anonymous/lambda function to be used
   // by the experience selector buttons
   _getExperienceButtonOnPress(navigatorType) {
@@ -200,10 +208,17 @@ class ViroSample extends Component {
   }
 
   // This function "exits" Viro by setting the navigatorType to UNSET.
-  _exitViro() {
-    this.setState({
-      navigatorType: UNSET,
-    });
+  _exitViro(navType = 'unset') {
+    if(navType === 'unset') {
+      this.setState({
+        navigatorType: UNSET,
+      });
+    } else if (navType === 'youWin') {
+      this.setState({
+        navigatorType: WINNER_NAVIGATOR_TYPE,
+      })
+    }
+
   }
 }
 
