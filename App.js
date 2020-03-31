@@ -29,6 +29,7 @@ import {connect} from 'react-redux'
 
 import {ViroARSceneNavigator} from 'react-viro';
 import {auth} from './server/db/firebase';
+import InitialARScene from './js/HelloWorldSceneAR';
 
 /*
  TODO: Insert your API key below
@@ -38,7 +39,6 @@ var sharedProps = {
 };
 
 // Sets the default scene you want for AR and VR
-var InitialARScene = require('./js/HelloWorldSceneAR');
 var InitialVRScene = require('./js/HighScores');
 var SignUp = require('./js/loginForm/SignUp');
 var Login = require('./js/loginForm/Login');
@@ -267,10 +267,6 @@ var localStyles = StyleSheet.create({
 const mapStateToProps = state => {
   return {wow: 'cool'};
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {getScores: () => dispatch(getAllScores()) };
-// }
 
 export default connect(mapStateToProps)(ViroSample)
 

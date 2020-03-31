@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {ViroNode, ViroText, ViroImage} from 'react-viro';
+import {connect} from 'react-redux';
+import {timeThunk} from '../../store/gameReducer'
 
-export default class TimerComponent extends Component {
+class TimerComponent extends Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   hours: 0,
-    //   minutes: 0,
-    //   seconds: 0,
-    // };
   }
 
   componentDidMount = () => {
@@ -18,19 +15,12 @@ export default class TimerComponent extends Component {
   };
 
   timer = () => {
-    let minutes = this.props.time.min;
-    let seconds = this.props.time.sec;
+    let minutes = this.props.currentGame.currentTime.min;
+    let seconds = this.props.currentGame.currentTime.sec;
     if (seconds < 60) {
-      // this.setState({
-      //   seconds: this.state.seconds + 1,
-      // });
-      this.props.updateTime(minutes, seconds + 1);
+      this.props.updateTime({min: minutes, sec: seconds + 1});
     } else if (minutes < 60) {
-      // this.setState({
-      //   seconds: 0,
-      //   minutes: this.state.minutes + 1,
-      // });
-      this.props.updateTime(minutes + 1, 0);
+      this.props.updateTime({min: minutes + 1, sec: 0});
     }
     //else {
     //   // this.setState({
@@ -43,7 +33,6 @@ export default class TimerComponent extends Component {
   };
 
   render() {
-    console.log('props in timerComponent', this.props)
     return (
       <ViroNode position={[0, 0, 0]}>
         <ViroImage
@@ -53,7 +42,7 @@ export default class TimerComponent extends Component {
         />
 
         <ViroText
-          text={`00:${this.props.time.min}:${this.props.time.sec}`}
+          text={`00:${this.props.currentGame.currentTime.min}:${this.props.currentGame.currentTime.sec}`}
           position={[0.1, 0.6, -1.4]}
           scale={[0.4, 0.4, 0.4]}
           width={1}
@@ -66,3 +55,14 @@ export default class TimerComponent extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {currentGame: state.game};
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateTime: newTime => dispatch(timeThunk(newTime)),
+  };
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(TimerComponent)
