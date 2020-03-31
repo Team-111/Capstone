@@ -54,15 +54,13 @@ export async function getSingleGame(callbackFunc, gameId) {
   }
 }
 
-export async function updateGame(userId, currentGame) {
+export const updateGame = async (userId, currentGame) => {
   try {
-    let gamesDocRef = await db.collection('games').doc(userId);
-    await gamesDocRef.set({...currentGame}, {merge: true});
-    //console.log('Successfully updated game');
+    await db.collection('games').doc(userId).update(currentGame);
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 //thunk to update Hints in a Game
 // export async function updateHint(userId, hintCount)

@@ -19,12 +19,10 @@ const initialState = {
 // Action Types
 const GOT_GAME = 'GOT_GAME'
 const UPDATE_HINT = 'UPDATE_HINT'
-//ACTION TYPE ADDED BY DANIELLE
 const UPDATE_TIME = 'UPDATE_TIME'
 const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS'
 const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY'
 const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
-//END ACTION TYPE ADDED BY DANIELLE
 
 // Action Creator
 const gotGame = info => {
@@ -82,17 +80,9 @@ export const fetchGame = gameID => {
     } catch (error) {
       console.error(error)
     }
-  }
-}
+  };
+};
 
-export const hintThunk = (oldHintCount) => {
-  return dispatch => {
-    let currHint = oldHintCount - 1;
-    dispatch(useHint(currHint))
-  }
-}
-
-//THUNKS ADDED BY DANIELLE
 export const timeThunk = (updateTimeObj) => {
   return dispatch => {
     dispatch(updateTime(updateTimeObj))
@@ -119,20 +109,19 @@ export const selectItemThunk = newIndex => {
 
 //END THUNKS ADDED BY DANIELLE
 
-export const saveGameThunk = (gameID, updatedGame) => {
+
+export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
     try {
-      let data = {}
-      updatedGame = {...updatedGame, hintsLeft: 1}
-      await updateGame((gameID, updatedGame))
-      await getSingleGame(((gameFound) => data = {...gameFound}), gameID)
-      dispatch(gotGame(data))
+      let data = {};
+      await updateGame(userId, updatedGame);
+      await getSingleGame(((gameFound) => data = {...gameFound}), userId);
+      dispatch(gotGame(data));
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
-
+  };
+};
 
 // score reducer
 const gameReducer = (state = initialState, action) => {
@@ -141,7 +130,6 @@ const gameReducer = (state = initialState, action) => {
       return action.info;
     case UPDATE_HINT:
       return {...state, hintsLeft: state.hintsLeft - 1}
-    //CASES ADDED BY DANIELLE
     case UPDATE_VISIBLE_ITEMS:
       let itemKey = action.info;
       return {...state, visibleInRoom: {
@@ -156,8 +144,6 @@ const gameReducer = (state = initialState, action) => {
       return {...state, selectedItemIndex: action.info}
     case UPDATE_TIME:
       return {...state, currentTime: action.info}
-
-    //END CASES ADDED BY DANIELLE
     default:
       return state;
   }

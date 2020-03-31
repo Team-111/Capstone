@@ -1,8 +1,11 @@
 'use strict';
 
 import React, {Component} from 'react';
-
-import {StyleSheet} from 'react-native';
+import {connect} from 'react-redux'
+import PuzzleColoredSquares from './PuzzleColoredSquares';
+import RoomCamera from './roomCameraHUD';
+import PuzzleSliding from './PuzzleSliding';
+import Combo from './Combo';
 
 import {
   ViroMaterials,
@@ -13,7 +16,7 @@ import {
   ViroText,
   Viro3DObject,
   ViroFlexView,
-  ViroAmbientLight
+  ViroAmbientLight,
 } from 'react-viro';
 import {connect} from 'react-redux'
 import {fetchGame, hintThunk, } from '../store/gameReducer';
@@ -59,38 +62,15 @@ class Room extends Component {
       time: {
         min: 0,
         sec: 0,
-      }
+      },
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
-    this.saveGame = this.saveGame.bind(this);
-    this.updateTime = this.updateTime.bind(this);
 
   }
 
-  saveGame() {
-    this.setState({
-      currGame: {
-        ...this.state.currGame,
-        currentTime: {
-          min: this.state.time.min,
-          sec: this.state.time.sec,
-        },
-      }
-    });
-    this.props.saveGame(this.props.currentUser.uid, this.state.currGame);
-  }
-
-  updateTime(min, sec) {
-    this.setState({
-      time: {
-        min,
-        sec,
-      },
-    });
-  }
 
   doorInteract() {
     if (this.state.visibleItems.key) {
@@ -111,15 +91,6 @@ class Room extends Component {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
-
-
-  }
-
-  showPuzzle() {
-    const puzzleState = this.state.puzzle;
-    this.setState({
-      puzzle: !puzzleState,
-    });
   }
 
   render() {
@@ -130,6 +101,18 @@ class Room extends Component {
 
     let Desk = <Viro3DObject source={require('./Objects/models/desk/desk.obj')} highAccuracyEvents={true} type="OBJ" position={[-4,-3,0]} scale={[.03,.03,.03]} rotation={[0,90,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} materials={['desk']}/>
 
+    const Desk = (
+      <Viro3DObject
+        source={require('./Objects/models/desk/desk.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[-4, -3, 0]}
+        scale={[.03, .03, .03]}
+        rotation={[0, 90, 0]}
+        onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")}
+        materials={['desk']}
+      />
+    );
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
@@ -138,9 +121,6 @@ class Room extends Component {
           hudText={this.state.hudText}
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
-          currentUserID={this.props.currentUser.uid}
-          // updateTime={this.updateTime}
-          // time={this.state.time}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox
@@ -175,13 +155,7 @@ class Room extends Component {
           visible={this.props.entered}
           onClick={this.doorInteract}
         />
-        {/* {!!this.state.currGame.hintsLeft && (
-          <ViroText
-            text={`Hints = ${this.state.currGame.hintsLeft}`}
-            scale={[0.5, 0.5, 0.5]}
-            position={[0, 0, -1]}
-          />
-        )} */}
+
         {this.props.entered && (
           <ViroSound source={require('./sounds/doorlock.wav')} loop={false} />
         )}
@@ -209,7 +183,6 @@ class Room extends Component {
           }}
           width={0.7}
           height={0.7}
-
           position={[-2, 0, 0]}
           rotation={[0, 90, 0]}
           backgroundColor="transparent">
@@ -218,15 +191,13 @@ class Room extends Component {
 
 
         <PuzzleSliding />
-        <Combo code={"2468"} getItem={this.getItem}/>
+        <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem}/>
       </ViroNode>
     );
   }
 }
 
 // export default Room;
-
-
 
 ViroMaterials.createMaterials({
   grid: {

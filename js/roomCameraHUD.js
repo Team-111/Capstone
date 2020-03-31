@@ -1,25 +1,25 @@
 'use strict';
 
 import React, {Component} from 'react';
+<<<<<<< HEAD
 
 import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux'
 import {saveGameThunk, useHint, selectItemThunk} from '../store/gameReducer'
 import {auth} from '../server/db/firebase'
+=======
+import {connect} from 'react-redux';
+import {saveGameThunk, useHint} from '../store/gameReducer';
+import TimerComponent from '../js/timer/timerComponent';
+>>>>>>> origin
 
 import {
-  ViroMaterials,
-  ViroBox,
   ViroButton,
   ViroNode,
   ViroCamera,
   ViroImage,
   ViroText,
-  ViroFlexView,
 } from 'react-viro';
-import PuzzleColoredSquares from './PuzzleColoredSquares';
-import TimerComponent from '../js/timer/timerComponent';
-import InventoryContainer from '../js/Inventory/inventoryContainer';
 
 class RoomCamera extends Component {
   constructor(props) {
@@ -50,14 +50,13 @@ class RoomCamera extends Component {
   }
 
   render() {
-    //console.log('roomCameraHud props', this.props);
     return (
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
         <TimerComponent />
         <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.35, 0.8, -1.5]}>
           <ViroButton
             source={require('./res/firewood-clipart-20-original.png')}
-            onClick={this.props.saveGame}
+            onClick={() => this.props.saveGame(this.props.uid, this.props.currentGame)}
             height={1}
             width={1}
           />
@@ -69,7 +68,7 @@ class RoomCamera extends Component {
             height={1}
             color="#F5B041"
             style={{fontFamily: 'Arial', fontSize: 15}}
-            onClick={() => this.props.useHint()}
+            onClick={this.props.useHint}
           />
         </ViroNode>
         <ViroText
@@ -91,17 +90,17 @@ class RoomCamera extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {currentGame: state.game};
-}
-
+const mapStateToProps = state => ({
+  currentGame: state.game,
+  uid: state.user.uid,
+});
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame)),
+    saveGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame)),
     useHint: () => dispatch(useHint()),
     selectItem: newIndex => dispatch(selectItemThunk(newIndex)),
   };
-}
+};
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(RoomCamera)
+export default connect(mapStateToProps, mapDispatchToProps)(RoomCamera);
