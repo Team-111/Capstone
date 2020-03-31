@@ -5,7 +5,7 @@ const initialState = {
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {key: true, desk: true},
-  inventory: {},
+  inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
   lockCombo: '1234',
@@ -46,10 +46,18 @@ export const updateTime = () => {
     type: UPDATE_TIME,
   }
 }
+
 export const updateVisibleItems = info => {
   return {
     type: UPDATE_VISIBLE_ITEMS,
     info,
+  }
+}
+
+export const addToInventory = info => {
+  return {
+    type: ADD_TO_INVENTORY,
+    info
   }
 }
 
@@ -80,6 +88,12 @@ export const hintThunk = (oldHintCount) => {
 export const itemVisibleThunk = itemKey => {
   return dispatch => {
     dispatch(updateVisibleItems(itemKey));
+  }
+}
+
+export const addToInventoryThunk = newItem => {
+  return dispatch => {
+    dispatch(addToInventory(newItem));
   }
 }
 
@@ -114,6 +128,11 @@ const gameReducer = (state = initialState, action) => {
           ...state.visibleInRoom,
           [itemKey]: false,
       }};
+    case ADD_TO_INVENTORY:
+      let currInventory = state.inventory;
+      currInventory.unshift(action.info);
+      return {...state, inventory: currInventory}
+
     //END CASES ADDED BY DANIELLE
     default:
       return state;

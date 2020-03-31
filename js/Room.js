@@ -18,7 +18,7 @@ import {
 import {connect} from 'react-redux'
 import {fetchGame, hintThunk} from '../store/gameReducer';
 //imported by Danielle
-import {itemVisibleThunk} from '../store/gameReducer';
+import {itemVisibleThunk, addToInventoryThunk} from '../store/gameReducer';
 //end imported by Danielle
 
 import {auth} from '../server/db/firebase'
@@ -56,8 +56,8 @@ class Room extends Component {
     this.state = {
       hudText: '',
       puzzle: false,
-      visibleItems: {key: true, bucket: true, desk: true},
-      inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
+      // visibleItems: {key: true, bucket: true, desk: true},
+      // inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
       currGame: {},
       time: {
         min: 0,
@@ -146,9 +146,10 @@ class Room extends Component {
       // let itemsCopy = {...this.props.currentGame.visibleInRoom}
       // itemsCopy.passedObj = false;
       this.props.visibleItems(passedObj);
-      let updatedInventory = [...this.state.inventory];
-      updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
-      this.setState({inventory: updatedInventory});
+      this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG})
+      // let updatedInventory = [...this.state.inventory];
+      // updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
+      // this.setState({inventory: updatedInventory});
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -180,7 +181,7 @@ class Room extends Component {
           hudText={this.state.hudText}
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
-          inventory={this.state.inventory}
+          // inventory={this.props.currentGame.inventory}
           currentUserID={this.props.currentUser.uid}
           // hintsLeft={this.state.currGame.hintsLeft}
           updateTime={this.updateTime}
@@ -300,6 +301,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     visibleItems: itemKey => dispatch(itemVisibleThunk(itemKey)),
+    addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj))
   };
 }
 

@@ -92,7 +92,7 @@ class RoomCamera extends Component {
           textClipMode="ClipToBounds"
           width={1} />
         <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
-          <ViroImage source={this.props.inventory[this.state.selectedItem].itemIMG} />
+          <ViroImage source={this.props.currentGame.inventory[this.state.selectedItem].itemIMG} />
           {/* <ViroText text={this.props.inventory[this.state.selectedItem].name}/> */}
         </ViroNode>
         <ViroImage position={[.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_right.png')} onClick={() => {this.changeItem('right')}}/>

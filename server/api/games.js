@@ -33,7 +33,7 @@ export async function getSingleGame(callbackFunc, gameId) {
           hintsLeft: 3,
           currentTime: {min: 0, sec: 0},
           visibleInRoom: {key: true, desk: true},
-          inventory: {},
+          inventory: [{name: 'Empty', itemIMG: require('../../js/Inventory/images/icon_close.png')}],
           selectedItemIndex: 0,
           levelName: 'spookyCabin',
           lockCombo: '1234',
