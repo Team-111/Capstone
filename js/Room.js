@@ -56,9 +56,6 @@ class Room extends Component {
     this.state = {
       hudText: '',
       puzzle: false,
-      // visibleItems: {key: true, bucket: true, desk: true},
-      // inventory: [{name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')}],
-      currGame: {},
       time: {
         min: 0,
         sec: 0,
@@ -103,10 +100,7 @@ class Room extends Component {
         },
       }
     });
-    //console.log('Here is state after setting in saveGame', this.state)
     this.props.saveGame(this.props.currentUser.uid, this.state.currGame);
-    //this.props.exitViro();
-    //console.log('successfully saved game')
   }
 
   updateTime(min, sec) {
@@ -118,15 +112,6 @@ class Room extends Component {
     });
   }
 
-  // gotHint() {
-  //   let currentHints = this.state.currGame.hintsLeft;
-  //   if (currentHints > 0) {
-  //     this.setState({
-  //       currGame: {...this.state.currGame, hintsLeft: currentHints - 1},
-  //     });
-  //   }
-  // }
-
   doorInteract() {
     if (this.state.visibleItems.key) {
       this.setState({hudText: 'The door is locked! Find a key!'});
@@ -137,19 +122,9 @@ class Room extends Component {
   }
 
   getItem(passedObj, inventoryIMG, isCollectable, itemText = '') {
-    // this.setState({
-    //   keyPossessed: true,
-    // });
     if(isCollectable) {
-      // let stateCopy = {...this.state.visibleItems};
-      // stateCopy[passedObj] = false;
-      // let itemsCopy = {...this.props.currentGame.visibleInRoom}
-      // itemsCopy.passedObj = false;
       this.props.visibleItems(passedObj);
       this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG})
-      // let updatedInventory = [...this.state.inventory];
-      // updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
-      // this.setState({inventory: updatedInventory});
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -181,13 +156,9 @@ class Room extends Component {
           hudText={this.state.hudText}
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
-          // inventory={this.props.currentGame.inventory}
           currentUserID={this.props.currentUser.uid}
-          // hintsLeft={this.state.currGame.hintsLeft}
           updateTime={this.updateTime}
           time={this.state.time}
-          // saveGame={this.saveGame}
-          // gotHint={this.gotHint}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox

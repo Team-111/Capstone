@@ -57,7 +57,14 @@ export const updateVisibleItems = info => {
 export const addToInventory = info => {
   return {
     type: ADD_TO_INVENTORY,
-    info
+    info,
+  }
+}
+
+export const selectedItemIndex = info => {
+  return {
+    type: CHANGE_SELECT_ITEM_IND,
+    info,
   }
 }
 
@@ -97,6 +104,12 @@ export const addToInventoryThunk = newItem => {
   }
 }
 
+export const selectItemThunk = newIndex => {
+  return dispatch => {
+    dispatch(selectedItemIndex(newIndex))
+  }
+}
+
 //END THUNKS ADDED BY DANIELLE
 
 export const saveGameThunk = (gameID, updatedGame) => {
@@ -132,6 +145,8 @@ const gameReducer = (state = initialState, action) => {
       let currInventory = state.inventory;
       currInventory.unshift(action.info);
       return {...state, inventory: currInventory}
+    case CHANGE_SELECT_ITEM_IND:
+      return {...state, selectedItemIndex: action.info}
 
     //END CASES ADDED BY DANIELLE
     default:
