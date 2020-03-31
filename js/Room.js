@@ -17,6 +17,7 @@ import {
   Viro3DObject,
   ViroFlexView,
   ViroAmbientLight,
+  ViroText,
 } from 'react-viro';
 
 import {
@@ -189,6 +190,8 @@ class Room extends Component {
         <Pallindrome />
         <PuzzleSliding />
         <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem} />
+
+        <ViroText text={this.props.codeDigit} color="purple" style={{fontSize: 32}} position={[0, 3, -1]} rotation={[90, 0, 0]}/>
       </ViroNode>
     );
   }
@@ -221,7 +224,10 @@ ViroMaterials.createMaterials({
 });
 
 const mapStateToProps = state => {
-  return {currentGame: state.game};
+  return {
+    currentGame: state.game,
+    codeDigit: state.game.lockCombo[3],
+  };
 };
 
 const mapDispatchToProps = dispatch => {

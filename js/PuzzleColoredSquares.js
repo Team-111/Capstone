@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-
-import {ViroFlexView, ViroMaterials, ViroQuad} from 'react-viro';
+import {connect} from 'react-redux';
+import {ViroFlexView, ViroMaterials, ViroQuad, ViroText} from 'react-viro';
 
 class PuzzleColoredSquares extends Component {
   constructor() {
@@ -67,11 +67,12 @@ class PuzzleColoredSquares extends Component {
   render() {
     return (
       <ViroFlexView
-        style={{flexDirection: 'column', alignSelf: 'center'}}
+        style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', alignItems: 'center'}}
         width={0.6}
         height={0.6}
         backgroundColor="transparent">
-        {this.state.gameBoard.map((row, rowIdx) => {
+        {!this.state.solved
+          ? this.state.gameBoard.map((row, rowIdx) => {
           return (
             <ViroFlexView
               key={`row${rowIdx}`}
@@ -90,15 +91,14 @@ class PuzzleColoredSquares extends Component {
                         ? null
                         : this.clickSquare(rowIdx, colIdx).bind(this)
                     }
-                    //add ternary to check if this.state.solved is true or false, onClick={this.state.solved--
-                    // ? null
-                    // : this.clickSquare(rowIdx, colIdx).bind(this)} or maybe () => {} may work
                   />
                 );
               })}
             </ViroFlexView>
           );
-        })}
+        })
+        : <ViroText text={this.props.codeDigit} color="red" />
+      }
       </ViroFlexView>
     );
   }
@@ -113,4 +113,8 @@ ViroMaterials.createMaterials({
   },
 });
 
-export default PuzzleColoredSquares;
+const mapStateToProps = state => ({
+  codeDigit: state.game.lockCombo[0],
+});
+
+export default connect(mapStateToProps)(PuzzleColoredSquares);
