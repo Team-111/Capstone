@@ -1,17 +1,11 @@
 'use strict';
 
 import React, {Component} from 'react';
-<<<<<<< HEAD
 
 import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux'
 import {saveGameThunk, useHint, selectItemThunk} from '../store/gameReducer'
-import {auth} from '../server/db/firebase'
-=======
-import {connect} from 'react-redux';
-import {saveGameThunk, useHint} from '../store/gameReducer';
 import TimerComponent from '../js/timer/timerComponent';
->>>>>>> origin
 
 import {
   ViroButton,
