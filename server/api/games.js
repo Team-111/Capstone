@@ -32,7 +32,9 @@ export async function getSingleGame(callbackFunc, gameId) {
         .set({
           hintsLeft: 3,
           currentTime: {min: 0, sec: 0},
+          visibleInRoom: {key: true, desk: true},
           inventory: {},
+          selectedItemIndex: 0,
           levelName: 'spookyCabin',
           lockCombo: '1234',
           puzzles: {

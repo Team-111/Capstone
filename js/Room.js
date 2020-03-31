@@ -16,7 +16,10 @@ import {
   ViroAmbientLight
 } from 'react-viro';
 import {connect} from 'react-redux'
-import {fetchGame, hintThunk} from '../store/gameReducer'
+import {fetchGame, hintThunk} from '../store/gameReducer';
+//imported by Danielle
+import {itemVisibleThunk} from '../store/gameReducer';
+//end imported by Danielle
 
 import {auth} from '../server/db/firebase'
 
@@ -138,11 +141,14 @@ class Room extends Component {
     //   keyPossessed: true,
     // });
     if(isCollectable) {
-      let stateCopy = {...this.state.visibleItems};
-      stateCopy[passedObj] = false;
+      // let stateCopy = {...this.state.visibleItems};
+      // stateCopy[passedObj] = false;
+      // let itemsCopy = {...this.props.currentGame.visibleInRoom}
+      // itemsCopy.passedObj = false;
+      this.props.visibleItems(passedObj);
       let updatedInventory = [...this.state.inventory];
       updatedInventory.unshift({name: passedObj, itemIMG: inventoryIMG});
-      this.setState({visibleItems: stateCopy, inventory: updatedInventory});
+      this.setState({inventory: updatedInventory});
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -162,7 +168,7 @@ class Room extends Component {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
     let Key = <Viro3DObject source={require('../js/Objects/models/key/worn_key.obj')}
     resources={[require('./Objects/models/key/worn_key.mtl'),
-              require('./Objects/models/key/t_worn_key.png')]} highAccuracyEvents={true} type="OBJ" position={[0,-3,-1]} visible={this.state.visibleItems.key} onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)} materials={['key']}/>
+              require('./Objects/models/key/t_worn_key.png')]} highAccuracyEvents={true} type="OBJ" position={[0,-3,-1]} visible={this.props.currentGame.visibleInRoom.key} onClick={() => this.getItem('key',require('../js/Inventory/images/key.png'), true)} materials={['key']}/>
 
     let Desk = <Viro3DObject source={require('./Objects/models/desk/desk.obj')} highAccuracyEvents={true} type="OBJ" position={[-4,-3,0]} scale={[.03,.03,.03]} rotation={[0,90,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} materials={['desk']}/>
 
@@ -264,7 +270,7 @@ class Room extends Component {
   }
 }
 
-export default Room;
+// export default Room;
 
 
 
@@ -291,10 +297,10 @@ const mapStateToProps = state => {
 }
 
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getHint: () => dispatch(hintThunk())
-//   };
-// }
+const mapDispatchToProps = dispatch => {
+  return {
+    visibleItems: itemKey => dispatch(itemVisibleThunk(itemKey)),
+  };
+}
 
-module.exports = connect(mapStateToProps, null)(Room)
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Room)
