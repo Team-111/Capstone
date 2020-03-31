@@ -26,6 +26,7 @@ import PuzzleColoredSquares from './PuzzleColoredSquares';
 import RoomCamera from './roomCameraHUD';
 import PuzzleSliding from './PuzzleSliding';
 import Combo from './Combo';
+import Pallindrome from './Pallindrome';
 
 function objIsEquivalent(a,b){
    //base case
@@ -166,6 +167,7 @@ class Room extends Component {
 
     let Desk = <Viro3DObject source={require('./Objects/models/desk/desk.obj')} highAccuracyEvents={true} type="OBJ" position={[-4,-3,0]} scale={[.03,.03,.03]} rotation={[0,90,0]} onClick={() => this.getItem('desk', 'noIMG', false, "A sturdy wooden desk.")} materials={['desk']}/>
 
+    let Cot = <Viro3DObject source={require('./Objects/models/cot/Old_bed.obj')} highAccuracyEvents={true} type="OBJ" position={[3,-3.5,1]} scale={[.015,.015,.015]} rotation={[0,90,0]} onClick={() => this.getItem('cot', 'noIMG', false, "An Old bed.")} materials={['cot']}/>
 
     return (
       <ViroNode position={[0, 0, -4.6]}>
@@ -239,6 +241,7 @@ class Room extends Component {
         {/* //Objects Here */}
         {Key}
         {Desk}
+        {Cot}
 
 
         <ViroFlexView
@@ -256,7 +259,7 @@ class Room extends Component {
           <PuzzleColoredSquares />
         </ViroFlexView>
 
-
+        <Pallindrome />
         <PuzzleSliding />
         <Combo code={"2468"} getItem={this.getItem}/>
       </ViroNode>
@@ -283,13 +286,15 @@ ViroMaterials.createMaterials({
   },
   key: {
     diffuseTexture: require('./Objects/models/key/t_worn_key.png')
-  }
+  },
+  cot: {
+    diffuseTexture: require('./Objects/models/cot/M_bed_BaseColor.png')
+  },
 });
 
 const mapStateToProps = state => {
   return {currentGame: state.game.currentGame};
-}
-
+};
 
 // const mapDispatchToProps = dispatch => {
 //   return {
