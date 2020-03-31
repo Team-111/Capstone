@@ -167,7 +167,7 @@ class Room extends Component {
           materials={['cabinFloor']}
         />
         {/* //Objects Here */}
-        {Key}
+        {/* {Key} */}
         {Desk}
         {Cot}
         {Knife}
