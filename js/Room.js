@@ -81,8 +81,18 @@ class Room extends Component {
       />
     );
 
-
-    let Cot = <Viro3DObject source={require('./Objects/models/cot/Old_bed.obj')} highAccuracyEvents={true} type="OBJ" position={[3,-3.5,1]} scale={[.015,.015,.015]} rotation={[0,90,0]} onClick={() => this.getItem('cot', 'noIMG', false, "An Old bed.")} materials={['cot']}/>
+    let Cot = (
+      <Viro3DObject
+        source={require('./Objects/models/cot/Old_bed.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[3, -3.5, 1]}
+        scale={[0.015, 0.015, 0.015]}
+        rotation={[0, 90, 0]}
+        onClick={() => this.getItem('cot', 'noIMG', false, 'An Old bed.')}
+        materials={['cot']}
+      />
+    );
 
     const Desk = (
       <Viro3DObject
@@ -105,6 +115,7 @@ class Room extends Component {
         <RoomCamera
           isActive={this.props.entered}
           hudText={this.state.hudText}
+          exitViro={this.props.exitViro}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox
