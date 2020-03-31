@@ -40,10 +40,11 @@ export const useHint = () => {
   }
 }
 
-//START ACTIONS ADDED BY DANIELLE= 'UPDATE_VISIBLE_ITEMS'
-export const updateTime = () => {
+//START ACTIONS ADDED BY DANIELLE
+export const updateTime = info => {
   return {
     type: UPDATE_TIME,
+    info
   }
 }
 
@@ -92,6 +93,12 @@ export const hintThunk = (oldHintCount) => {
 }
 
 //THUNKS ADDED BY DANIELLE
+export const timeThunk = (updateTimeObj) => {
+  return dispatch => {
+    dispatch(updateTime(updateTimeObj))
+  }
+}
+
 export const itemVisibleThunk = itemKey => {
   return dispatch => {
     dispatch(updateVisibleItems(itemKey));
@@ -147,6 +154,8 @@ const gameReducer = (state = initialState, action) => {
       return {...state, inventory: currInventory}
     case CHANGE_SELECT_ITEM_IND:
       return {...state, selectedItemIndex: action.info}
+    case UPDATE_TIME:
+      return {...state, currentTime: action.info}
 
     //END CASES ADDED BY DANIELLE
     default:

@@ -27,13 +27,7 @@ class RoomCamera extends Component {
     this.changeItem = this.changeItem.bind(this)
 
   }
-  // changeItem() {
-  //   if(!this.props.inventory[this.props.inventory.length]) {
-  //     this.setState({selectedItem: 0})
-  //   } else {
-  //     this.setState({selectedItem: this.state.selectedItem + 1})
-  //   }
-  // }
+
   changeItem(direction) {
     if(direction === "right") {
       if(this.props.currentGame.selectedItemIndex === (this.props.currentGame.inventory.length -1)) {
@@ -59,10 +53,7 @@ class RoomCamera extends Component {
     //console.log('roomCameraHud props', this.props);
     return (
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
-        <TimerComponent
-          time={this.props.time}
-          updateTime={this.props.updateTime}
-        />
+        <TimerComponent />
         <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.35, 0.8, -1.5]}>
           <ViroButton
             source={require('./res/firewood-clipart-20-original.png')}

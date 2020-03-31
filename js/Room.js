@@ -16,9 +16,9 @@ import {
   ViroAmbientLight
 } from 'react-viro';
 import {connect} from 'react-redux'
-import {fetchGame, hintThunk} from '../store/gameReducer';
+import {fetchGame, hintThunk, } from '../store/gameReducer';
 //imported by Danielle
-import {itemVisibleThunk, addToInventoryThunk} from '../store/gameReducer';
+import {itemVisibleThunk, addToInventoryThunk, selectItemThunk} from '../store/gameReducer';
 //end imported by Danielle
 
 import {auth} from '../server/db/firebase'
@@ -65,30 +65,10 @@ class Room extends Component {
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.showPuzzle = this.showPuzzle.bind(this);
-    // this.getCurrentGame = this.getCurrentGame.bind(this);
     this.saveGame = this.saveGame.bind(this);
     this.updateTime = this.updateTime.bind(this);
-    // this.gotHint = this.gotHint.bind(this);
+
   }
-
-  // componentDidUpdate(prevProps) {
-  //   // Typical usage (don't forget to compare props):
-  //   if (!objIsEquivalent(this.props.currentGame, prevProps.currentGame)) {
-  //     // console.log('Here is the current props=', this.props.currentGame);
-  //     // console.log('Here are the previous props', prevProps.currentGame);
-  //     this.getCurrentGame();
-  //     // console.log('Here is the State after get currentGame', this.state);
-  //   }
-  // }
-
-
-  // getCurrentGame() {
-  //   // this.setState({
-  //   //   currGame: this.props.currentGame,
-  //   //   time: this.props.currentGame.currentTime,
-  //   // });
-  //   this.props.currentGame;
-  // }
 
   saveGame() {
     this.setState({
@@ -125,6 +105,8 @@ class Room extends Component {
     if(isCollectable) {
       this.props.visibleItems(passedObj);
       this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG})
+      //Sets the selectedItem Index to 0 whenever you get a new item
+      this.props.selectItem(0)
     } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -157,8 +139,8 @@ class Room extends Component {
           puzzle={this.state.puzzle}
           showPuzzle={this.showPuzzle}
           currentUserID={this.props.currentUser.uid}
-          updateTime={this.updateTime}
-          time={this.state.time}
+          // updateTime={this.updateTime}
+          // time={this.state.time}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox
@@ -272,7 +254,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     visibleItems: itemKey => dispatch(itemVisibleThunk(itemKey)),
-    addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj))
+    addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
+    selectItem: selectInd => dispatch(selectItemThunk(selectInd))
   };
 }
 
