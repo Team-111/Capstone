@@ -33,7 +33,12 @@ export async function getSingleGame(callbackFunc, gameId) {
           hintsLeft: 3,
           currentTime: {min: 0, sec: 0},
           visibleInRoom: {key: true, desk: true},
-          inventory: [{name: 'Empty', itemIMG: require('../../js/Inventory/images/icon_close.png')}],
+          inventory: [
+            {
+              name: 'Empty',
+              itemIMG: require('../../js/Inventory/images/icon_close.png'),
+            },
+          ],
           selectedItemIndex: 0,
           levelName: 'spookyCabin',
           lockCombo: '1234',
@@ -56,7 +61,10 @@ export async function getSingleGame(callbackFunc, gameId) {
 
 export const updateGame = async (userId, currentGame) => {
   try {
-    await db.collection('games').doc(userId).update(currentGame);
+    await db
+      .collection('games')
+      .doc(userId)
+      .update(currentGame);
   } catch (error) {
     console.log(error);
   }

@@ -2,11 +2,11 @@
 
 import React, {Component} from 'react';
 
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableHighlightBase} from 'react-native';
 import Room from './Room';
 import {connect} from 'react-redux';
 import {getSingleGame, updateGame} from '../server/api/games';
-import {fetchGame, setUser} from '../store';
+import {fetchGame, setUser, secretCode} from '../store';
 
 import {
   ViroARScene,
@@ -27,6 +27,7 @@ class HelloWorldSceneAR extends Component {
       text: 'Initializing AR ...',
       entered: false,
       game: {},
+      code: '',
     };
 
     // bind 'this' to functions
@@ -40,6 +41,7 @@ class HelloWorldSceneAR extends Component {
 
     this.props.getGame(currentUser.uid);
     this.props.setUser(currentUser.uid, currentUser.email);
+    this.randomCode();
   }
 
   enterPortal() {
@@ -54,6 +56,13 @@ class HelloWorldSceneAR extends Component {
       entered: false,
     });
   }
+
+  randomCode = () => {
+    let min = 1000,
+      max = 9999;
+    let code = Math.round(Math.random() * (max - min) + min);
+    this.setState({secretCode: code.toString()});
+  };
 
   render() {
     const exitViro = this.props.arSceneNavigator.viroAppProps.exitViro;
@@ -110,15 +119,20 @@ var styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  return {currentGame: state.game};
-};
+const mapStateToProps = state => ({
+  currentGame: state.game,
+  lockCombo: state.code,
+});
 
 const mapDispatchToProps = dispatch => {
   return {
     getGame: userID => dispatch(fetchGame(userID)),
     setUser: (uid, name) => dispatch(setUser(uid, name)),
+    secretCode: code => dispatch(secretCode(code)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HelloWorldSceneAR);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HelloWorldSceneAR);
