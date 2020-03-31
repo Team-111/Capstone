@@ -29,9 +29,8 @@ const gotGame = info => {
 export const useHint = () => {
   return {
     type: UPDATE_HINT,
-  }
-}
-
+  };
+};
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -43,30 +42,21 @@ export const fetchGame = gameID => {
     } catch (error) {
       console.error(error)
     }
-  }
-}
+  };
+};
 
-export const hintThunk = (oldHintCount) => {
-  return dispatch => {
-    let currHint = oldHintCount - 1;
-    dispatch(useHint(currHint))
-  }
-}
-
-export const saveGameThunk = (gameID, updatedGame) => {
+export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
     try {
-      let data = {}
-      updatedGame = {...updatedGame, hintsLeft: 1}
-      await updateGame((gameID, updatedGame))
-      await getSingleGame(((gameFound) => data = {...gameFound}), gameID)
-      dispatch(gotGame(data))
+      let data = {};
+      await updateGame(userId, updatedGame);
+      await getSingleGame(((gameFound) => data = {...gameFound}), userId);
+      dispatch(gotGame(data));
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
-
+  };
+};
 
 // score reducer
 const gameReducer = (state = initialState, action) => {
@@ -74,7 +64,7 @@ const gameReducer = (state = initialState, action) => {
     case GOT_GAME:
       return action.info;
     case UPDATE_HINT:
-      return {...state, hintsLeft: state.hintsLeft - 1}
+      return {...state, hintsLeft: state.hintsLeft - 1};
     default:
       return state;
   }
