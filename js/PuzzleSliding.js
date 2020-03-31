@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-
+import {connect} from 'react-redux';
 import {
   ViroFlexView,
-  ViroImage,
   ViroQuad,
   ViroMaterials,
   ViroSound,
   ViroNode,
+  ViroText,
 } from 'react-viro';
 
 class PuzzleSliding extends Component {
@@ -175,15 +175,13 @@ class PuzzleSliding extends Component {
               );
             })
           ) : (
-            <ViroImage
-              source={
-                !this.state.spookyPortrait
-                  ? require('./res/SlidingPuzzle/portrait1.png')
-                  : require('./res/SlidingPuzzle/portrait2.png')
-              }
+            <ViroFlexView
+              materials={this.state.spookyPortrait ? ['portrait2'] : ['portrait1']}
+              style={{justifyContent: 'center', alignItems: 'center'}}
               width={0.94}
-              height={0.94}
-            />
+              height={0.94}>
+                <ViroText text={this.props.codeDigit} color="blue" />
+            </ViroFlexView>
           )}
         </ViroFlexView>
         {this.state.spookyPortrait && (
@@ -225,6 +223,16 @@ ViroMaterials.createMaterials({
   gridBlank: {
     diffuseTexture: require('./res/SlidingPuzzle/grid8.png'),
   },
+  portrait1: {
+    diffuseTexture: require('./res/SlidingPuzzle/portrait1.png'),
+  },
+  portrait2: {
+    diffuseTexture: require('./res/SlidingPuzzle/portrait2.png'),
+  },
 });
 
-export default PuzzleSliding;
+const mapStateToProps = state => ({
+  codeDigit: state.game.lockCombo[1],
+});
+
+export default connect(mapStateToProps)(PuzzleSliding);

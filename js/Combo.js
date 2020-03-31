@@ -76,7 +76,7 @@ class Combo extends Component {
             return (
               <ViroFlexView
                 key={`digit${idx}`}
-                materials={['comboBg']}
+                materials={[`combo${idx}`]}
                 width={0.3}
                 height={0.3}
                 style={{
@@ -112,8 +112,17 @@ class Combo extends Component {
 }
 
 ViroMaterials.createMaterials({
-  comboBg: {
-    diffuseTexture: require('./res/combo_bg.jpg'),
+  combo0: {
+    diffuseTexture: require('./res/combo0.jpg'),
+  },
+  combo1: {
+    diffuseTexture: require('./res/combo1.jpg'),
+  },
+  combo2: {
+    diffuseTexture: require('./res/combo2.jpg'),
+  },
+  combo3: {
+    diffuseTexture: require('./res/combo3.jpg'),
   },
 });
 

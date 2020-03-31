@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {
   ViroNode,
   ViroText,
@@ -9,7 +10,7 @@ import {
   ViroSound,
 } from 'react-viro';
 
-export default class Pallindrome extends Component {
+class Pallindrome extends Component {
   constructor() {
     super();
     this.state = {
@@ -75,13 +76,16 @@ export default class Pallindrome extends Component {
   render() {
     return (
       <ViroNode>
-        <ViroImage
-          source={require('../images/1221.jpeg')}
-          position={[2, 0.4, 0]}
-          width={0.7}
-          height={0.75}
-          rotation={[0, 270, 0]}
-        />
+        {!this.state.solved
+          ? (<ViroImage
+            source={require('../images/1221.jpeg')}
+            position={[2, 0.4, 0]}
+            width={0.7}
+            height={0.75}
+            rotation={[0, 270, 0]}
+          />)
+          : <ViroText text={this.props.codeDigit} color="green" style={{fontSize: 32, textAlign: 'center'}} position={[2, 0.4, 0]} rotation={[0, 270, 0]}/>
+        }
         <ViroFlexView
           backgroundColor="black"
           materials={['input']}
@@ -169,3 +173,9 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./res/input.jpg'),
   },
 });
+
+const mapStateToProps = state => ({
+  codeDigit: state.game.lockCombo[2],
+});
+
+export default connect(mapStateToProps)(Pallindrome);
