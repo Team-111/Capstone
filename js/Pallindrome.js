@@ -33,10 +33,14 @@ export default class Pallindrome extends Component {
       digitsCopy[idx] = 0;
     }
 
-    this.setState({
-      guess1: digitsCopy,
-    });
-    this.checkSolved();
+    this.setState(
+      {
+        guess1: digitsCopy,
+      },
+      () => {
+        this.checkSolved();
+      },
+    );
   }
 
   handleClick2(idx) {
@@ -47,10 +51,14 @@ export default class Pallindrome extends Component {
       digitsCopy[idx] = 0;
     }
 
-    this.setState({
-      guess2: digitsCopy,
-    });
-    this.checkSolved();
+    this.setState(
+      {
+        guess2: digitsCopy,
+      },
+      () => {
+        this.checkSolved();
+      },
+    );
   }
 
   checkSolved() {
@@ -102,7 +110,7 @@ export default class Pallindrome extends Component {
                   !this.state.solved ? () => this.handleClick1(idx) : () => {}
                 }>
                 <ViroText
-                  color="cc6600"
+                  color="#cc6600"
                   height={0.3}
                   width={0.3}
                   textAlign="center"
