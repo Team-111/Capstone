@@ -36,10 +36,7 @@ class PuzzleSliding extends Component {
     while (!isSolvable) {
       arr = this.shuffle([0, 1, 2, 3, 4, 5, 6, 7, 'Blank']);
       isSolvable = this.determineSolvability(arr);
-
     }
-
-   }
 
     for (let i = 0; i < arr.length; i++) {
       row.push(arr[i]);
@@ -127,6 +124,7 @@ class PuzzleSliding extends Component {
         if (arr1[i][j] !== arr2[i][j]) return false;
       }
     }
+
     return true;
   }
 
