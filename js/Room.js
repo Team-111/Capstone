@@ -14,7 +14,6 @@ import {
   ViroNode,
   ViroImage,
   ViroSound,
-  ViroText,
   Viro3DObject,
   ViroFlexView,
   ViroAmbientLight,
@@ -31,7 +30,6 @@ class Room extends Component {
     super();
     this.state = {
       hudText: '',
-      puzzle: false,
       time: {
         min: 0,
         sec: 0,
@@ -107,8 +105,6 @@ class Room extends Component {
         <RoomCamera
           isActive={this.props.entered}
           hudText={this.state.hudText}
-          puzzle={this.state.puzzle}
-          showPuzzle={this.showPuzzle}
         />
         <ViroAmbientLight color="#ffffff" />
         <ViroBox
