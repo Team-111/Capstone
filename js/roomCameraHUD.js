@@ -52,7 +52,7 @@ class RoomCamera extends Component {
             source={require('./res/firewood-clipart-20-original.png')}
             onClick={() => {
               this.props.saveGame(this.props.uid, this.props.currentGame);
-              //this.props.exitViro();
+              this.props.exitViro();
             }}
             height={1}
             width={1}

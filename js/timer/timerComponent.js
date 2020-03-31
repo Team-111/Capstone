@@ -4,6 +4,7 @@ import {ViroNode, ViroText, ViroImage} from 'react-viro';
 import {connect} from 'react-redux';
 import {timeThunk} from '../../store/gameReducer'
 
+
 class TimerComponent extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,11 @@ class TimerComponent extends Component {
   componentDidMount = () => {
     setInterval(() => this.timer(), 1000);
   };
+
+  //This may need a reference to the interval set above to clear it
+  componentWillUnmount = () => {
+    clearInterval();
+  }
 
   timer = () => {
     let minutes = this.props.currentGame.currentTime.min;
