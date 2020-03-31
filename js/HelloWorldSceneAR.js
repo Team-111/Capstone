@@ -6,7 +6,7 @@ import {StyleSheet} from 'react-native';
 import Room from './Room';
 import {connect} from 'react-redux';
 import {getSingleGame, updateGame} from '../server/api/games';
-import {fetchGame} from '../store/gameReducer'
+import {fetchGame, setUser} from '../store';
 
 import {
   ViroARScene,
@@ -16,10 +16,6 @@ import {
   ViroPortal,
   ViroPortalScene,
   Viro3DObject,
-  ViroBox,
-  Text,
-  TouchableHighlight,
-  ViroImage,
 } from 'react-viro';
 
 class HelloWorldSceneAR extends Component {
@@ -40,30 +36,26 @@ class HelloWorldSceneAR extends Component {
   }
 
   async componentDidMount() {
-    // await getSingleGame(
-    //   gameFound => this.setState({game: gameFound}),
-    //   this.props.arSceneNavigator.viroAppProps.user.uid,
-    // );
-    this.props.getGame(this.props.arSceneNavigator.viroAppProps.user.uid)
+    const currentUser = this.props.arSceneNavigator.viroAppProps.user;
+
+    this.props.getGame(currentUser.uid);
+    this.props.setUser(currentUser.uid, currentUser.email);
   }
 
   enterPortal() {
     this.setState({
       entered: true,
-    })
+    });
   }
 
   // Exit just exists for testing purposes, can probably delete in final code
   exitPortal() {
     this.setState({
       entered: false,
-    })
+    });
   }
 
   render() {
-    // console.log('state in HelloWorldSceneAR =', this.state);
-    // console.log('props on HelloWorldAr=', this.props.arSceneNavigator.viroAppProps.user);
-    const currentUser = this.props.arSceneNavigator.viroAppProps.user;
     const exitViro = this.props.arSceneNavigator.viroAppProps.exitViro;
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
@@ -74,7 +66,7 @@ class HelloWorldSceneAR extends Component {
           style={styles.helloWorldTextStyle}
         />
         <ViroAmbientLight color="#ffffff" intensity={200} />
-          <ViroPortalScene
+        <ViroPortalScene
           passable={true}
           dragType="FixedDistance"
           onPortalEnter={this.enterPortal}
@@ -91,21 +83,8 @@ class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
-          <Room
-            entered={this.state.entered}
-            // currentGame={this.state.game}
-            // saveGame={updateGame}
-            currentUser={currentUser}
-            exitViro={exitViro}
-          />
+          <Room entered={this.state.entered} exitViro={exitViro} />
         </ViroPortalScene>
-
-        {/* <TouchableHighlight
-          // style={localStyles.buttons}
-          onPress={this.props.exitViro}
-          underlayColor={'#68a0ff'}>
-          <Text>Start</Text>
-        </TouchableHighlight> */}
       </ViroARScene>
     );
   }
@@ -133,13 +112,13 @@ var styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {currentGame: state.game};
-}
-
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     getGame: userID => dispatch(fetchGame(userID)),
+    setUser: (uid, name) => dispatch(setUser(uid, name)),
   };
-}
+};
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(HelloWorldSceneAR)
+export default connect(mapStateToProps, mapDispatchToProps)(HelloWorldSceneAR);

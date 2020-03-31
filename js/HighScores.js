@@ -5,30 +5,18 @@ import {connect} from 'react-redux';
 import {getAllScores} from '../store/scoreReducer'
 
 import {
-  AppRegistry,
   Text,
   View,
   StyleSheet,
   Button,
-  PixelRatio,
-  TouchableHighlight,
-  Alert,
 } from 'react-native';
-
-import {ViroARScene, ViroText, ViroFlexView, Viro360Image} from 'react-viro';
-
-// import {getScores} from '../server/api/scores';
 
 class HighScores extends Component {
   constructor() {
     super();
   }
   componentDidMount() {
-    //callback func for getScores takes in the mapped array of objects from api/scores
-    // getScores(inputArr => {
-    //   this.setState({hiScores: inputArr});
-    // });
-    this.props.getScores()
+    this.props.getScores();
   }
 
   render() {
