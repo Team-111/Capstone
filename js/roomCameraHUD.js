@@ -50,7 +50,10 @@ class RoomCamera extends Component {
         <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.35, 0.8, -1.5]}>
           <ViroButton
             source={require('./res/firewood-clipart-20-original.png')}
-            onClick={() => this.props.saveGame(this.props.uid, this.props.currentGame)}
+            onClick={() => {
+              this.props.saveGame(this.props.uid, this.props.currentGame);
+              this.props.exitViro();
+            }}
             height={1}
             width={1}
           />
