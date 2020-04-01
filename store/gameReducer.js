@@ -3,6 +3,7 @@ import {getSingleGame, updateGame, initializeGameObj} from '../server/api/games'
 // Initial State
 const initialState = {
   hintsLeft: 3,
+  hints: ['hint1', 'hint2', 'hint3'],
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {key: true, desk: true},
   inventory: [
@@ -174,7 +175,7 @@ const gameReducer = (state = initialState, action) => {
     case GOT_GAME:
       return {...action.info, isLoaded: true};
     case UPDATE_HINT:
-      return {...state, hintsLeft: state.hintsLeft - 1};
+      return {...state, hintsLeft: state.hintsLeft - 1, hints:[]};
     case UPDATE_VISIBLE_ITEMS:
       let itemKey = action.info;
       return {
