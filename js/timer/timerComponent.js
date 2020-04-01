@@ -8,21 +8,24 @@ import {timeThunk} from '../../store/gameReducer';
 class TimerComponent extends Component {
   constructor(props) {
     super(props);
-  }
+    this.state = {
+      interval: () => {},
+    }
 
+  }
   componentDidMount = () => {
-    setInterval(() => this.timer(), 1000);
+    this.setState({interval: setInterval(() => this.timer(), 1000)});
   };
 
   //This may need a reference to the interval set above to clear it
   componentWillUnmount = () => {
-    clearInterval();
+    clearInterval(this.state.interval);
   }
 
   timer = () => {
     let minutes = this.props.currentGame.currentTime.min;
     let seconds = this.props.currentGame.currentTime.sec;
-    if (seconds < 60) {
+    if (seconds < 59) {
       this.props.updateTime({min: minutes, sec: seconds + 1});
     } else if (minutes < 60) {
       this.props.updateTime({min: minutes + 1, sec: 0});
@@ -38,6 +41,7 @@ class TimerComponent extends Component {
   };
 
   render() {
+    //console.log('This is the props in the timer component', this.props);
     return (
       <ViroNode position={[0, 0, 0]}>
         <ViroImage
