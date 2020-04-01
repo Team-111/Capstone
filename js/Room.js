@@ -33,14 +33,13 @@ class Room extends Component {
     super();
     this.state = {
       hudText: '',
-      time: {
-        min: 0,
-        sec: 0,
-      },
+      investigateObjDisplay: false,
+      shownObject: 'newspaper',
     };
 
     this.doorInteract = this.doorInteract.bind(this);
     this.getItem = this.getItem.bind(this);
+    this.putItemAway = this.putItemAway.bind(this);
   }
 
   doorInteract() {
@@ -52,21 +51,32 @@ class Room extends Component {
     }
   }
 
-  getItem(passedObj, inventoryIMG, isCollectable, itemText = '') {
+  getItem(passedObj, inventoryIMG, isCollectable, itemText = '', hudPopup = false) {
     if (isCollectable) {
       this.props.visibleItems(passedObj);
       this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG});
       //Sets the selectedItem Index to 0 whenever you get a new item
       this.props.selectItem(0);
-    } else {
+    } else if (hudPopup) {
+      //set state to value
+      this.setState({shownObject: passedObj, investigateObjDisplay: true})
+    }
+      else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
+  putItemAway() {
+    this.setState({investigateObjDisplay: false})
+  }
+
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
-    let Legs = (<ViroBox height = {2} width={1} length={1} position={[0,-0.2,0.1]}  />)
+    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} />)
+
+    const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
+    onClick={() => this.getItem('newspaper', 'noImg', false, '', true)}/>)
 
     let Key = (
       <Viro3DObject
@@ -135,7 +145,7 @@ class Room extends Component {
         position={[1.5, -1.2, 1]}
         scale={[0.018, 0.018, 0.018]}
         rotation={[260, 230, -10]}
-        onClick={() => this.getItem('skull', 'noIMG', false, `A skull. Looks like they're missing some parts.`)}
+        onClick={() => this.getItem('skull', 'noIMG', false, "A Skull.")}
         materials={['skull']}
       />
     );
@@ -146,6 +156,9 @@ class Room extends Component {
           isActive={this.props.entered}
           hudText={this.state.hudText}
           exitViro={this.props.exitViro}
+          shownObject={this.state.shownObject}
+          objectDisplay={this.state.investigateObjDisplay}
+          putItemAway={this.putItemAway}
         />
 
         <ViroQuad
@@ -157,7 +170,7 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={1000}/>
+          <ViroAmbientLight color="#ffffff" intensity={200}/>
         ) : (
           <ViroAmbientLight color="#00001a" intensity={50000}/>
         )}
@@ -216,6 +229,7 @@ class Room extends Component {
         {Cot}
         {Knife}
         {Skull}
+        {Newspaper}
 
         <ViroFlexView
           style={{
