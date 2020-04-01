@@ -121,4 +121,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HelloWorldSceneAR);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HelloWorldSceneAR);
