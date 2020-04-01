@@ -2,14 +2,9 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getAllScores} from '../store/scoreReducer'
+import {getAllScores} from '../store/scoreReducer';
 
-import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-} from 'react-native';
+import {Text, View, StyleSheet, Button} from 'react-native';
 
 class HighScores extends Component {
   constructor() {
@@ -19,30 +14,33 @@ class HighScores extends Component {
     this.props.getScores();
   }
 
+  sortFunc = (a, b) => a.milliseconds - b.milliseconds;
+
   render() {
-    if(this.props.highScores[0]) {
+    if (this.props.highScores[0]) {
       return (
         <View style={styles.highScoreStyle}>
           <Text style={styles.hsTitle}>High Scores</Text>
-          {this.props.highScores.map(element => {
-            return (
-              <View key={element.id}>
-                <Text style={styles.score}>
-                  {element.user} {element.score}
-                </Text>
-              </View>
-            );
-          })}
+          {this.props.highScores
+            .sort(this.sortFunc)
+            .map((element, idx) => {
+              return (
+                <View key={element.id}>
+                  <Text style={styles.score}>
+                    {idx + 1}. {element.user} {element.score}
+                  </Text>
+                </View>
+              );
+            })
+            .slice(0, 10)}
           <Button title="back" onPress={() => this.props.exitViro()}>
             Back
           </Button>
         </View>
       );
     } else {
-      return (
-      <Text>Loading HighScores</Text>)
+      return <Text>Loading HighScores</Text>;
     }
-
   }
 }
 
@@ -74,6 +72,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {getScores: () => dispatch(getAllScores())};
-}
+};
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(HighScores)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HighScores);
