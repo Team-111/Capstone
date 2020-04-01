@@ -20,6 +20,11 @@ class HowToPlay extends Component {
       <View style={styles.container}>
         <View style={styles.inner}>
           <Text style={styles.titleText}>How To Play</Text>
+          <Text style={styles.instructionsText}>Obtain key to escape the room</Text>
+          <Text style={styles.instructionsText}>Solve all puzzles to get clues</Text>
+          <Text style={styles.instructionsText}>Solve all puzzles to get clues</Text>
+          <Text style={styles.instructionsText}>Solve all puzzles to get clues</Text>
+          <Text style={styles.instructionsText}>Solve all puzzles to get clues</Text>
         </View>
         <TouchableHighlight style={styles.buttons} title="back" onPress={() => this.props.exitViro()}>
           <Text style={styles.buttonText}>Back</Text>
@@ -52,9 +57,16 @@ const styles = StyleSheet.create({
   titleText:{
     color: '#fff',
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 32,
     marginTop: 13,
-    marginBottom: 13,
+    marginBottom: 10,
+  },
+  instructionsText: {
+    color: '#fff',
+    fontSize: 20,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 10,
   },
   buttonText: {
     color: '#fff',
