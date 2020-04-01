@@ -11,21 +11,23 @@ const initialState = {
   ],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
-  lockCombo: '',
+  lockCombo: '0000',
   puzzles: {
     eastWall: 'lockBox',
     northWall: 'colorBlock',
     westWall: 'slidingPuzzle',
   },
+  isLoaded: false,
 };
 
 // Action Types
-const GOT_GAME = 'GOT_GAME';
-const UPDATE_HINT = 'UPDATE_HINT';
-const UPDATE_TIME = 'UPDATE_TIME';
-const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS';
-const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY';
-const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND';
+const GOT_GAME = 'GOT_GAME'
+const UPDATE_HINT = 'UPDATE_HINT'
+const UPDATE_TIME = 'UPDATE_TIME'
+const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS'
+const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY'
+const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
+const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 const SET_CODE = 'SET_CODE';
 
 // Action Creator
@@ -74,8 +76,14 @@ export const selectedItemIndex = info => {
   return {
     type: CHANGE_SELECT_ITEM_IND,
     info,
-  };
-};
+  }
+}
+
+//END ACTIONS ADDED BY DANIELLE
+
+export const toggleLight = () => ({
+  type: TOGGLE_LIGHT,
+});
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -138,7 +146,7 @@ export const saveGameThunk = (userId, updatedGame) => {
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_GAME:
-      return action.info;
+      return {...action.info, isLoaded: true};
     case UPDATE_HINT:
       return {...state, hintsLeft: state.hintsLeft - 1, hints:[]};
     case UPDATE_VISIBLE_ITEMS:
@@ -158,6 +166,9 @@ const gameReducer = (state = initialState, action) => {
       return {...state, selectedItemIndex: action.info};
     case UPDATE_TIME:
       return {...state, currentTime: action.info};
+    case TOGGLE_LIGHT:
+      const lightState = state.lightOn;
+      return {...state, lightOn: !lightState};
     case SET_CODE:
       return {...state, lockBox: action.code};
     default:
