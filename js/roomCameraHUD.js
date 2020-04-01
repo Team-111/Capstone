@@ -18,8 +18,11 @@ import {
 class RoomCamera extends Component {
   constructor(props) {
     super(props);
-    this.changeItem = this.changeItem.bind(this)
-
+    this.changeItem = this.changeItem.bind(this);
+    this.state = {
+      hintVisible: false,
+    }
+    this.showHint = this.showHint.bind(this);
   }
 
   changeItem(direction) {
@@ -41,6 +44,10 @@ class RoomCamera extends Component {
         this.props.selectItem(newNum)
       }
     }
+  }
+
+  showHint() {
+
   }
 
   render() {
@@ -65,7 +72,10 @@ class RoomCamera extends Component {
             height={1}
             color="#F5B041"
             style={{fontFamily: 'Arial', fontSize: 15}}
-            onClick={this.props.useHint}
+            onClick={() => {
+              this.props.useHint();
+
+            }}
           />
         </ViroNode>
         <ViroText
