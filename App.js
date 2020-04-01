@@ -120,16 +120,16 @@ class ViroSample extends Component {
 
               <TouchableHighlight
                 style={localStyles.buttons}
-                onPress={this._getExperienceButtonOnPress(SCORE_NAVIGATOR_TYPE)}
+                onPress={this._getExperienceButtonOnPress(HOWTOPLAY_NAVIGATOR_TYPE)}
                 underlayColor={'#68a0ff'}>
-                <Text style={localStyles.buttonText}>Highscores</Text>
+                <Text style={localStyles.buttonText}>How to play</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
                 style={localStyles.buttons}
-                onPress={this._getExperienceButtonOnPress(HOWTOPLAY_NAVIGATOR_TYPE)}
+                onPress={this._getExperienceButtonOnPress(SCORE_NAVIGATOR_TYPE)}
                 underlayColor={'#68a0ff'}>
-                <Text style={localStyles.buttonText}>How to play</Text>
+                <Text style={localStyles.buttonText}>Highscores</Text>
               </TouchableHighlight>
 
               <TouchableHighlight

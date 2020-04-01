@@ -155,7 +155,7 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" />
+          <ViroAmbientLight color="#ffffff" intensity={200} />
         ) : (
           <ViroAmbientLight color="#00001a" intensity={50000} />
         )}
@@ -237,7 +237,7 @@ class Room extends Component {
             getItem={this.getItem}
           />
         )}
-        
+
         {!this.props.lightOn && (
           <ViroText
             text={this.props.codeDigit}
