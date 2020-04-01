@@ -17,4 +17,19 @@ export async function getScores(callbackFunc) {
   }
 }
 
+export async function newHighScore(leaderBoardName, time) {
+  try {
+  //set a new score in the database using this info
+  await db.collection('scores').doc().set({
+    user: leaderBoardName,
+    level: 'Spooky Cabin',
+    score: time,
+  })
+  } catch (error) {
+    console.error(error)
+  }
+
+
+}
+
 // module.exports = getScores

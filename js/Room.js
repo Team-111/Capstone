@@ -48,7 +48,7 @@ class Room extends Component {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
-      this.setState({hudText: "You've escaped the room!"});
+      this.props.exitViro('youWin')
     }
   }
 
@@ -84,8 +84,18 @@ class Room extends Component {
       />
     );
 
-
-    let Cot = <Viro3DObject source={require('./Objects/models/cot/Old_bed.obj')} highAccuracyEvents={true} type="OBJ" position={[3,-3.5,1]} scale={[.015,.015,.015]} rotation={[0,90,0]} onClick={() => this.getItem('cot', 'noIMG', false, "An Old bed.")} materials={['cot']}/>
+    let Cot = (
+      <Viro3DObject
+        source={require('./Objects/models/cot/Old_bed.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[3, -3.5, 1]}
+        scale={[0.015, 0.015, 0.015]}
+        rotation={[0, 90, 0]}
+        onClick={() => this.getItem('cot', 'noIMG', false, 'An Old bed.')}
+        materials={['cot']}
+      />
+    );
 
     const Desk = (
       <Viro3DObject
@@ -115,11 +125,25 @@ class Room extends Component {
       />
     );
 
+    const Skull = (
+      <Viro3DObject
+        source={require('./Objects/models/skull/12140_Skull_v3_L2.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[1.5, -1.2, 1]}
+        scale={[0.018, 0.018, 0.018]}
+        rotation={[260, 230, -10]}
+        onClick={() => this.getItem('skull', 'noIMG', false, 'A Skull')}
+        materials={['skull']}
+      />
+    );
+
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
           isActive={this.props.entered}
           hudText={this.state.hudText}
+          exitViro={this.props.exitViro}
         />
 
         <ViroQuad
@@ -184,10 +208,11 @@ class Room extends Component {
           materials={['cabinFloor']}
         />
         {/* //Objects Here */}
-        {Key}
+        {/* {Key} */}
         {Desk}
         {Cot}
         {Knife}
+        {Skull}
 
         <ViroFlexView
           style={{
@@ -257,7 +282,11 @@ ViroMaterials.createMaterials({
   door: {
     diffuseTexture: require('./res/cabindoor.jpg'),
     lightingModel: 'Blinn',
-  }
+  },
+  skull: {
+    diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
+    lightingModel: 'Blinn',
+  },
 });
 
 const mapStateToProps = state => {

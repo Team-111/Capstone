@@ -25,7 +25,7 @@ import {
   Button,
 } from 'react-native';
 
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 import {ViroARSceneNavigator} from 'react-viro';
 import {auth} from './server/db/firebase';
@@ -40,14 +40,16 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialVRScene = require('./js/HighScores');
-var SignUp = require('./js/loginForm/SignUp');
-var Login = require('./js/loginForm/Login');
+var SignUp = require('./js/reactNativeForms/SignUp');
+var Login = require('./js/reactNativeForms/Login');
+var Winner = require('./js/reactNativeForms/Winner')
 
 var UNSET = 'UNSET';
 var SCORE_NAVIGATOR_TYPE = 'VR';
 var LOGIN_NAVIGATOR_TYPE = 'LOGIN';
 var SIGNUP_NAVIGATOR_TYPE = 'SIGNUP';
 var AR_NAVIGATOR_TYPE = 'AR';
+var WINNER_NAVIGATOR_TYPE = 'WINNER';
 
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
@@ -68,6 +70,7 @@ class ViroSample extends Component {
     this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
       this,
     );
+    this._getWinner = this._getWinner.bind(this)
     this._exitViro = this._exitViro.bind(this);
   }
 
@@ -84,6 +87,8 @@ class ViroSample extends Component {
       return this._getSignUpNavigator();
     } else if (this.state.navigatorType === LOGIN_NAVIGATOR_TYPE) {
       return this._getLoginNavigator();
+    } else if (this.state.navigatorType === WINNER_NAVIGATOR_TYPE) {
+      return this._getWinner();
     }
   }
 
@@ -91,7 +96,6 @@ class ViroSample extends Component {
   _getExperienceSelector() {
     //if (auth.currentUser) console.log('Auth=', auth.currentUser.uid);
     return (
-
       <View style={localStyles.outer}>
         <View style={localStyles.inner}>
           {/* {auth.currentUser ??
@@ -173,7 +177,6 @@ class ViroSample extends Component {
     );
   }
 
-
   // Returns the ViroSceneNavigator which will start the VR experience
   _getScoreNavigator() {
     return (
@@ -182,11 +185,15 @@ class ViroSample extends Component {
   }
 
   _getLoginNavigator() {
-    return (<Login {...this.state.sharedProps} exitViro={this._exitViro} />);
+    return <Login {...this.state.sharedProps} exitViro={this._exitViro} />;
   }
 
   _getSignUpNavigator() {
-    return (<SignUp {...this.state.sharedProps} exitViro={this._exitViro} />);
+    return <SignUp {...this.state.sharedProps} exitViro={this._exitViro} />;
+  }
+
+  _getWinner() {
+    return (<Winner {...this.state.sharedProps} exitViro={this._exitViro} />)
   }
 
   // This function returns an anonymous/lambda function to be used
@@ -200,10 +207,21 @@ class ViroSample extends Component {
   }
 
   // This function "exits" Viro by setting the navigatorType to UNSET.
-  _exitViro() {
-    this.setState({
-      navigatorType: UNSET,
-    });
+  _exitViro(navType = 'unset') {
+    if(navType === 'unset') {
+      this.setState({
+        navigatorType: UNSET,
+      });
+    } else if (navType === 'youWin') {
+      this.setState({
+        navigatorType: WINNER_NAVIGATOR_TYPE,
+      })
+    } else if (navType === 'highScores') {
+      this.setState({
+        navigatorType: SCORE_NAVIGATOR_TYPE,
+      })
+    }
+
   }
 }
 
@@ -229,7 +247,7 @@ var localStyles = StyleSheet.create({
     paddingBottom: 20,
     color: '#ff0000',
     textAlign: 'center',
-    fontSize: 25
+    fontSize: 25,
     // fontFamily: 'CFNightofTerrorPERSONAL-Reg'
   },
   buttonText: {
@@ -248,7 +266,7 @@ var localStyles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: '#ae0000',
-    borderTopColor: '#ff5555'
+    borderTopColor: '#ff5555',
   },
   exitButton: {
     height: 50,
@@ -266,8 +284,8 @@ var localStyles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {wow: 'cool'};
-}
+};
 
-export default connect(mapStateToProps)(ViroSample)
+export default connect(mapStateToProps)(ViroSample);
 
 // module.exports = ViroSample;

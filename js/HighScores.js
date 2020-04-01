@@ -28,7 +28,7 @@ class HighScores extends Component {
             return (
               <View key={element.id}>
                 <Text style={styles.score}>
-                  {element.user} {element.score.toString()}
+                  {element.user} {element.score}
                 </Text>
               </View>
             );
@@ -40,7 +40,7 @@ class HighScores extends Component {
       );
     } else {
       return (
-      <Text>Ew</Text>)
+      <Text>Loading HighScores</Text>)
     }
 
   }
