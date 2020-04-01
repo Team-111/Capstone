@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {updatePuzzleStatus} from '../store';
 import {
   ViroNode,
   ViroText,
@@ -18,7 +19,6 @@ class Pallindrome extends Component {
       solution2: '1001',
       guess1: [0, 0, 0, 0],
       guess2: [0, 0, 0, 0],
-      solved: false,
     };
 
     this.handleClick1 = this.handleClick1.bind(this);
@@ -69,14 +69,14 @@ class Pallindrome extends Component {
     let s2 = this.state.solution2;
 
     if ((s1 === g1 && s2 === g2) || (s1 === g2 && s2 === g1)) {
-      this.setState({solved: true});
+      this.props.updatePuzzleStatus('palindrome');
     }
   }
 
   render() {
     return (
       <ViroNode>
-        {!this.state.solved || this.props.lightOn
+        {!this.props.solved || this.props.lightOn
           ? (<ViroQuad
             materials={['clockImage']}
             position={[2, 0.4, 0]}
@@ -119,7 +119,7 @@ class Pallindrome extends Component {
                   paddingTop: 0.1,
                 }}
                 onClick={
-                  !this.state.solved ? () => this.handleClick1(idx) : () => {}
+                  !this.props.solved ? () => this.handleClick1(idx) : () => {}
                 }>
                 <ViroText
                   color="#cc6600"
@@ -158,7 +158,7 @@ class Pallindrome extends Component {
                   paddingTop: 0.1,
                 }}
                 onClick={
-                  !this.state.solved ? () => this.handleClick2(idx) : () => {}
+                  !this.props.solved ? () => this.handleClick2(idx) : () => {}
                 }>
                 <ViroText
                   color="#cc6600"
@@ -189,6 +189,11 @@ ViroMaterials.createMaterials({
 const mapStateToProps = state => ({
   codeDigit: state.game.lockCombo[2],
   lightOn: state.game.lightOn,
+  solved: state.game.puzzles.palindrome.complete,
 });
 
-export default connect(mapStateToProps)(Pallindrome);
+const mapDispatchToProps = dispatch => ({
+  updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pallindrome);

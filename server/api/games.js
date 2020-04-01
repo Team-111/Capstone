@@ -51,9 +51,18 @@ export async function getSingleGame(callbackFunc, gameId) {
           lockCombo: randomCode(),
           lightOn: true,
           puzzles: {
-            eastWall: 'lockBox',
-            northWall: 'colorBlock',
-            westWall: 'slidingPuzzle',
+            colorBlock: {
+              location: 'west',
+              complete: false,
+            },
+            slidingPuzzle: {
+              location: 'north',
+              complete: false,
+            },
+            palindrome: {
+              location: 'east',
+              complete: false,
+            },
           },
           isLoaded: false,
         });
