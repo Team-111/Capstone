@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {updatePuzzleStatus} from '../store';
 import {ViroFlexView, ViroMaterials, ViroQuad, ViroText} from 'react-viro';
 
 class PuzzleColoredSquares extends Component {
@@ -7,7 +8,6 @@ class PuzzleColoredSquares extends Component {
     super();
     this.state = {
       gameBoard: this.makeBoard(6, 6),
-      solved: false,
       secretCodeDigit: 1,
     };
 
@@ -61,7 +61,7 @@ class PuzzleColoredSquares extends Component {
       }
     }
 
-    this.setState({solved: true});
+    this.props.updatePuzzleStatus('colorBlock');
   };
 
   render() {
@@ -71,7 +71,7 @@ class PuzzleColoredSquares extends Component {
         width={0.6}
         height={0.6}
         backgroundColor="transparent">
-        {this.props.lightOn || !this.state.solved ?
+        {this.props.lightOn || !this.props.solved ?
           this.state.gameBoard.map((row, rowIdx) => {
             return (
               <ViroFlexView
@@ -87,7 +87,7 @@ class PuzzleColoredSquares extends Component {
                       height={0.1}
                       materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
                       onClick={
-                        this.state.solved === true
+                        this.props.solved === true
                           ? null
                           : this.clickSquare(rowIdx, colIdx).bind(this)
                       }
@@ -97,7 +97,7 @@ class PuzzleColoredSquares extends Component {
               </ViroFlexView>
             );
           })
-          : <ViroText text={this.props.codeDigit} color="red" style={{fontSize: 32}} />
+          : <ViroText text={this.props.codeDigit} color="red" style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 32}} />
       }
       </ViroFlexView>
     );
@@ -118,6 +118,11 @@ ViroMaterials.createMaterials({
 const mapStateToProps = state => ({
   codeDigit: state.game.lockCombo[0],
   lightOn: state.game.lightOn,
+  solved: state.game.puzzles.colorBlock.complete,
 });
 
-export default connect(mapStateToProps)(PuzzleColoredSquares);
+const mapDispatchToProps = dispatch => ({
+  updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PuzzleColoredSquares);

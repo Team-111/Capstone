@@ -1,4 +1,4 @@
-import {getSingleGame, updateGame} from '../server/api/games';
+import {getSingleGame, updateGame, initializeGameObj} from '../server/api/games';
 
 // Initial State
 const initialState = {
@@ -12,9 +12,22 @@ const initialState = {
   levelName: 'spookyCabin',
   lockCombo: '0000',
   puzzles: {
-    eastWall: 'lockBox',
-    northWall: 'colorBlock',
-    westWall: 'slidingPuzzle',
+    colorBlock: {
+      location: 'west',
+      complete: false,
+    },
+    slidingPuzzle: {
+      location: 'north',
+      complete: false,
+    },
+    palindrome: {
+      location: 'east',
+      complete: false,
+    },
+    combo: {
+      location: 'door',
+      complete: false,
+    },
   },
   isLoaded: false,
 };
@@ -28,6 +41,8 @@ const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY'
 const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
 const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 const SET_CODE = 'SET_CODE';
+const UPDATE_PUZZLE = 'UPDATE_PUZZLE';
+const CLEAR_GAME_STATE = 'CLEAR_GAME_STATE';
 
 // Action Creator
 const gotGame = info => {
@@ -75,14 +90,25 @@ export const selectedItemIndex = info => {
   return {
     type: CHANGE_SELECT_ITEM_IND,
     info,
-  }
-}
+  };
+};
 
 //END ACTIONS ADDED BY DANIELLE
 
 export const toggleLight = () => ({
   type: TOGGLE_LIGHT,
 });
+
+export const updatePuzzleStatus = puzzle => ({
+  type: UPDATE_PUZZLE,
+  puzzle,
+});
+
+export const clearGameState = () => ({
+  type: CLEAR_GAME_STATE,
+});
+
+//END ACTIONS ADDED BY LAUREN
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -127,10 +153,11 @@ export const secretCode = code => {
   };
 };
 
-
 export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
     try {
+      if (!Object.keys(updatedGame).length) updatedGame = initializeGameObj();
+
       let data = {};
       await updateGame(userId, updatedGame);
       await getSingleGame(gameFound => (data = {...gameFound}), userId);
@@ -170,6 +197,12 @@ const gameReducer = (state = initialState, action) => {
       return {...state, lightOn: !lightState};
     case SET_CODE:
       return {...state, lockBox: action.code};
+    case UPDATE_PUZZLE:
+      const puzzlesCopy = state.puzzles;
+      puzzlesCopy[action.puzzle].complete = true;
+      return {...state, puzzles: puzzlesCopy};
+    case CLEAR_GAME_STATE:
+      return {...initialState};
     default:
       return state;
   }

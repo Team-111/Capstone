@@ -26,6 +26,7 @@ import {
   addToInventoryThunk,
   selectItemThunk,
   toggleLight,
+  saveGameThunk,
 } from '../store';
 
 class Room extends Component {
@@ -48,7 +49,8 @@ class Room extends Component {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
-      this.props.exitViro('youWin')
+      this.props.exitViro('youWin');
+      this.props.saveGame(this.props.uid, {});
     }
   }
 
@@ -301,6 +303,7 @@ const mapStateToProps = state => {
     isLoaded: state.game.isLoaded,
     codeDigit: state.game.lockCombo[3],
     lightOn: state.game.lightOn,
+    uid: state.user.uid,
   };
 };
 
@@ -310,6 +313,7 @@ const mapDispatchToProps = dispatch => {
     addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
     selectItem: selectInd => dispatch(selectItemThunk(selectInd)),
     toggleLight: () => dispatch(toggleLight()),
+    saveGame: (userId, gameState) => dispatch(saveGameThunk(userId, gameState)),
   };
 };
 

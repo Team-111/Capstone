@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {updatePuzzleStatus} from '../store';
 import {
   ViroFlexView,
   ViroQuad,
@@ -15,8 +16,6 @@ class PuzzleSliding extends Component {
     this.state = {
       solution: [[0, 1, 2], [3, 4, 5], [6, 7, 'Blank']],
       gameBoard: [],
-      solved: false,
-      secretCodeDigit: '9',
       spookyPortrait: false,
     };
 
@@ -129,7 +128,7 @@ class PuzzleSliding extends Component {
   }
 
   puzzleSolved() {
-    this.setState({solved: true});
+    this.props.updatePuzzleStatus('slidingPuzzle');
     setTimeout(() => this.setState({spookyPortrait: true}), 2000);
   }
 
@@ -147,7 +146,7 @@ class PuzzleSliding extends Component {
           rotation={[0, 0, 0]}
           height={0.94}
           width={0.94}>
-          {!this.state.solved ? (
+          {!this.props.solved ? (
             this.state.gameBoard.map((row, rowIdx) => {
               return (
                 <ViroFlexView
@@ -181,7 +180,7 @@ class PuzzleSliding extends Component {
               width={0.94}
               height={0.94}>
               {!this.props.lightOn && (
-                <ViroText text={this.props.codeDigit} color="blue" style={{fontSize: 32}} />
+                <ViroText text={this.props.codeDigit} color="blue" style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 32}} />
               )}
             </ViroFlexView>
           )}
@@ -247,6 +246,11 @@ ViroMaterials.createMaterials({
 const mapStateToProps = state => ({
   codeDigit: state.game.lockCombo[1],
   lightOn: state.game.lightOn,
+  solved: state.game.puzzles.slidingPuzzle.complete,
 });
 
-export default connect(mapStateToProps)(PuzzleSliding);
+const mapDispatchToProps = dispatch => ({
+  updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PuzzleSliding);
