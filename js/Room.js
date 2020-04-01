@@ -38,16 +38,38 @@ class Room extends Component {
     };
 
     this.doorInteract = this.doorInteract.bind(this);
+    this.skullInteract = this.skullInteract.bind(this);
+    this.chainedLegsInteract = this.chainedLegsInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.putItemAway = this.putItemAway.bind(this);
   }
 
   doorInteract() {
+    //change to check curr selected inventory item
     if (this.props.currentGame.visibleInRoom.key) {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
       this.props.exitViro('youWin')
+    }
+  }
+
+  skullInteract() {//change to check curr selected inventory item
+    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'spoon')) {
+      this.setState({hudText: 'A Skull.'});
+      setTimeout(() => this.setState({hudText: ''}), 4000)
+    } else {
+      this.props.visibleItems('skull');
+    }
+  }
+
+  chainedLegsInteract() {
+    if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
+      this.setState({hudText: 'Yes! My legs are free!'})
+      setTimeout(() => this.setState({hudText: ''}), 4000)
+    } else {
+      this.setState({hudText: "I'll need a key to free my legs..."})
+      setTimeout(() => this.setState({hudText: ''}), 4000)
     }
   }
 
@@ -73,23 +95,22 @@ class Room extends Component {
 
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
-    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} />)
+    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
 
     const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
     onClick={() => this.getItem('newspaper', 'noImg', false, '', true)}/>)
 
-    const Spoon = (<Viro3DObject source={require('../js/Objects/models/specialSpoon/Spoon2.obj')}
-    resources={[
-      require('./Objects/models/specialSpoon/OriginalDiff.BMP'),
-    ]}
+    const Spoon = (
+      <Viro3DObject
+        source={require('../js/Objects/models/specialSpoon/Spoon3.obj')}
+        resources={[require('./Objects/models/key/t_worn_key.png')]}
     highAccuracyEvents={true}
     type="OBJ"
     position={[-1, -3, 2]}
     visible={this.props.currentGame.visibleInRoom.spoon}
     onClick={() =>
-      this.getItem('spoon', require('../js/Inventory/images/key.png'), true)
-    }
-    materials={['spoon']}/>)
+      this.getItem('spoon', require('../js/Inventory/images/spoon.jpg'), true)
+    } />)
 
     let Key = (
       <Viro3DObject
@@ -100,7 +121,8 @@ class Room extends Component {
         ]}
         highAccuracyEvents={true}
         type="OBJ"
-        position={[0, -3, -1]}
+        position={[1.5, -1.2, 1]}
+        scale={[.8,.8,.8]}
         visible={this.props.currentGame.visibleInRoom.key}
         onClick={() =>
           this.getItem('key', require('../js/Inventory/images/key.png'), true)
@@ -158,8 +180,8 @@ class Room extends Component {
         position={[1.5, -1.2, 1]}
         scale={[0.018, 0.018, 0.018]}
         rotation={[260, 230, -10]}
-        onClick={() => this.getItem('skull', 'noIMG', false, "A Skull.")}
-        materials={['skull']}
+        visible={this.props.currentGame.visibleInRoom.skull}
+        onClick={this.skullInteract}
       />
     );
 
@@ -244,6 +266,7 @@ class Room extends Component {
         {Skull}
         {Newspaper}
         {Spoon}
+        {Key}
 
         <ViroFlexView
           style={{
@@ -324,10 +347,6 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
     lightingModel: 'Blinn',
   },
-  spoon: {
-    diffuseTexture: require('./Objects/models/specialSpoon/Spoon2.BMP'),
-    lightingModel: 'Blinn',
-  }
 });
 
 const mapStateToProps = state => {

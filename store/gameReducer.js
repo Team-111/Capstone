@@ -4,7 +4,7 @@ import {getSingleGame, updateGame} from '../server/api/games';
 const initialState = {
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
-  visibleInRoom: {key: true, desk: true, spoon: true},
+  visibleInRoom: {key: true, desk: true, spoon: true, skull: true},
   inventory: [
     {name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')},
   ],
