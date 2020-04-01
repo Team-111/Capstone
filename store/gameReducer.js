@@ -4,7 +4,7 @@ import {getSingleGame, updateGame} from '../server/api/games';
 const initialState = {
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
-  visibleInRoom: {key: true, desk: true},
+  visibleInRoom: {key: true, desk: true, spoon: true},
   inventory: [
     {name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')},
   ],
@@ -78,7 +78,6 @@ export const selectedItemIndex = info => {
   }
 }
 
-//END ACTIONS ADDED BY DANIELLE
 
 export const toggleLight = () => ({
   type: TOGGLE_LIGHT,

@@ -78,6 +78,19 @@ class Room extends Component {
     const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
     onClick={() => this.getItem('newspaper', 'noImg', false, '', true)}/>)
 
+    const Spoon = (<Viro3DObject source={require('../js/Objects/models/specialSpoon/Spoon2.obj')}
+    resources={[
+      require('./Objects/models/specialSpoon/OriginalDiff.BMP'),
+    ]}
+    highAccuracyEvents={true}
+    type="OBJ"
+    position={[-1, -3, 2]}
+    visible={this.props.currentGame.visibleInRoom.spoon}
+    onClick={() =>
+      this.getItem('spoon', require('../js/Inventory/images/key.png'), true)
+    }
+    materials={['spoon']}/>)
+
     let Key = (
       <Viro3DObject
         source={require('../js/Objects/models/key/worn_key.obj')}
@@ -230,6 +243,7 @@ class Room extends Component {
         {Knife}
         {Skull}
         {Newspaper}
+        {Spoon}
 
         <ViroFlexView
           style={{
@@ -310,6 +324,10 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
     lightingModel: 'Blinn',
   },
+  spoon: {
+    diffuseTexture: require('./Objects/models/specialSpoon/Spoon2.BMP'),
+    lightingModel: 'Blinn',
+  }
 });
 
 const mapStateToProps = state => {

@@ -39,7 +39,7 @@ export async function getSingleGame(callbackFunc, gameId) {
         .set({
           hintsLeft: 3,
           currentTime: {min: 0, sec: 0},
-          visibleInRoom: {key: true, desk: true},
+          visibleInRoom: {key: true, desk: true, spoon: true},
           inventory: [
             {
               name: 'Empty',
