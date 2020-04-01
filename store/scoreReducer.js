@@ -28,8 +28,9 @@ export const getAllScores = () => {
           let minutes = Math.floor(totalTimeinSeconds / 60);
           let seconds = totalTimeinSeconds - (minutes * 60);
 
-          let dupElement = {...element}
+          let dupElement = {...element};
           dupElement.score = `${minutes}:${seconds}`;
+          dupElement.milliseconds = timeMilliseconds;
           return dupElement;
         })
         data = [...arrInTime]
