@@ -41,7 +41,7 @@ class HelloWorldSceneAR extends Component {
 
     this.props.getGame(currentUser.uid);
     this.props.setUser(currentUser.uid, currentUser.email);
-    this.randomCode();
+    // this.randomCode();
   }
 
   enterPortal() {
@@ -57,12 +57,12 @@ class HelloWorldSceneAR extends Component {
     });
   }
 
-  randomCode = () => {
-    let min = 1000,
-      max = 9999;
-    let random = Math.round(Math.random() * (max - min) + min);
-    this.setState({code: random.toString()});
-  };
+  // randomCode = () => {
+  //   let min = 1000,
+  //     max = 9999;
+  //   let random = Math.round(Math.random() * (max - min) + min);
+  //   this.setState({code: random.toString()});
+  // };
 
   render() {
     const exitViro = this.props.arSceneNavigator.viroAppProps.exitViro;

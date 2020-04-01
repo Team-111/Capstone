@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import {
   ViroText,
@@ -126,4 +127,8 @@ ViroMaterials.createMaterials({
   },
 });
 
-export default Combo;
+const mapStateToProps = state => ({
+  code: state.game.lockCombo,
+});
+
+export default connect(mapStateToProps)(Combo);

@@ -18,13 +18,15 @@ import {
   ViroFlexView,
   ViroAmbientLight,
   ViroText,
+  ViroQuad,
 } from 'react-viro';
 
 import {
   itemVisibleThunk,
   addToInventoryThunk,
   selectItemThunk,
-} from '../store/gameReducer';
+  toggleLight,
+} from '../store';
 
 class Room extends Component {
   constructor() {
@@ -143,7 +145,21 @@ class Room extends Component {
           hudText={this.state.hudText}
           exitViro={this.props.exitViro}
         />
-        <ViroAmbientLight color="#ffffff" />
+
+        <ViroQuad
+          materials={['lightSwitch']}
+          height={0.3}
+          width={0.2}
+          position={[0.8, 0, 3.48]}
+          rotation={[0, 180, 0]}
+          onClick={this.props.toggleLight}
+        />
+        {this.props.lightOn ? (
+          <ViroAmbientLight color="#ffffff" />
+        ) : (
+          <ViroAmbientLight color="#00001a" intensity={50000} />
+        )}
+
         <ViroBox
           position={[-4, 0, 0]}
           scale={[8, 7, 0.1]}
@@ -168,8 +184,8 @@ class Room extends Component {
           visible={this.props.entered}
         />
 
-        <ViroImage
-          source={require('./res/cabindoor.jpg')}
+        <ViroQuad
+          materials={['door']}
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
           rotation={[0, 180, 0]}
@@ -214,15 +230,23 @@ class Room extends Component {
 
         <Pallindrome />
         <PuzzleSliding />
-        <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem} />
 
-        <ViroText
-          text={this.props.codeDigit}
-          color="purple"
-          style={{fontSize: 32}}
-          position={[0, 3, -1]}
-          rotation={[90, 0, 0]}
-        />
+        {this.props.isLoaded && (
+          <Combo
+            code={this.props.currentGame.lockCombo}
+            getItem={this.getItem}
+          />
+        )}
+        
+        {!this.props.lightOn && (
+          <ViroText
+            text={this.props.codeDigit}
+            color="purple"
+            style={{fontSize: 32}}
+            position={[0, 3, -1]}
+            rotation={[90, 0, 0]}
+          />
+        )}
       </ViroNode>
     );
   }
@@ -236,31 +260,47 @@ ViroMaterials.createMaterials({
   },
   cabinWall: {
     diffuseTexture: require('./res/cabin_wall_sample.jpg'),
+    lightingModel: 'Blinn',
   },
   cabinFloor: {
     diffuseTexture: require('./res/cabin_floor_sample.jpg'),
+    lightingModel: 'Blinn',
   },
   desk: {
     diffuseTexture: require('./Objects/models/desk/desk_texture.png'),
+    lightingModel: 'Blinn',
   },
   key: {
     diffuseTexture: require('./Objects/models/key/t_worn_key.png'),
+    lightingModel: 'Blinn',
   },
   cot: {
     diffuseTexture: require('./Objects/models/cot/M_bed_BaseColor.png'),
+    lightingModel: 'Blinn',
   },
   knife: {
     diffuseTexture: require('./Objects/models/knife/knife_D.jpg'),
+    lightingModel: 'Blinn',
+  },
+  lightSwitch: {
+    diffuseTexture: require('./res/lightswitch.png'),
+  },
+  door: {
+    diffuseTexture: require('./res/cabindoor.jpg'),
+    lightingModel: 'Blinn',
   },
   skull: {
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
+    lightingModel: 'Blinn',
   },
 });
 
 const mapStateToProps = state => {
   return {
     currentGame: state.game,
+    isLoaded: state.game.isLoaded,
     codeDigit: state.game.lockCombo[3],
+    lightOn: state.game.lightOn,
   };
 };
 
@@ -269,6 +309,7 @@ const mapDispatchToProps = dispatch => {
     visibleItems: itemKey => dispatch(itemVisibleThunk(itemKey)),
     addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
     selectItem: selectInd => dispatch(selectItemThunk(selectInd)),
+    toggleLight: () => dispatch(toggleLight()),
   };
 };
 
