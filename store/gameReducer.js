@@ -1,4 +1,4 @@
-import {getSingleGame, updateGame} from '../server/api/games';
+import {getSingleGame, updateGame, initializeGameObj} from '../server/api/games';
 
 // Initial State
 const initialState = {
@@ -42,6 +42,7 @@ const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
 const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 const SET_CODE = 'SET_CODE';
 const UPDATE_PUZZLE = 'UPDATE_PUZZLE';
+const CLEAR_GAME_STATE = 'CLEAR_GAME_STATE';
 
 // Action Creator
 const gotGame = info => {
@@ -103,6 +104,10 @@ export const updatePuzzleStatus = puzzle => ({
   puzzle,
 });
 
+export const clearGameState = () => ({
+  type: CLEAR_GAME_STATE,
+});
+
 //END ACTIONS ADDED BY LAUREN
 
 // Thunk Creator
@@ -151,6 +156,8 @@ export const secretCode = code => {
 export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
     try {
+      if (!Object.keys(updatedGame).length) updatedGame = initializeGameObj();
+
       let data = {};
       await updateGame(userId, updatedGame);
       await getSingleGame(gameFound => (data = {...gameFound}), userId);
@@ -194,6 +201,8 @@ const gameReducer = (state = initialState, action) => {
       const puzzlesCopy = state.puzzles;
       puzzlesCopy[action.puzzle].complete = true;
       return {...state, puzzles: puzzlesCopy};
+    case CLEAR_GAME_STATE:
+      return {...initialState};
     default:
       return state;
   }
