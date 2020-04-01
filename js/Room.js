@@ -207,11 +207,7 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-<<<<<<< HEAD
           <ViroAmbientLight color="#ffffff" intensity={200}/>
-=======
-          <ViroAmbientLight color="#ffffff" intensity={200} />
->>>>>>> origin
         ) : (
           <ViroAmbientLight color="#00001a" intensity={50000}/>
         )}
