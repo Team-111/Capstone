@@ -10,7 +10,7 @@ const initialState = {
   ],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
-  lockCombo: '1234',
+  lockCombo: '',
   puzzles: {
     eastWall: 'lockBox',
     northWall: 'colorBlock',
@@ -25,6 +25,7 @@ const UPDATE_TIME = 'UPDATE_TIME';
 const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS';
 const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY';
 const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND';
+const SET_CODE = 'SET_CODE';
 
 // Action Creator
 const gotGame = info => {
@@ -40,7 +41,13 @@ export const useHint = () => {
   };
 };
 
-//START ACTIONS ADDED BY DANIELLE
+const setCode = code => {
+  return {
+    type: SET_CODE,
+    code,
+  };
+};
+
 export const updateTime = info => {
   return {
     type: UPDATE_TIME,
@@ -69,7 +76,6 @@ export const selectedItemIndex = info => {
   };
 };
 
-//END ACTIONS ADDED BY DANIELLE
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -108,7 +114,12 @@ export const selectItemThunk = newIndex => {
   };
 };
 
-//END THUNKS ADDED BY DANIELLE
+export const secretCode = code => {
+  return dispatch => {
+    dispatch(setCode(code));
+  };
+};
+
 
 export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
@@ -147,6 +158,8 @@ const gameReducer = (state = initialState, action) => {
       return {...state, selectedItemIndex: action.info};
     case UPDATE_TIME:
       return {...state, currentTime: action.info};
+    case SET_CODE:
+      return {...state, lockBox: action.code};
     default:
       return state;
   }

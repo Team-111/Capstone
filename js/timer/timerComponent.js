@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {ViroNode, ViroText, ViroImage} from 'react-viro';
 import {connect} from 'react-redux';
-import {timeThunk} from '../../store/gameReducer'
+import {timeThunk} from '../../store/gameReducer';
 
 
 class TimerComponent extends Component {
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount = () => {
@@ -48,7 +47,9 @@ class TimerComponent extends Component {
         />
 
         <ViroText
-          text={`00:${this.props.currentGame.currentTime.min}:${this.props.currentGame.currentTime.sec}`}
+          text={`00:${this.props.currentGame.currentTime.min}:${
+            this.props.currentGame.currentTime.sec
+          }`}
           position={[0.1, 0.6, -1.4]}
           scale={[0.4, 0.4, 0.4]}
           width={1}
@@ -63,12 +64,15 @@ class TimerComponent extends Component {
 }
 const mapStateToProps = state => {
   return {currentGame: state.game};
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     updateTime: newTime => dispatch(timeThunk(newTime)),
   };
-}
+};
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(TimerComponent)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TimerComponent);
