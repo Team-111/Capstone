@@ -24,6 +24,10 @@ const initialState = {
       location: 'east',
       complete: false,
     },
+    combo: {
+      location: 'door',
+      complete: false,
+    },
   },
   isLoaded: false,
 };

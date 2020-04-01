@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {updatePuzzleStatus} from '../store';
 
 import {
   ViroText,
@@ -15,7 +16,6 @@ class Combo extends Component {
     this.state = {
       solution: [],
       digits: [0, 0, 0, 0],
-      solved: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -40,11 +40,9 @@ class Combo extends Component {
     }
 
     const correctCode = this.checkMatch(digitsCopy);
+    if (correctCode) this.props.updatePuzzleStatus('combo');
 
-    this.setState({
-      digits: digitsCopy,
-      solved: correctCode,
-    });
+    this.setState({digits: digitsCopy});
   }
 
   // If a match occurs, the player gets the key
@@ -87,7 +85,7 @@ class Combo extends Component {
                   paddingTop: 0.1,
                 }}
                 onClick={
-                  !this.state.solved ? () => this.handleClick(idx) : () => {}
+                  !this.props.solved ? () => this.handleClick(idx) : () => {}
                 }>
                 <ViroText
                   color="red"
@@ -101,7 +99,7 @@ class Combo extends Component {
             );
           })}
         </ViroFlexView>
-        {this.state.solved && (
+        {this.props.solved && (
           <ViroSound
             source={require('./sounds/horror_stab.mp3')}
             loop={false}
@@ -129,6 +127,11 @@ ViroMaterials.createMaterials({
 
 const mapStateToProps = state => ({
   code: state.game.lockCombo,
+  solved: state.game.puzzles.combo.complete,
 });
 
-export default connect(mapStateToProps)(Combo);
+const mapDispatchToProps = dispatch => ({
+  updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Combo);
