@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {ViroFlexView, ViroMaterials, ViroQuad, ViroText} from 'react-viro';
+import {
+  ViroFlexView,
+  ViroMaterials,
+  ViroQuad,
+  ViroText,
+  ViroImage,
+} from 'react-viro';
 
 class PuzzleColoredSquares extends Component {
   constructor() {
@@ -9,6 +15,7 @@ class PuzzleColoredSquares extends Component {
       gameBoard: this.makeBoard(6, 6),
       solved: false,
       secretCodeDigit: 1,
+      secretImage: false,
     };
 
     this.clickSquare = this.clickSquare.bind(this);
@@ -67,38 +74,53 @@ class PuzzleColoredSquares extends Component {
   render() {
     return (
       <ViroFlexView
-        style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', alignItems: 'center'}}
+        style={{
+          flexDirection: 'column',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
         width={0.6}
         height={0.6}
         backgroundColor="transparent">
-        {!this.state.solved
-          ? this.state.gameBoard.map((row, rowIdx) => {
-          return (
-            <ViroFlexView
-              key={`row${rowIdx}`}
-              style={{flexDirection: 'row'}}
-              width={0.5}
-              height={0.1}>
-              {row.map((tile, colIdx) => {
-                return (
-                  <ViroQuad
-                    key={`tile${colIdx}`}
-                    width={0.1}
-                    height={0.1}
-                    materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
-                    onClick={
-                      this.state.solved === true
-                        ? null
-                        : this.clickSquare(rowIdx, colIdx).bind(this)
-                    }
-                  />
-                );
-              })}
-            </ViroFlexView>
-          );
-        })
-        : <ViroText text={this.props.codeDigit} color="red" />
-      }
+        {!this.state.solved ? (
+          this.state.gameBoard.map((row, rowIdx) => {
+            return (
+              <ViroFlexView
+                key={`row${rowIdx}`}
+                style={{flexDirection: 'row'}}
+                width={0.5}
+                height={0.1}>
+                {row.map((tile, colIdx) => {
+                  return (
+                    <ViroQuad
+                      key={`tile${colIdx}`}
+                      width={0.1}
+                      height={0.1}
+                      materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
+                      onClick={
+                        this.state.solved === true
+                          ? null
+                          : this.clickSquare(rowIdx, colIdx).bind(this)
+                      }
+                    />
+                  );
+                })}
+              </ViroFlexView>
+            );
+          })
+        ) : (
+          <ViroFlexView>
+            <ViroImage
+              source={require('./res/ColoredSquares/helpme.png')}
+              position={[2, 0.4, 0]}
+              width={0.7}
+              height={0.75}
+              rotation={[0, 270, 0]}
+            />
+            <ViroText text={this.props.codeDigit} color="red" />
+          </ViroFlexView>
+        )}
       </ViroFlexView>
     );
   }

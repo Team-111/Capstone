@@ -46,7 +46,7 @@ class Room extends Component {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
-      this.props.exitViro('youWin')
+      this.props.exitViro('youWin');
     }
   }
 
@@ -129,7 +129,7 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[0.018, 0.018, 0.018]}
+        scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         onClick={() => this.getItem('skull', 'noIMG', false, 'A Skull')}
         materials={['skull']}

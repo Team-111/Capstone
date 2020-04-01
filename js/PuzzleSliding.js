@@ -78,11 +78,15 @@ class PuzzleSliding extends Component {
 
     for (let i = 0; i < arr.length - 1; i++) {
       for (let j = i + 1; j < arr.length; j++) {
-        if (arr[j] !== 'Blank' && arr[i] > arr[j]) inversions++;
+        if (arr[j] !== 'Blank' && arr[i] > arr[j]) {
+          inversions++;
+        }
       }
     }
 
-    if (inversions % 2 === 0) return true;
+    if (inversions % 2 === 0) {
+      return true;
+    }
     return false;
   }
 
@@ -114,14 +118,18 @@ class PuzzleSliding extends Component {
 
       this.setState({gameBoard: boardCopy});
       const playerWon = this.compareBoards(boardCopy, this.state.solution);
-      if (playerWon) this.puzzleSolved();
+      if (playerWon) {
+        this.puzzleSolved();
+      }
     };
   }
 
   compareBoards(arr1, arr2) {
     for (let i = 0; i < arr1.length; i++) {
       for (let j = 0; j < arr1[i].length; j++) {
-        if (arr1[i][j] !== arr2[i][j]) return false;
+        if (arr1[i][j] !== arr2[i][j]) {
+          return false;
+        }
       }
     }
 
@@ -176,11 +184,13 @@ class PuzzleSliding extends Component {
             })
           ) : (
             <ViroFlexView
-              materials={this.state.spookyPortrait ? ['portrait2'] : ['portrait1']}
+              materials={
+                this.state.spookyPortrait ? ['portrait2'] : ['portrait1']
+              }
               style={{justifyContent: 'center', alignItems: 'center'}}
               width={0.94}
               height={0.94}>
-                <ViroText text={this.props.codeDigit} color="blue" />
+              <ViroText text={this.props.codeDigit} color="blue" />
             </ViroFlexView>
           )}
         </ViroFlexView>
