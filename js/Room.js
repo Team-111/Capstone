@@ -66,6 +66,8 @@ class Room extends Component {
 
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
+    let Legs = (<ViroBox height = {2} width={1} length={1} position={[0,-0.2,0.1]}  />)
+
     let Key = (
       <Viro3DObject
         source={require('../js/Objects/models/key/worn_key.obj')}
@@ -133,7 +135,7 @@ class Room extends Component {
         position={[1.5, -1.2, 1]}
         scale={[0.018, 0.018, 0.018]}
         rotation={[260, 230, -10]}
-        onClick={() => this.getItem('skull', 'noIMG', false, 'A Skull')}
+        onClick={() => this.getItem('skull', 'noIMG', false, `A skull. Looks like they're missing some parts.`)}
         materials={['skull']}
       />
     );
@@ -155,9 +157,9 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" />
+          <ViroAmbientLight color="#ffffff" intensity={1000}/>
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000} />
+          <ViroAmbientLight color="#00001a" intensity={50000}/>
         )}
 
         <ViroBox
@@ -209,6 +211,7 @@ class Room extends Component {
         />
         {/* //Objects Here */}
         {/* {Key} */}
+        {Legs}
         {Desk}
         {Cot}
         {Knife}
@@ -237,7 +240,7 @@ class Room extends Component {
             getItem={this.getItem}
           />
         )}
-        
+
         {!this.props.lightOn && (
           <ViroText
             text={this.props.codeDigit}
