@@ -1,5 +1,12 @@
 const {db} = require('../db/firebase');
 
+const randomCode = () => {
+  let min = 1000,
+    max = 9999;
+  let random = Math.round(Math.random() * (max - min) + min);
+  return random.toString();
+};
+
 export async function getGames(callbackFunc) {
   let allGames = db.collection('games');
   try {
@@ -41,13 +48,14 @@ export async function getSingleGame(callbackFunc, gameId) {
           ],
           selectedItemIndex: 0,
           levelName: 'spookyCabin',
-          lockCombo: this.props.lockCombo,
+          lockCombo: randomCode(),
           lightOn: true,
           puzzles: {
             eastWall: 'lockBox',
             northWall: 'colorBlock',
             westWall: 'slidingPuzzle',
           },
+          isLoaded: false,
         });
       let newGame = await db
         .collection('games')

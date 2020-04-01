@@ -10,12 +10,13 @@ const initialState = {
   ],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
-  lockCombo: '',
+  lockCombo: '0000',
   puzzles: {
     eastWall: 'lockBox',
     northWall: 'colorBlock',
     westWall: 'slidingPuzzle',
   },
+  isLoaded: false,
 };
 
 // Action Types
@@ -144,7 +145,7 @@ export const saveGameThunk = (userId, updatedGame) => {
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_GAME:
-      return action.info;
+      return {...action.info, isLoaded: true};
     case UPDATE_HINT:
       return {...state, hintsLeft: state.hintsLeft - 1};
     case UPDATE_VISIBLE_ITEMS:

@@ -230,7 +230,13 @@ class Room extends Component {
 
         <Pallindrome />
         <PuzzleSliding />
-        <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem} />
+
+        {this.props.isLoaded && (
+          <Combo
+            code={this.props.currentGame.lockCombo}
+            getItem={this.getItem}
+          />
+        )}
         
         {!this.props.lightOn && (
           <ViroText
@@ -292,6 +298,7 @@ ViroMaterials.createMaterials({
 const mapStateToProps = state => {
   return {
     currentGame: state.game,
+    isLoaded: state.game.isLoaded,
     codeDigit: state.game.lockCombo[3],
     lightOn: state.game.lightOn,
   };
