@@ -48,7 +48,6 @@ const setCode = code => {
   };
 };
 
-//START ACTIONS ADDED BY DANIELLE
 export const updateTime = info => {
   return {
     type: UPDATE_TIME,
@@ -77,7 +76,6 @@ export const selectedItemIndex = info => {
   };
 };
 
-//END ACTIONS ADDED BY DANIELLE
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -122,7 +120,6 @@ export const secretCode = code => {
   };
 };
 
-//END THUNKS ADDED BY DANIELLE
 
 export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {

@@ -123,6 +123,19 @@ class Room extends Component {
       />
     );
 
+    const Skull = (
+      <Viro3DObject
+        source={require('./Objects/models/skull/12140_Skull_v3_L2.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[1.5, -1.2, 1]}
+        scale={[0.018, 0.018, 0.018]}
+        rotation={[260, 230, -10]}
+        onClick={() => this.getItem('skull', 'noIMG', false, 'A Skull')}
+        materials={['skull']}
+      />
+    );
+
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
@@ -183,6 +196,7 @@ class Room extends Component {
         {Desk}
         {Cot}
         {Knife}
+        {Skull}
 
         <ViroFlexView
           style={{
@@ -202,7 +216,13 @@ class Room extends Component {
         <PuzzleSliding />
         <Combo code={this.props.currentGame.lockCombo} getItem={this.getItem} />
 
-        <ViroText text={this.props.codeDigit} color="purple" style={{fontSize: 32}} position={[0, 3, -1]} rotation={[90, 0, 0]}/>
+        <ViroText
+          text={this.props.codeDigit}
+          color="purple"
+          style={{fontSize: 32}}
+          position={[0, 3, -1]}
+          rotation={[90, 0, 0]}
+        />
       </ViroNode>
     );
   }
@@ -224,13 +244,16 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/desk/desk_texture.png'),
   },
   key: {
-    diffuseTexture: require('./Objects/models/key/t_worn_key.png')
+    diffuseTexture: require('./Objects/models/key/t_worn_key.png'),
   },
   cot: {
-    diffuseTexture: require('./Objects/models/cot/M_bed_BaseColor.png')
+    diffuseTexture: require('./Objects/models/cot/M_bed_BaseColor.png'),
   },
   knife: {
     diffuseTexture: require('./Objects/models/knife/knife_D.jpg'),
+  },
+  skull: {
+    diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
   },
 });
 
