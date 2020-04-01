@@ -46,7 +46,7 @@ class Room extends Component {
       this.setState({hudText: 'The door is locked! Find a key!'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
-      this.setState({hudText: "You've escaped the room!"});
+      this.props.exitViro('youWin')
     }
   }
 
@@ -192,7 +192,7 @@ class Room extends Component {
           materials={['cabinFloor']}
         />
         {/* //Objects Here */}
-        {Key}
+        {/* {Key} */}
         {Desk}
         {Cot}
         {Knife}
