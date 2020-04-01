@@ -180,7 +180,7 @@ class PuzzleSliding extends Component {
               width={0.94}
               height={0.94}>
               {!this.props.lightOn && (
-                <ViroText text={this.props.codeDigit} color="blue" style={{fontSize: 32}} />
+                <ViroText text={this.props.codeDigit} color="blue" style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 32}} />
               )}
             </ViroFlexView>
           )}

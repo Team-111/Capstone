@@ -97,7 +97,7 @@ class PuzzleColoredSquares extends Component {
               </ViroFlexView>
             );
           })
-          : <ViroText text={this.props.codeDigit} color="red" style={{fontSize: 32}} />
+          : <ViroText text={this.props.codeDigit} color="red" style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 32}} />
       }
       </ViroFlexView>
     );
