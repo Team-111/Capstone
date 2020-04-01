@@ -25,7 +25,7 @@ import {
   Button,
 } from 'react-native';
 
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 import {ViroARSceneNavigator} from 'react-viro';
 import {auth} from './server/db/firebase';
@@ -91,7 +91,6 @@ class ViroSample extends Component {
   _getExperienceSelector() {
     //if (auth.currentUser) console.log('Auth=', auth.currentUser.uid);
     return (
-
       <View style={localStyles.outer}>
         <View style={localStyles.inner}>
           {/* {auth.currentUser ??
@@ -173,7 +172,6 @@ class ViroSample extends Component {
     );
   }
 
-
   // Returns the ViroSceneNavigator which will start the VR experience
   _getScoreNavigator() {
     return (
@@ -182,11 +180,11 @@ class ViroSample extends Component {
   }
 
   _getLoginNavigator() {
-    return (<Login {...this.state.sharedProps} exitViro={this._exitViro} />);
+    return <Login {...this.state.sharedProps} exitViro={this._exitViro} />;
   }
 
   _getSignUpNavigator() {
-    return (<SignUp {...this.state.sharedProps} exitViro={this._exitViro} />);
+    return <SignUp {...this.state.sharedProps} exitViro={this._exitViro} />;
   }
 
   // This function returns an anonymous/lambda function to be used
@@ -229,7 +227,7 @@ var localStyles = StyleSheet.create({
     paddingBottom: 20,
     color: '#ff0000',
     textAlign: 'center',
-    fontSize: 25
+    fontSize: 25,
     // fontFamily: 'CFNightofTerrorPERSONAL-Reg'
   },
   buttonText: {
@@ -248,7 +246,7 @@ var localStyles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: '#ae0000',
-    borderTopColor: '#ff5555'
+    borderTopColor: '#ff5555',
   },
   exitButton: {
     height: 50,
@@ -266,8 +264,8 @@ var localStyles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {wow: 'cool'};
-}
+};
 
-export default connect(mapStateToProps)(ViroSample)
+export default connect(mapStateToProps)(ViroSample);
 
 // module.exports = ViroSample;
