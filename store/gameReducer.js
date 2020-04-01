@@ -30,6 +30,7 @@ const initialState = {
       complete: false,
     },
   },
+  legsBound: true,
   isLoaded: false,
 };
 

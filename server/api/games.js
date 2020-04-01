@@ -41,6 +41,7 @@ export const initializeGameObj = () => ({
       complete: false,
     },
   },
+  legsBound: true,
   isLoaded: false,
 });
 

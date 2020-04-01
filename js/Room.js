@@ -47,12 +47,12 @@ class Room extends Component {
 
   doorInteract() {
     //change to check curr selected inventory item
-    if (this.props.currentGame.visibleInRoom.key) {
-      this.setState({hudText: 'The door is locked! Find a key!'});
-      setTimeout(() => this.setState({hudText: ''}), 4000);
-    } else {
+    if ((!this.props.currentGame.legsBound) && (this.props.currentGame.puzzles.combo.complete)) {
       this.props.exitViro('youWin');
       this.props.saveGame(this.props.uid, {});
+    } else {
+      this.setState({hudText: 'Enter the combo'});
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
@@ -66,13 +66,19 @@ class Room extends Component {
   }
 
   chainedLegsInteract() {
-    if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
-      this.setState({hudText: 'Yes! My legs are free!'})
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+    if(this.props.currentGame.legsBound) {
+      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
+        this.setState({hudText: 'Yes! My legs are free!'})
+        setTimeout(() => this.setState({hudText: ''}), 4000)
+      } else {
+        this.setState({hudText: "I'll need a key to free my legs..."})
+        setTimeout(() => this.setState({hudText: ''}), 4000)
+      }
     } else {
-      this.setState({hudText: "I'll need a key to free my legs..."})
+      this.setState({hudText: 'I could just walk out! If I knew the door combo...'})
       setTimeout(() => this.setState({hudText: ''}), 4000)
     }
+
   }
 
   getItem(passedObj, inventoryIMG, isCollectable, itemText = '', hudPopup = false) {
