@@ -12,7 +12,7 @@ const randomCode = () => {
 export const initializeGameObj = () => ({
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
-  visibleInRoom: {key: true, desk: true},
+  visibleInRoom: {key: true, desk: true, spoon: true, skull: true},
   inventory: [
     {
       name: 'Empty',
@@ -41,6 +41,7 @@ export const initializeGameObj = () => ({
       complete: false,
     },
   },
+  legsBound: true,
   isLoaded: false,
 });
 

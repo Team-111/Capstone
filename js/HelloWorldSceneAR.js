@@ -74,7 +74,7 @@ class HelloWorldSceneAR extends Component {
           position={[0, 0, -1]}
           style={styles.helloWorldTextStyle}
         />
-        <ViroAmbientLight color="#ffffff" intensity={200} />
+        {/* <ViroAmbientLight color="#ffffff" intensity={200} /> */}
         <ViroPortalScene
           passable={true}
           dragType="FixedDistance"

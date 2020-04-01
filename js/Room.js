@@ -34,40 +34,92 @@ class Room extends Component {
     super();
     this.state = {
       hudText: '',
-      time: {
-        min: 0,
-        sec: 0,
-      },
+      investigateObjDisplay: false,
+      shownObject: 'newspaper',
     };
 
     this.doorInteract = this.doorInteract.bind(this);
+    this.skullInteract = this.skullInteract.bind(this);
+    this.chainedLegsInteract = this.chainedLegsInteract.bind(this);
     this.getItem = this.getItem.bind(this);
+    this.putItemAway = this.putItemAway.bind(this);
   }
 
   doorInteract() {
-    if (this.props.currentGame.visibleInRoom.key) {
-      this.setState({hudText: 'The door is locked! Find a key!'});
-      setTimeout(() => this.setState({hudText: ''}), 4000);
-    } else {
+    //change to check curr selected inventory item
+    if ((!this.props.currentGame.legsBound) && (this.props.currentGame.puzzles.combo.complete)) {
       this.props.exitViro('youWin');
       this.props.saveGame(this.props.uid, {});
+    } else {
+      this.setState({hudText: 'Enter the combo'});
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
-  getItem(passedObj, inventoryIMG, isCollectable, itemText = '') {
+  skullInteract() {//change to check curr selected inventory item
+    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'spoon')) {
+      this.setState({hudText: 'A Skull.'});
+      setTimeout(() => this.setState({hudText: ''}), 4000)
+    } else {
+      this.props.visibleItems('skull');
+    }
+  }
+
+  chainedLegsInteract() {
+    if(this.props.currentGame.legsBound) {
+      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
+        this.setState({hudText: 'Yes! My legs are free!'})
+        setTimeout(() => this.setState({hudText: ''}), 4000)
+      } else {
+        this.setState({hudText: "I'll need a key to free my legs..."})
+        setTimeout(() => this.setState({hudText: ''}), 4000)
+      }
+    } else {
+      this.setState({hudText: 'I could just walk out! If I knew the door combo...'})
+      setTimeout(() => this.setState({hudText: ''}), 4000)
+    }
+
+  }
+
+  getItem(passedObj, inventoryIMG, isCollectable, itemText = '', hudPopup = false) {
     if (isCollectable) {
       this.props.visibleItems(passedObj);
       this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG});
       //Sets the selectedItem Index to 0 whenever you get a new item
       this.props.selectItem(0);
-    } else {
+    } else if (hudPopup) {
+      //set state to value
+      this.setState({shownObject: passedObj, investigateObjDisplay: true})
+    }
+      else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
+  putItemAway() {
+    this.setState({investigateObjDisplay: false})
+  }
+
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
+    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
+
+    const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
+    onClick={() => this.getItem('newspaper', 'noImg', false, '', true)}/>)
+
+    const Spoon = (
+      <Viro3DObject
+        source={require('../js/Objects/models/specialSpoon/Spoon3.obj')}
+        resources={[require('./Objects/models/key/t_worn_key.png')]}
+    highAccuracyEvents={true}
+    type="OBJ"
+    position={[-1, -3, 2]}
+    visible={this.props.currentGame.visibleInRoom.spoon}
+    onClick={() =>
+      this.getItem('spoon', require('../js/Inventory/images/spoon.jpg'), true)
+    } />)
+
     let Key = (
       <Viro3DObject
         source={require('../js/Objects/models/key/worn_key.obj')}
@@ -77,7 +129,8 @@ class Room extends Component {
         ]}
         highAccuracyEvents={true}
         type="OBJ"
-        position={[0, -3, -1]}
+        position={[1.5, -1.2, 1]}
+        scale={[.8,.8,.8]}
         visible={this.props.currentGame.visibleInRoom.key}
         onClick={() =>
           this.getItem('key', require('../js/Inventory/images/key.png'), true)
@@ -135,8 +188,8 @@ class Room extends Component {
         position={[1.5, -1.2, 1]}
         scale={[0.018, 0.018, 0.018]}
         rotation={[260, 230, -10]}
-        onClick={() => this.getItem('skull', 'noIMG', false, 'A Skull')}
-        materials={['skull']}
+        visible={this.props.currentGame.visibleInRoom.skull}
+        onClick={this.skullInteract}
       />
     );
 
@@ -146,6 +199,9 @@ class Room extends Component {
           isActive={this.props.entered}
           hudText={this.state.hudText}
           exitViro={this.props.exitViro}
+          shownObject={this.state.shownObject}
+          objectDisplay={this.state.investigateObjDisplay}
+          putItemAway={this.putItemAway}
         />
 
         <ViroQuad
@@ -157,9 +213,9 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={200} />
+          <ViroAmbientLight color="#ffffff" intensity={200}/>
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000} />
+          <ViroAmbientLight color="#00001a" intensity={50000}/>
         )}
 
         <ViroBox
@@ -211,10 +267,14 @@ class Room extends Component {
         />
         {/* //Objects Here */}
         {/* {Key} */}
+        {Legs}
         {Desk}
         {Cot}
         {Knife}
         {Skull}
+        {Newspaper}
+        {Spoon}
+        {Key}
 
         <ViroFlexView
           style={{

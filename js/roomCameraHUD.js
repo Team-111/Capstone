@@ -13,6 +13,8 @@ import {
   ViroCamera,
   ViroImage,
   ViroText,
+  ViroMaterials,
+  ViroQuad,
 } from 'react-viro';
 
 class RoomCamera extends Component {
@@ -91,11 +93,21 @@ class RoomCamera extends Component {
         </ViroNode>
         <ViroImage position={[.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_right.png')} onClick={() => {this.changeItem('right')}}/>
         <ViroImage position={[-.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_left.png')} onClick={() => {this.changeItem('left')}}/>
+        {/*This ViroQuad is passed the material for a 'pop up display item' ie newspaper */}
+          <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.4]} onClick={this.props.putItemAway} visible={this.props.objectDisplay}/>
+
 
       </ViroCamera>
     );
   }
 }
+
+//Materials for camera pop up
+ViroMaterials.createMaterials({
+  newspaper: {
+    diffuseTexture: require('./res/newspaper.jpg'),
+  },
+})
 
 const mapStateToProps = state => ({
   currentGame: state.game,
