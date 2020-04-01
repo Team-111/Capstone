@@ -76,15 +76,23 @@ class Pallindrome extends Component {
   render() {
     return (
       <ViroNode>
-        {!this.state.solved
-          ? (<ViroImage
-            source={require('../images/1221.jpeg')}
+        {!this.state.solved || this.props.lightOn
+          ? (<ViroQuad
+            materials={['clockImage']}
             position={[2, 0.4, 0]}
             width={0.7}
             height={0.75}
             rotation={[0, 270, 0]}
-          />)
-          : <ViroText text={this.props.codeDigit} color="green" style={{fontSize: 32, textAlign: 'center'}} position={[2, 0.4, 0]} rotation={[0, 270, 0]}/>
+          />
+        ) : (
+          <ViroText
+            text={this.props.codeDigit}
+            color="green"
+            style={{fontSize: 32, textAlign: 'center'}}
+            position={[2, 0.4, 0]}
+            rotation={[0, 270, 0]}
+          />
+          )
         }
         <ViroFlexView
           backgroundColor="black"
@@ -172,10 +180,15 @@ ViroMaterials.createMaterials({
   input: {
     diffuseTexture: require('./res/input.jpg'),
   },
+  clockImage: {
+    diffuseTexture: require('../images/1221.jpeg'),
+    lightingModel: 'Blinn',
+  },
 });
 
 const mapStateToProps = state => ({
   codeDigit: state.game.lockCombo[2],
+  lightOn: state.game.lightOn,
 });
 
 export default connect(mapStateToProps)(Pallindrome);

@@ -71,33 +71,33 @@ class PuzzleColoredSquares extends Component {
         width={0.6}
         height={0.6}
         backgroundColor="transparent">
-        {!this.state.solved
-          ? this.state.gameBoard.map((row, rowIdx) => {
-          return (
-            <ViroFlexView
-              key={`row${rowIdx}`}
-              style={{flexDirection: 'row'}}
-              width={0.5}
-              height={0.1}>
-              {row.map((tile, colIdx) => {
-                return (
-                  <ViroQuad
-                    key={`tile${colIdx}`}
-                    width={0.1}
-                    height={0.1}
-                    materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
-                    onClick={
-                      this.state.solved === true
-                        ? null
-                        : this.clickSquare(rowIdx, colIdx).bind(this)
-                    }
-                  />
-                );
-              })}
-            </ViroFlexView>
-          );
-        })
-        : <ViroText text={this.props.codeDigit} color="red" />
+        {this.props.lightOn || !this.state.solved ?
+          this.state.gameBoard.map((row, rowIdx) => {
+            return (
+              <ViroFlexView
+                key={`row${rowIdx}`}
+                style={{flexDirection: 'row'}}
+                width={0.5}
+                height={0.1}>
+                {row.map((tile, colIdx) => {
+                  return (
+                    <ViroQuad
+                      key={`tile${colIdx}`}
+                      width={0.1}
+                      height={0.1}
+                      materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
+                      onClick={
+                        this.state.solved === true
+                          ? null
+                          : this.clickSquare(rowIdx, colIdx).bind(this)
+                      }
+                    />
+                  );
+                })}
+              </ViroFlexView>
+            );
+          })
+          : <ViroText text={this.props.codeDigit} color="red" style={{fontSize: 32}} />
       }
       </ViroFlexView>
     );
@@ -107,14 +107,17 @@ class PuzzleColoredSquares extends Component {
 ViroMaterials.createMaterials({
   redSquare: {
     diffuseTexture: require('./res/ColoredSquares/redSquare.png'),
+    lightingModel: 'Blinn',
   },
   yellowSquare: {
     diffuseTexture: require('./res/ColoredSquares/yellowSquare.png'),
+    lightingModel: 'Blinn',
   },
 });
 
 const mapStateToProps = state => ({
   codeDigit: state.game.lockCombo[0],
+  lightOn: state.game.lightOn,
 });
 
 export default connect(mapStateToProps)(PuzzleColoredSquares);

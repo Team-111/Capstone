@@ -180,7 +180,9 @@ class PuzzleSliding extends Component {
               style={{justifyContent: 'center', alignItems: 'center'}}
               width={0.94}
               height={0.94}>
-                <ViroText text={this.props.codeDigit} color="blue" />
+              {!this.props.lightOn && (
+                <ViroText text={this.props.codeDigit} color="blue" style={{fontSize: 32}} />
+              )}
             </ViroFlexView>
           )}
         </ViroFlexView>
@@ -198,41 +200,53 @@ class PuzzleSliding extends Component {
 ViroMaterials.createMaterials({
   grid0: {
     diffuseTexture: require('./res/SlidingPuzzle/grid0.png'),
+    lightingModel: 'Blinn',
   },
   grid1: {
     diffuseTexture: require('./res/SlidingPuzzle/grid1.png'),
+    lightingModel: 'Blinn',
   },
   grid2: {
     diffuseTexture: require('./res/SlidingPuzzle/grid2.png'),
+    lightingModel: 'Blinn',
   },
   grid3: {
     diffuseTexture: require('./res/SlidingPuzzle/grid3.png'),
+    lightingModel: 'Blinn',
   },
   grid4: {
     diffuseTexture: require('./res/SlidingPuzzle/grid4.png'),
+    lightingModel: 'Blinn',
   },
   grid5: {
     diffuseTexture: require('./res/SlidingPuzzle/grid5.png'),
+    lightingModel: 'Blinn',
   },
   grid6: {
     diffuseTexture: require('./res/SlidingPuzzle/grid6.png'),
+    lightingModel: 'Blinn',
   },
   grid7: {
     diffuseTexture: require('./res/SlidingPuzzle/grid7.png'),
+    lightingModel: 'Blinn',
   },
   gridBlank: {
     diffuseTexture: require('./res/SlidingPuzzle/grid8.png'),
+    lightingModel: 'Blinn',
   },
   portrait1: {
     diffuseTexture: require('./res/SlidingPuzzle/portrait1.png'),
+    lightingModel: 'Blinn',
   },
   portrait2: {
     diffuseTexture: require('./res/SlidingPuzzle/portrait2.png'),
+    lightingModel: 'Blinn',
   },
 });
 
 const mapStateToProps = state => ({
   codeDigit: state.game.lockCombo[1],
+  lightOn: state.game.lightOn,
 });
 
 export default connect(mapStateToProps)(PuzzleSliding);

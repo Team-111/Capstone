@@ -37,6 +37,7 @@ export async function getSingleGame(callbackFunc, gameId) {
           selectedItemIndex: 0,
           levelName: 'spookyCabin',
           lockCombo: '1234',
+          lightOn: true,
           puzzles: {
             eastWall: 'lockBox',
             northWall: 'colorBlock',

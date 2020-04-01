@@ -23,6 +23,7 @@ const UPDATE_TIME = 'UPDATE_TIME'
 const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS'
 const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY'
 const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
+const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 
 // Action Creator
 const gotGame = info => {
@@ -66,6 +67,10 @@ export const selectedItemIndex = info => {
     info,
   }
 }
+
+export const toggleLight = () => ({
+  type: TOGGLE_LIGHT,
+});
 
 //END ACTIONS ADDED BY DANIELLE
 
@@ -139,11 +144,14 @@ const gameReducer = (state = initialState, action) => {
     case ADD_TO_INVENTORY:
       let currInventory = state.inventory;
       currInventory.unshift(action.info);
-      return {...state, inventory: currInventory}
+      return {...state, inventory: currInventory};
     case CHANGE_SELECT_ITEM_IND:
-      return {...state, selectedItemIndex: action.info}
+      return {...state, selectedItemIndex: action.info};
     case UPDATE_TIME:
-      return {...state, currentTime: action.info}
+      return {...state, currentTime: action.info};
+    case TOGGLE_LIGHT:
+      const lightState = state.lightOn;
+      return {...state, lightOn: !lightState};
     default:
       return state;
   }
