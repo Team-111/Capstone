@@ -58,6 +58,7 @@ class PuzzleColoredSquares extends Component {
       this.checkSolved(boardCopy);
     };
   }
+  //http://perfectweb.org/ddo/solver/vale_puzzle.html for solutions!!!
 
   checkSolved = board => {
     for (let i = 0; i < board.length; i++) {
@@ -69,7 +70,6 @@ class PuzzleColoredSquares extends Component {
     }
 
     this.setState({solved: true});
-    setTimeout(() => this.setState({spookyPortrait: true}), 3000);
   };
 
   render() {
@@ -112,7 +112,7 @@ class PuzzleColoredSquares extends Component {
           })
         ) : (
           <ViroFlexView
-            materials={this.state.spookyPortrait ? [] : ['helpme']}
+            materials={['helpme']}
             style={{justifyContent: 'center', alignItems: 'center'}}
             width={0.9}
             height={0.9}>
