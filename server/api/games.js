@@ -41,7 +41,7 @@ const randomCode = () => {
       complete: false,
     },
   },
-  hints: [],
+  hints: {},
   legsBound: true,
   isLoaded: false,
 });
@@ -129,10 +129,15 @@ export async function getGameHints(gamePuzzles) {
         // console.log(gamePuzzArray.includes(puzzHint.id));
         gamePuzzArray.includes(puzzHint.id)
       );
-    }
-    );
+    });
     console.log('Here is the hintsArray inside getGameHints', hintsArray);
-    return hintsArray;
+    let hints = {}
+    for(let i =0; i<hintsArray.length; i++){
+      if(hintsArray[i].hints){
+        hints[hintsArray[i].id] = hintsArray[i].hints;
+      }
+    }
+    return hints;
   } catch (error) {
     console.log(error);
   }

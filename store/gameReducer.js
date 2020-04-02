@@ -3,7 +3,7 @@ import {getSingleGame, updateGame, initializeGameObj} from '../server/api/games'
 // Initial State
 const initialState = {
   hintsLeft: 3,
-  hints: ['hint1', 'hint2', 'hint3'],
+  hints: {},
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {key: true, desk: true, spoon: true, skull: true},
   inventory: [
