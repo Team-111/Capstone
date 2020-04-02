@@ -20,11 +20,16 @@ import {
 class RoomCamera extends Component {
   constructor(props) {
     super(props);
-    this.changeItem = this.changeItem.bind(this);
     this.state = {
       hintVisible: false,
+      itemImageKeys: {
+        key: require('./Inventory/images/key.png'),
+        spoon: require('./Inventory/images/spoon.jpg'),
+        empty: require('./Inventory/images/icon_close.png')
+      }
     }
     this.showHint = this.showHint.bind(this);
+    this.changeItem = this.changeItem.bind(this);
   }
 
   changeItem(direction) {
@@ -88,11 +93,11 @@ class RoomCamera extends Component {
           textClipMode="ClipToBounds"
           width={1} />
         <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
-          <ViroImage source={this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].itemIMG} />
+          <ViroImage source={this.state.itemImageKeys[this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]]} />
           {/* <ViroText text={this.props.inventory[this.state.selectedItem].name}/> */}
         </ViroNode>
-        <ViroImage position={[.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_right.png')} onClick={() => {this.changeItem('right')}}/>
-        <ViroImage position={[-.7, -1, -3]} scale={[.5,.5,.5]} source={require('./Inventory/images/icon_left.png')} onClick={() => {this.changeItem('left')}}/>
+        <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}}/>
+        <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}}/>
         {/*This ViroQuad is passed the material for a 'pop up display item' ie newspaper */}
           <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.4]} onClick={this.props.putItemAway} visible={this.props.objectDisplay}/>
 
@@ -107,6 +112,12 @@ ViroMaterials.createMaterials({
   newspaper: {
     diffuseTexture: require('./res/newspaper.jpg'),
   },
+  right: {
+    diffuseTexture: require('./Inventory/images/icon_right.png'),
+  },
+  left: {
+    diffuseTexture: require('./Inventory/images/icon_left.png'),
+  }
 })
 
 const mapStateToProps = state => ({

@@ -12,7 +12,7 @@ import {
   ViroARScene,
   ViroText,
   ViroConstants,
-  ViroAmbientLight,
+  ViroSound,
   ViroPortal,
   ViroPortalScene,
   Viro3DObject,
@@ -26,14 +26,14 @@ class HelloWorldSceneAR extends Component {
     this.state = {
       text: 'Initializing AR ...',
       entered: false,
-      game: {},
-      code: '',
+      endGame: false,
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
     this.enterPortal = this.enterPortal.bind(this);
     this.exitPortal = this.exitPortal.bind(this);
+    this.gameOver = this.gameOver.bind(this);
   }
 
   async componentDidMount() {
@@ -41,7 +41,6 @@ class HelloWorldSceneAR extends Component {
 
     this.props.getGame(currentUser.uid);
     this.props.setUser(currentUser.uid, currentUser.email);
-    // this.randomCode();
   }
 
   enterPortal() {
@@ -57,12 +56,9 @@ class HelloWorldSceneAR extends Component {
     });
   }
 
-  // randomCode = () => {
-  //   let min = 1000,
-  //     max = 9999;
-  //   let random = Math.round(Math.random() * (max - min) + min);
-  //   this.setState({code: random.toString()});
-  // };
+  gameOver() {
+    this.setState({endGame: true});
+  }
 
   render() {
     const exitViro = this.props.arSceneNavigator.viroAppProps.exitViro;
@@ -74,6 +70,35 @@ class HelloWorldSceneAR extends Component {
           position={[0, 0, -1]}
           style={styles.helloWorldTextStyle}
         />
+
+        <Viro3DObject
+          source={require('./Objects/models/zombie/zombie.obj')}
+          position={[0, -3.5, 0.5]}
+          rotation={[0, 180, 0]}
+          scale={[2, 2, 2]}
+          resources={[
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Body_diffuse.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Body_gloss.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Body_normal.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Body_specular.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Bottom_diffuse.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Bottom_gloss.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Bottom_normal.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Bottom_specular.png'),
+            require('./Objects/models/zombie/temp_skin_21411_140723359993168_914921521.fbm/Zombi_Top_diffuse.png'),
+          ]}
+          highAccuracyEvents={true}
+          type="OBJ"
+          visible={this.state.endGame}
+        />
+
+        {this.state.endGame && (
+          <ViroSound
+            source={require('./sounds/zombie_groan.mp3')}
+            loop={false}
+          />
+        )}
+
         {/* <ViroAmbientLight color="#ffffff" intensity={200} /> */}
         <ViroPortalScene
           passable={true}
@@ -92,7 +117,12 @@ class HelloWorldSceneAR extends Component {
               type="VRX"
             />
           </ViroPortal>
-          <Room entered={this.state.entered} exitViro={exitViro} />
+          <Room
+            entered={this.state.entered}
+            exitViro={exitViro}
+            endGame={this.state.endGame}
+            gameOver={this.gameOver}
+          />
         </ViroPortalScene>
       </ViroARScene>
     );

@@ -9,6 +9,7 @@ class PuzzleColoredSquares extends Component {
     this.state = {
       gameBoard: this.makeBoard(6, 6),
       secretCodeDigit: 1,
+      spookyPortrait: false,
     };
 
     this.clickSquare = this.clickSquare.bind(this);
@@ -51,6 +52,7 @@ class PuzzleColoredSquares extends Component {
       this.checkSolved(boardCopy);
     };
   }
+  //http://perfectweb.org/ddo/solver/vale_puzzle.html for solutions!!!
 
   checkSolved = board => {
     for (let i = 0; i < board.length; i++) {
@@ -67,11 +69,16 @@ class PuzzleColoredSquares extends Component {
   render() {
     return (
       <ViroFlexView
-        style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', alignItems: 'center'}}
+        style={{
+          flexDirection: 'column',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
         width={0.6}
         height={0.6}
         backgroundColor="transparent">
-        {this.props.lightOn || !this.props.solved ?
+        {this.props.lightOn || !this.props.solved ? (
           this.state.gameBoard.map((row, rowIdx) => {
             return (
               <ViroFlexView
@@ -97,8 +104,23 @@ class PuzzleColoredSquares extends Component {
               </ViroFlexView>
             );
           })
-          : <ViroText text={this.props.codeDigit} color="red" style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 32}} />
-      }
+        ) : (
+        <ViroFlexView
+          materials={['helpme']}
+          style={{justifyContent: 'center', alignItems: 'center'}}
+          width={0.9}
+          height={0.9}>
+          <ViroText
+            text={this.props.codeDigit}
+            color="red"
+            style={{
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              fontSize: 32,
+            }}
+          />
+        </ViroFlexView>
+        )}
       </ViroFlexView>
     );
   }
@@ -113,6 +135,9 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./res/ColoredSquares/yellowSquare.png'),
     lightingModel: 'Blinn',
   },
+  helpme: {
+    diffuseTexture: require('./res/ColoredSquares/helpme.png'),
+  },
 });
 
 const mapStateToProps = state => ({
@@ -123,6 +148,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(PuzzleColoredSquares);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PuzzleColoredSquares);

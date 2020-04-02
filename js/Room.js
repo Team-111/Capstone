@@ -12,7 +12,6 @@ import {
   ViroMaterials,
   ViroBox,
   ViroNode,
-  ViroImage,
   ViroSound,
   Viro3DObject,
   ViroFlexView,
@@ -27,6 +26,7 @@ import {
   selectItemThunk,
   toggleLight,
   saveGameThunk,
+  toggleChainsThunk,
 } from '../store';
 
 class Room extends Component {
@@ -43,13 +43,17 @@ class Room extends Component {
     this.chainedLegsInteract = this.chainedLegsInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.putItemAway = this.putItemAway.bind(this);
+    this.endGameProcessing = this.endGameProcessing.bind(this);
   }
 
   doorInteract() {
     //change to check curr selected inventory item
-    if ((!this.props.currentGame.legsBound) && (this.props.currentGame.puzzles.combo.complete)) {
-      this.props.exitViro('youWin');
-      this.props.saveGame(this.props.uid, {});
+    if (
+      !this.props.currentGame.legsBound &&
+      this.props.currentGame.puzzles.combo.complete
+    ) {
+      this.props.gameOver();
+      setTimeout(this.endGameProcessing, 5000);
     } else {
       this.setState({hudText: 'Enter the combo'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -57,67 +61,104 @@ class Room extends Component {
   }
 
   skullInteract() {//change to check curr selected inventory item
-    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'spoon')) {
+    if (
+      !(
+        this.props.currentGame.inventory[
+          this.props.currentGame.selectedItemIndex
+        ] === 'spoon'
+      )
+    ) {
       this.setState({hudText: 'A Skull.'});
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
       this.props.visibleItems('skull');
     }
   }
 
   chainedLegsInteract() {
-    if(this.props.currentGame.legsBound) {
-      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
-        this.setState({hudText: 'Yes! My legs are free!'})
-        setTimeout(() => this.setState({hudText: ''}), 4000)
+    if (this.props.currentGame.legsBound) {
+      if (
+        this.props.currentGame.inventory[
+          this.props.currentGame.selectedItemIndex
+        ] === 'key'
+      ) {
+        this.setState({hudText: 'Yes! My legs are free!'});
+        this.props.toggleChains();
+        setTimeout(() => this.setState({hudText: ''}), 4000);
       } else {
-        this.setState({hudText: "I'll need a key to free my legs..."})
-        setTimeout(() => this.setState({hudText: ''}), 4000)
+        this.setState({hudText: "I'll need a key to free my legs..."});
+        setTimeout(() => this.setState({hudText: ''}), 4000);
       }
     } else {
-      this.setState({hudText: 'I could just walk out! If I knew the door combo...'})
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+      this.setState({
+        hudText: 'I could just walk out! If I knew the door combo...',
+      });
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     }
-
   }
 
-  getItem(passedObj, inventoryIMG, isCollectable, itemText = '', hudPopup = false) {
+  getItem(passedObj, isCollectable, itemText = '', hudPopup = false) {
     if (isCollectable) {
       this.props.visibleItems(passedObj);
-      this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG});
+      this.props.addToInventory(passedObj);
       //Sets the selectedItem Index to 0 whenever you get a new item
       this.props.selectItem(0);
     } else if (hudPopup) {
       //set state to value
-      this.setState({shownObject: passedObj, investigateObjDisplay: true})
-    }
-      else {
+      this.setState({shownObject: passedObj, investigateObjDisplay: true});
+    } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
   putItemAway() {
-    this.setState({investigateObjDisplay: false})
+    this.setState({investigateObjDisplay: false});
+  }
+
+  endGameProcessing() {
+    this.props.exitViro('youWin');
+    this.props.saveGame(this.props.uid, {});
   }
 
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
-    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
+    // let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
+    const Legs = (<Viro3DObject source={require('./Objects/models/ARoomModels/legs.obj')}
+    resources={[require('./Objects/models/ARoomModels/legTextureSmall.png')]}
+    highAccuracyEvents={true}
+    type="OBJ"
+    position={[0, -3, -.1]}
+    visible={this.props.entered}
+    scale={[.3,.3,.3]}
+    materials={['legs']}
+    onClick={this.chainedLegsInteract} />)
 
-    const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
-    onClick={() => this.getItem('newspaper', 'noImg', false, '', true)}/>)
+    const Chains = (<Viro3DObject source={require('./Objects/models/ARoomModels/chains.obj')}
+    highAccuracyEvents={true}
+    type="OBJ"
+    position={[0, -3, -.1]}
+    visible={this.props.entered && this.props.currentGame.legsBound}
+    scale={[.3,.3,.3]}
+    materials={['chains']}
+    onClick={this.chainedLegsInteract} />)
+
+    const Newspaper = (<Viro3DObject source={require('./Objects/models/ARoomModels/newspaper.obj')} highAccuracyEvents={true}
+    type="OBJ" materials={['newspaper']} position={[-2, -0.9, 1]} scale={[.1,.1,.1]}
+    onClick={() => this.getItem('newspaper', false, '', true)}/>)
 
     const Spoon = (
       <Viro3DObject
-        source={require('../js/Objects/models/specialSpoon/Spoon3.obj')}
-        resources={[require('./Objects/models/key/t_worn_key.png')]}
+        source={require('../js/Objects/models/ARoomModels/spoonLowPoly.obj')}
     highAccuracyEvents={true}
     type="OBJ"
-    position={[-1, -3, 2]}
+    position={[0, 0, -2]}
+    rotation={[90,0,0]}
+    scale={[0.1,0.1,0.1]}
     visible={this.props.currentGame.visibleInRoom.spoon}
+    materials={['spoon']}
     onClick={() =>
-      this.getItem('spoon', require('../js/Inventory/images/spoon.jpg'), true)
+      this.getItem('spoon', true)
     } />)
 
     let Key = (
@@ -130,11 +171,9 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[.8,.8,.8]}
+        scale={[0.8, 0.8, 0.8]}
         visible={this.props.currentGame.visibleInRoom.key}
-        onClick={() =>
-          this.getItem('key', require('../js/Inventory/images/key.png'), true)
-        }
+        onClick={() => this.getItem('key', true)}
         materials={['key']}
       />
     );
@@ -147,7 +186,7 @@ class Room extends Component {
         position={[3, -3.5, 1]}
         scale={[0.015, 0.015, 0.015]}
         rotation={[0, 90, 0]}
-        onClick={() => this.getItem('cot', 'noIMG', false, 'An Old bed.')}
+        onClick={() => this.getItem('cot', false, 'An Old bed.')}
         materials={['cot']}
       />
     );
@@ -160,9 +199,7 @@ class Room extends Component {
         position={[-4, -3, 0]}
         scale={[0.03, 0.03, 0.03]}
         rotation={[0, 90, 0]}
-        onClick={() =>
-          this.getItem('desk', 'noIMG', false, 'A sturdy wooden desk.')
-        }
+        onClick={() => this.getItem('desk', false, 'A sturdy wooden desk.')}
         materials={['desk']}
       />
     );
@@ -175,7 +212,7 @@ class Room extends Component {
         position={[-3.1, -0.9, 0]}
         scale={[0.01, 0.01, 0.01]}
         rotation={[90, 110, 0]}
-        onClick={() => this.getItem('knife', 'noIMG', false, 'A bloody knife')}
+        onClick={() => this.getItem('knife', false, 'A bloody knife')}
         materials={['knife']}
       />
     );
@@ -186,8 +223,9 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[0.018, 0.018, 0.018]}
+        scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
+        materials={['skull']}
         visible={this.props.currentGame.visibleInRoom.skull}
         onClick={this.skullInteract}
       />
@@ -213,9 +251,9 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={200}/>
+          <ViroAmbientLight color="#ffffff" intensity={200} />
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000}/>
+          <ViroAmbientLight color="#00001a" intensity={50000} />
         )}
 
         <ViroBox
@@ -247,7 +285,7 @@ class Room extends Component {
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
           rotation={[0, 180, 0]}
-          visible={this.props.entered}
+          visible={this.props.entered && !this.props.endGame}
           onClick={this.doorInteract}
         />
 
@@ -268,6 +306,7 @@ class Room extends Component {
         {/* //Objects Here */}
         {/* {Key} */}
         {Legs}
+        {Chains}
         {Desk}
         {Cot}
         {Knife}
@@ -293,7 +332,7 @@ class Room extends Component {
         <Pallindrome />
         <PuzzleSliding />
 
-        {this.props.isLoaded && (
+        {this.props.isLoaded && !this.props.endGame && (
           <Combo
             code={this.props.currentGame.lockCombo}
             getItem={this.getItem}
@@ -355,6 +394,22 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
     lightingModel: 'Blinn',
   },
+  legs: {
+    diffuseTexture: require('./Objects/models/ARoomModels/legTextureSmall.png'),
+    lightingModel: 'Blinn',
+  },
+  chains: {
+    diffuseTexture: require('./Objects/models/ARoomModels/chains.jpg'),
+    lightingModel: 'Blinn'
+  },
+  spoon: {
+    diffuseTexture: require('./Objects/models/ARoomModels/spoondiffuse.png'),
+    lightingModel: 'Blinn'
+  },
+  newspaper: {
+    diffuseTexture: require('./Objects/models/ARoomModels/newspaper.png'),
+    lightingModel: 'Blinn'
+  }
 });
 
 const mapStateToProps = state => {
@@ -373,6 +428,7 @@ const mapDispatchToProps = dispatch => {
     addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
     selectItem: selectInd => dispatch(selectItemThunk(selectInd)),
     toggleLight: () => dispatch(toggleLight()),
+    toggleChains: () => dispatch(toggleChainsThunk()),
     saveGame: (userId, gameState) => dispatch(saveGameThunk(userId, gameState)),
   };
 };

@@ -1,0 +1,47 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl Bodymat
+Ns 179.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Body_normal.png
+map_Kd temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Body_diffuse.png
+map_Ks temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Body_specular.png
+map_Ns temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Body_gloss.png
+map_d temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Body_diffuse.png
+
+newmtl Bottommat
+Ns 179.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Bottom_normal.png
+map_Kd temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Bottom_diffuse.png
+map_Ks temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Bottom_specular.png
+map_Ns temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Bottom_gloss.png
+map_d temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Bottom_diffuse.png
+
+newmtl Topmat
+Ns 179.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Top_normal.png
+map_Kd temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Top_diffuse.png
+map_Ks temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Top_specular.png
+map_Ns temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Top_gloss.png
+map_d temp_skin_21411_140723359993168_914921521.fbm\\Zombi_Top_diffuse.png
