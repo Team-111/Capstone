@@ -175,7 +175,7 @@ const gameReducer = (state = initialState, action) => {
     case GOT_GAME:
       return {...action.info, isLoaded: true};
     case UPDATE_HINT:
-      return {...state, hintsLeft: state.hintsLeft - 1, hints:[]};
+      return {...state, hintsLeft: state.hintsLeft - 1};
     case UPDATE_VISIBLE_ITEMS:
       let itemKey = action.info;
       return {
