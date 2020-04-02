@@ -76,8 +76,8 @@ class Pallindrome extends Component {
   render() {
     return (
       <ViroNode>
-        {!this.props.solved || this.props.lightOn
-          ? (<ViroQuad
+        {!this.props.solved || this.props.lightOn ? (
+          <ViroQuad
             materials={['clockImage']}
             position={[2, 0.4, 0]}
             width={0.7}
@@ -184,6 +184,7 @@ ViroMaterials.createMaterials({
   clockImage: {
     diffuseTexture: require('../images/1221.jpeg'),
     lightingModel: 'Blinn',
+  },
   scary: {
     diffuseTexture: require('./res/Pallindrome/scary.jpg'),
   },
@@ -197,6 +198,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pallindrome);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Pallindrome);
