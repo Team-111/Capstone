@@ -29,7 +29,7 @@ export const getAllScores = () => {
           let seconds = totalTimeinSeconds - (minutes * 60);
 
           let dupElement = {...element};
-          dupElement.score = `${minutes}:${seconds}`;
+          dupElement.score = `${minutes}:${seconds < 10 ? `0${seconds}`: `${seconds}`}`;
           dupElement.milliseconds = timeMilliseconds;
           return dupElement;
         })

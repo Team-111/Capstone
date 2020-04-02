@@ -206,13 +206,8 @@ const gameReducer = (state = initialState, action) => {
       const puzzlesCopy = state.puzzles;
       puzzlesCopy[action.puzzle].complete = true;
       return {...state, puzzles: puzzlesCopy};
-<<<<<<< HEAD
-    case CLEAR_GAME_STATE:
-      return {...initialState};
     case TOGGLE_CHAINS:
-      return {...state, legsBound: false}
-=======
->>>>>>> master
+      return {...state, legsBound: false};
     default:
       return state;
   }
