@@ -104,18 +104,39 @@ class Room extends Component {
 
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
-    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
+    // let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
+    const Legs = (<Viro3DObject source={require('./Objects/models/ARoomModels/legs.obj')}
+    resources={[require('./Objects/models/ARoomModels/legTextureSmall.png')]}
+    highAccuracyEvents={true}
+    type="OBJ"
+    position={[0, -3, -.1]}
+    visible={this.props.entered}
+    scale={[.3,.3,.3]}
+    materials={['legs']}
+    onClick={this.chainedLegsInteract} />)
+
+    const Chains = (<Viro3DObject source={require('./Objects/models/ARoomModels/chains.obj')}
+    highAccuracyEvents={true}
+    type="OBJ"
+    position={[0, -3, -.1]}
+    visible={this.props.entered && this.props.currentGame.legsBound}
+    scale={[.3,.3,.3]}
+    materials={['chains']}
+    onClick={this.chainedLegsInteract} />)
 
     const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
     onClick={() => this.getItem('newspaper', false, '', true)}/>)
 
+    // const Newspaper = (<Viro3DObject />)
+
     const Spoon = (
       <Viro3DObject
-        source={require('../js/Objects/models/specialSpoon/Spoon3.obj')}
-        resources={[require('./Objects/models/key/t_worn_key.png')]}
+        source={require('../js/Objects/models/ARoomModels/spoonLowPoly.obj')}
+        resources={[require('./Objects/models/ARoomModels/spoondiffuse.png')]}
     highAccuracyEvents={true}
     type="OBJ"
-    position={[-1, -3, 2]}
+    position={[-1, -3, 4]}
+    rotation={[0,90,0]}
     visible={this.props.currentGame.visibleInRoom.spoon}
     onClick={() =>
       this.getItem('spoon', true)
@@ -269,6 +290,7 @@ class Room extends Component {
         {/* //Objects Here */}
         {/* {Key} */}
         {Legs}
+        {Chains}
         {Desk}
         {Cot}
         {Knife}
@@ -356,6 +378,14 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
     lightingModel: 'Blinn',
   },
+  legs: {
+    diffuseTexture: require('./Objects/models/ARoomModels/legTextureSmall.png'),
+    lightingModel: 'Blinn',
+  },
+  chains: {
+    diffuseTexture: require('./Objects/models/ARoomModels/chains.jpg'),
+    lightingModel: 'Blinn'
+  }
 });
 
 const mapStateToProps = state => {
