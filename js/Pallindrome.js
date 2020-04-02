@@ -19,6 +19,7 @@ class Pallindrome extends Component {
       guess1: [0, 0, 0, 0],
       guess2: [0, 0, 0, 0],
       solved: false,
+      spookyPortrait: false,
     };
 
     this.handleClick1 = this.handleClick1.bind(this);
@@ -70,6 +71,7 @@ class Pallindrome extends Component {
 
     if ((s1 === g1 && s2 === g2) || (s1 === g2 && s2 === g1)) {
       this.setState({solved: true});
+      setTimeout(() => this.setState({spookyPortrait: true}), 3000);
     }
   }
 
@@ -86,20 +88,13 @@ class Pallindrome extends Component {
           />
         ) : (
           <ViroFlexView
-            backgroundColor={'black'}
+            materials={this.state.spookyPortrait ? [] : ['scary']}
             style={{
               flexDirection: 'column',
               alignItems: 'center',
             }}
-            height={0.1}
-            width={0.1}
-            position={[2, 0.4, 0]}
-            rotation={[0, 270, 0]}>
-            <ViroImage
-              source={require('./res/Pallindrome/scary.jpg')}
-              width={1}
-              height={1}
-            />
+            height={2}
+            width={2}>
             <ViroText
               text={this.props.codeDigit}
               color="green"
@@ -192,6 +187,9 @@ class Pallindrome extends Component {
 ViroMaterials.createMaterials({
   input: {
     diffuseTexture: require('./res/input.jpg'),
+  },
+  scary: {
+    diffuseTexture: require('./res/Pallindrome/scary.jpg'),
   },
 });
 

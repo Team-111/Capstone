@@ -15,7 +15,7 @@ class PuzzleColoredSquares extends Component {
       gameBoard: this.makeBoard(6, 6),
       solved: false,
       secretCodeDigit: 1,
-      secretImage: false,
+      spookyPortrait: false,
     };
 
     this.clickSquare = this.clickSquare.bind(this);
@@ -69,6 +69,7 @@ class PuzzleColoredSquares extends Component {
     }
 
     this.setState({solved: true});
+    setTimeout(() => this.setState({spookyPortrait: true}), 3000);
   };
 
   render() {
@@ -111,18 +112,10 @@ class PuzzleColoredSquares extends Component {
           })
         ) : (
           <ViroFlexView
-            backgroundColor={'black'}
-            style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-            height={0.7}
-            width={0.7}>
-            <ViroImage
-              source={require('./res/ColoredSquares/helpme.png')}
-              width={0.1}
-              height={0.1}
-            />
+            materials={this.state.spookyPortrait ? [] : ['helpme']}
+            style={{justifyContent: 'center', alignItems: 'center'}}
+            width={0.9}
+            height={0.9}>
             <ViroText text={this.props.codeDigit} color="red" />
           </ViroFlexView>
         )}
@@ -137,6 +130,9 @@ ViroMaterials.createMaterials({
   },
   yellowSquare: {
     diffuseTexture: require('./res/ColoredSquares/yellowSquare.png'),
+  },
+  helpme: {
+    diffuseTexture: require('./res/ColoredSquares/helpme.png'),
   },
 });
 
