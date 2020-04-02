@@ -27,6 +27,7 @@ import {
   selectItemThunk,
   toggleLight,
   saveGameThunk,
+  toggleChainsThunk
 } from '../store';
 
 class Room extends Component {
@@ -69,6 +70,7 @@ class Room extends Component {
     if(this.props.currentGame.legsBound) {
       if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
         this.setState({hudText: 'Yes! My legs are free!'})
+        this.props.toggleChains();
         setTimeout(() => this.setState({hudText: ''}), 4000)
       } else {
         this.setState({hudText: "I'll need a key to free my legs..."})
@@ -373,6 +375,7 @@ const mapDispatchToProps = dispatch => {
     addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
     selectItem: selectInd => dispatch(selectItemThunk(selectInd)),
     toggleLight: () => dispatch(toggleLight()),
+    toggleChains: () => dispatch(toggleChainsThunk()),
     saveGame: (userId, gameState) => dispatch(saveGameThunk(userId, gameState)),
   };
 };
