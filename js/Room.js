@@ -67,8 +67,6 @@ class Room extends Component {
 
   chainedLegsInteract() {
     if(this.props.currentGame.legsBound) {
-      console.log(this.props.currentGame.inventory)
-      console.log(this.props.currentGame.selectedItemIndex)
       if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex] === 'key') {
         this.setState({hudText: 'Yes! My legs are free!'})
         this.props.toggleChains();
