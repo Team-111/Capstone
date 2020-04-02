@@ -85,20 +85,25 @@ class Pallindrome extends Component {
             rotation={[0, 270, 0]}
           />
         ) : (
-          <ViroFlexView>
+          <ViroFlexView
+            backgroundColor={'black'}
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+            height={0.1}
+            width={0.1}
+            position={[2, 0.4, 0]}
+            rotation={[0, 270, 0]}>
             <ViroImage
               source={require('./res/Pallindrome/scary.jpg')}
-              position={[2, 0.4, 0]}
-              width={0.7}
-              height={0.75}
-              rotation={[0, 270, 0]}
+              width={1}
+              height={1}
             />
             <ViroText
               text={this.props.codeDigit}
               color="green"
               style={{fontSize: 32, textAlign: 'center'}}
-              position={[2, 0.4, 0]}
-              rotation={[0, 270, 0]}
             />
           </ViroFlexView>
         )}

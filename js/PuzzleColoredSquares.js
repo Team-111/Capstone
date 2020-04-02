@@ -110,13 +110,18 @@ class PuzzleColoredSquares extends Component {
             );
           })
         ) : (
-          <ViroFlexView>
+          <ViroFlexView
+            backgroundColor={'black'}
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+            height={0.7}
+            width={0.7}>
             <ViroImage
               source={require('./res/ColoredSquares/helpme.png')}
-              position={[2, 0.4, 0]}
-              width={0.7}
-              height={0.75}
-              rotation={[0, 270, 0]}
+              width={0.1}
+              height={0.1}
             />
             <ViroText text={this.props.codeDigit} color="red" />
           </ViroFlexView>
