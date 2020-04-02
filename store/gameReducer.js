@@ -96,7 +96,6 @@ export const selectedItemIndex = info => {
   };
 };
 
-
 export const toggleLight = () => ({
   type: TOGGLE_LIGHT,
 });
@@ -104,10 +103,6 @@ export const toggleLight = () => ({
 export const updatePuzzleStatus = puzzle => ({
   type: UPDATE_PUZZLE,
   puzzle,
-});
-
-export const clearGameState = () => ({
-  type: CLEAR_GAME_STATE,
 });
 
 export const toggleChains = () => ({
@@ -211,10 +206,13 @@ const gameReducer = (state = initialState, action) => {
       const puzzlesCopy = state.puzzles;
       puzzlesCopy[action.puzzle].complete = true;
       return {...state, puzzles: puzzlesCopy};
+<<<<<<< HEAD
     case CLEAR_GAME_STATE:
       return {...initialState};
     case TOGGLE_CHAINS:
       return {...state, legsBound: false}
+=======
+>>>>>>> master
     default:
       return state;
   }
