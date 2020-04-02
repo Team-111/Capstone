@@ -46,7 +46,11 @@ class Winner extends Component {
       <View style={styles.bigContainer}>
         <View style={styles.container}>
           <Text style={styles.bigCongrats}>{`Congratulations, ${this.props.currentUser.username.split('@')[0]}`}</Text>
-          <Text style={styles.littleCongrats}>{`You got a highscore of: ${this.state.min}: ${this.state.sec}`}</Text>
+          <Text style={styles.littleCongrats}>{`You got a highscore of: ${
+            this.state.min
+          }: ${
+            this.state.sec < 10 ? `0${this.state.sec}` : `${this.state.sec}`
+          }`}</Text>
           <Text style={styles.littleCongrats}>Rachel, Lauren, Karen, and Danielle are so proud of you.</Text>
           <Button title="Submit Your Score" onPress={this.handleSubmit}></Button>
         </View>

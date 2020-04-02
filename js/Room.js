@@ -12,7 +12,6 @@ import {
   ViroMaterials,
   ViroBox,
   ViroNode,
-  ViroImage,
   ViroSound,
   Viro3DObject,
   ViroFlexView,
@@ -68,7 +67,7 @@ class Room extends Component {
 
   chainedLegsInteract() {
     if(this.props.currentGame.legsBound) {
-      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
+      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex] === 'key') {
         this.setState({hudText: 'Yes! My legs are free!'})
         this.props.toggleChains();
         setTimeout(() => this.setState({hudText: ''}), 4000)

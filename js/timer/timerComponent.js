@@ -30,17 +30,12 @@ class TimerComponent extends Component {
     } else if (minutes < 60) {
       this.props.updateTime({min: minutes + 1, sec: 0});
     }
-    //else {
-    //   // this.setState({
-    //   //   seconds: 0,
-    //   //   minutes: 0,
-    //   //   hours: this.state.hours + 1,
-    //   // });
-    //   this.props.updateTime(this.state.minutes, this.state.seconds)
-    // }
   };
 
   render() {
+    const min = this.props.currentGame.currentTime.min;
+    const sec = this.props.currentGame.currentTime.sec;
+
     //console.log('This is the props in the timer component', this.props);
     return (
       <ViroNode position={[0, 0, 0]}>
@@ -51,9 +46,7 @@ class TimerComponent extends Component {
         />
 
         <ViroText
-          text={`00:${this.props.currentGame.currentTime.min}:${
-            this.props.currentGame.currentTime.sec
-          }`}
+          text={`${min}:${sec < 10 ? `0${sec}` : `${sec}`}`}
           position={[0.1, 0.6, -1.4]}
           scale={[0.4, 0.4, 0.4]}
           width={1}
