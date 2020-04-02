@@ -44,7 +44,6 @@ const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
 const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 const SET_CODE = 'SET_CODE';
 const UPDATE_PUZZLE = 'UPDATE_PUZZLE';
-const CLEAR_GAME_STATE = 'CLEAR_GAME_STATE';
 const TOGGLE_CHAINS = 'TOGGLE_CHAINS';
 
 // Action Creator
@@ -107,7 +106,7 @@ export const updatePuzzleStatus = puzzle => ({
 
 export const toggleChains = () => ({
   type: TOGGLE_CHAINS,
-})
+});
 
 // Thunk Creator
 export const fetchGame = gameID => {

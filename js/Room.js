@@ -43,13 +43,17 @@ class Room extends Component {
     this.chainedLegsInteract = this.chainedLegsInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.putItemAway = this.putItemAway.bind(this);
+    this.endGameProcessing = this.endGameProcessing.bind(this);
   }
 
   doorInteract() {
     //change to check curr selected inventory item
-    if ((!this.props.currentGame.legsBound) && (this.props.currentGame.puzzles.combo.complete)) {
-      this.props.exitViro('youWin');
-      this.props.saveGame(this.props.uid, {});
+    if (
+      !this.props.currentGame.legsBound &&
+      this.props.currentGame.puzzles.combo.complete
+    ) {
+      this.props.gameOver();
+      setTimeout(this.endGameProcessing, 5000);
     } else {
       this.setState({hudText: 'Enter the combo'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -57,7 +61,7 @@ class Room extends Component {
   }
 
   skullInteract() {//change to check curr selected inventory item
-    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'spoon')) {
+    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex] === 'spoon')) {
       this.setState({hudText: 'A Skull.'});
       setTimeout(() => this.setState({hudText: ''}), 4000)
     } else {
@@ -100,6 +104,11 @@ class Room extends Component {
 
   putItemAway() {
     this.setState({investigateObjDisplay: false})
+  }
+
+  endGameProcessing() {
+    this.props.exitViro('youWin');
+    this.props.saveGame(this.props.uid, {});
   }
 
   render() {
@@ -248,7 +257,7 @@ class Room extends Component {
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
           rotation={[0, 180, 0]}
-          visible={this.props.entered}
+          visible={this.props.entered && !this.props.endGame}
           onClick={this.doorInteract}
         />
 
@@ -294,7 +303,7 @@ class Room extends Component {
         <Pallindrome />
         <PuzzleSliding />
 
-        {this.props.isLoaded && (
+        {this.props.isLoaded && !this.props.endGame && (
           <Combo
             code={this.props.currentGame.lockCombo}
             getItem={this.getItem}
