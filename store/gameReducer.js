@@ -105,10 +105,6 @@ export const updatePuzzleStatus = puzzle => ({
   puzzle,
 });
 
-export const clearGameState = () => ({
-  type: CLEAR_GAME_STATE,
-});
-
 //END ACTIONS ADDED BY LAUREN
 
 // Thunk Creator
@@ -202,8 +198,6 @@ const gameReducer = (state = initialState, action) => {
       const puzzlesCopy = state.puzzles;
       puzzlesCopy[action.puzzle].complete = true;
       return {...state, puzzles: puzzlesCopy};
-    case CLEAR_GAME_STATE:
-      return {...initialState};
     default:
       return state;
   }

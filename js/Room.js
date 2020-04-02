@@ -12,7 +12,6 @@ import {
   ViroMaterials,
   ViroBox,
   ViroNode,
-  ViroImage,
   ViroSound,
   Viro3DObject,
   ViroFlexView,
