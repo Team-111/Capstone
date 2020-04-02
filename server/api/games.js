@@ -13,11 +13,7 @@ export const initializeGameObj = () => ({
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {key: true, desk: true, spoon: true, skull: true},
-  inventory: [
-    {
-      name: 'Empty',
-      itemIMG: require('../../js/Inventory/images/icon_close.png'),
-    },
+  inventory: ['empty'
   ],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
