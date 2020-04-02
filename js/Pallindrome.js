@@ -76,8 +76,8 @@ class Pallindrome extends Component {
   render() {
     return (
       <ViroNode>
-        {!this.props.solved || this.props.lightOn
-          ? (<ViroQuad
+        {!this.props.solved || this.props.lightOn ? (
+          <ViroQuad
             materials={['clockImage']}
             position={[2, 0.4, 0]}
             width={0.7}
@@ -85,15 +85,16 @@ class Pallindrome extends Component {
             rotation={[0, 270, 0]}
           />
         ) : (
-          <ViroText
-            text={this.props.codeDigit}
-            color="green"
-            style={{fontSize: 32, textAlign: 'center'}}
-            position={[2, 0.4, 0]}
-            rotation={[0, 270, 0]}
-          />
-          )
-        }
+          <ViroNode position={[2, 0.4, 0]} rotation={[0, 270, 0]}>
+            <ViroQuad materials={['scary']} height={1.2} width={0.9} />
+            <ViroText
+              text={this.props.codeDigit}
+              position={[0, -0.2, 0.1]}
+              color="green"
+              style={{fontSize: 32, textAlign: 'center'}}
+            />
+          </ViroNode>
+        )}
         <ViroFlexView
           backgroundColor="black"
           materials={['input']}
@@ -181,8 +182,11 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./res/input.jpg'),
   },
   clockImage: {
-    diffuseTexture: require('../images/1221.jpeg'),
+    diffuseTexture: require('./res/Pallindrome/1221.jpeg'),
     lightingModel: 'Blinn',
+  },
+  scary: {
+    diffuseTexture: require('./res/Pallindrome/scary.jpg'),
   },
 });
 
@@ -194,6 +198,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updatePuzzleStatus: puzzle => dispatch(updatePuzzleStatus(puzzle)),
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pallindrome);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Pallindrome);

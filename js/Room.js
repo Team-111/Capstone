@@ -26,7 +26,7 @@ import {
   selectItemThunk,
   toggleLight,
   saveGameThunk,
-  toggleChainsThunk
+  toggleChainsThunk,
 } from '../store';
 
 class Room extends Component {
@@ -61,29 +61,40 @@ class Room extends Component {
   }
 
   skullInteract() {//change to check curr selected inventory item
-    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex] === 'spoon')) {
+    if (
+      !(
+        this.props.currentGame.inventory[
+          this.props.currentGame.selectedItemIndex
+        ] === 'spoon'
+      )
+    ) {
       this.setState({hudText: 'A Skull.'});
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
       this.props.visibleItems('skull');
     }
   }
 
   chainedLegsInteract() {
-    if(this.props.currentGame.legsBound) {
-      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex] === 'key') {
-        this.setState({hudText: 'Yes! My legs are free!'})
+    if (this.props.currentGame.legsBound) {
+      if (
+        this.props.currentGame.inventory[
+          this.props.currentGame.selectedItemIndex
+        ] === 'key'
+      ) {
+        this.setState({hudText: 'Yes! My legs are free!'});
         this.props.toggleChains();
-        setTimeout(() => this.setState({hudText: ''}), 4000)
+        setTimeout(() => this.setState({hudText: ''}), 4000);
       } else {
-        this.setState({hudText: "I'll need a key to free my legs..."})
-        setTimeout(() => this.setState({hudText: ''}), 4000)
+        this.setState({hudText: "I'll need a key to free my legs..."});
+        setTimeout(() => this.setState({hudText: ''}), 4000);
       }
     } else {
-      this.setState({hudText: 'I could just walk out! If I knew the door combo...'})
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+      this.setState({
+        hudText: 'I could just walk out! If I knew the door combo...',
+      });
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     }
-
   }
 
   getItem(passedObj, isCollectable, itemText = '', hudPopup = false) {
@@ -94,16 +105,15 @@ class Room extends Component {
       this.props.selectItem(0);
     } else if (hudPopup) {
       //set state to value
-      this.setState({shownObject: passedObj, investigateObjDisplay: true})
-    }
-      else {
+      this.setState({shownObject: passedObj, investigateObjDisplay: true});
+    } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
   putItemAway() {
-    this.setState({investigateObjDisplay: false})
+    this.setState({investigateObjDisplay: false});
   }
 
   endGameProcessing() {
@@ -113,22 +123,38 @@ class Room extends Component {
 
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
-    let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
+    let Legs = (
+      <ViroBox
+        height={1.4}
+        width={0.2}
+        length={0.2}
+        position={[0, -1, 0]}
+        visible={this.props.entered}
+        onClick={this.chainedLegsInteract}
+      />
+    );
 
-    const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
-    onClick={() => this.getItem('newspaper', false, '', true)}/>)
+    const Newspaper = (
+      <ViroBox
+        height={0.1}
+        width={1}
+        length={1}
+        position={[-3.1, -0.9, 1]}
+        onClick={() => this.getItem('newspaper', false, '', true)}
+      />
+    );
 
     const Spoon = (
       <Viro3DObject
         source={require('../js/Objects/models/specialSpoon/Spoon3.obj')}
         resources={[require('./Objects/models/key/t_worn_key.png')]}
-    highAccuracyEvents={true}
-    type="OBJ"
-    position={[-1, -3, 2]}
-    visible={this.props.currentGame.visibleInRoom.spoon}
-    onClick={() =>
-      this.getItem('spoon', true)
-    } />)
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[-1, -3, 2]}
+        visible={this.props.currentGame.visibleInRoom.spoon}
+        onClick={() => this.getItem('spoon', true)}
+      />
+    );
 
     let Key = (
       <Viro3DObject
@@ -140,11 +166,9 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[.8,.8,.8]}
+        scale={[0.8, 0.8, 0.8]}
         visible={this.props.currentGame.visibleInRoom.key}
-        onClick={() =>
-          this.getItem('key', true)
-        }
+        onClick={() => this.getItem('key', true)}
         materials={['key']}
       />
     );
@@ -170,9 +194,7 @@ class Room extends Component {
         position={[-4, -3, 0]}
         scale={[0.03, 0.03, 0.03]}
         rotation={[0, 90, 0]}
-        onClick={() =>
-          this.getItem('desk', false, 'A sturdy wooden desk.')
-        }
+        onClick={() => this.getItem('desk', false, 'A sturdy wooden desk.')}
         materials={['desk']}
       />
     );
@@ -196,7 +218,7 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[0.018, 0.018, 0.018]}
+        scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         visible={this.props.currentGame.visibleInRoom.skull}
         onClick={this.skullInteract}
@@ -223,9 +245,9 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={200}/>
+          <ViroAmbientLight color="#ffffff" intensity={200} />
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000}/>
+          <ViroAmbientLight color="#00001a" intensity={50000} />
         )}
 
         <ViroBox
