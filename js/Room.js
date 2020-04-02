@@ -61,7 +61,11 @@ class Room extends Component {
       this.setState({hudText: 'A Skull.'});
       setTimeout(() => this.setState({hudText: ''}), 4000)
     } else {
+<<<<<<< HEAD
       this.props.visibleItems('skull');
+=======
+      this.props.exitViro('youWin');
+>>>>>>> secretimages
     }
   }
 
@@ -187,7 +191,7 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[0.018, 0.018, 0.018]}
+        scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         visible={this.props.currentGame.visibleInRoom.skull}
         onClick={this.skullInteract}
