@@ -7,7 +7,7 @@ const initialState = {
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {key: true, desk: true, spoon: true, skull: true},
   inventory: [
-    {name: 'Empty', itemIMG: require('../js/Inventory/images/icon_close.png')},
+    'empty',
   ],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
@@ -45,6 +45,7 @@ const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 const SET_CODE = 'SET_CODE';
 const UPDATE_PUZZLE = 'UPDATE_PUZZLE';
 const CLEAR_GAME_STATE = 'CLEAR_GAME_STATE';
+const TOGGLE_CHAINS = 'TOGGLE_CHAINS';
 
 // Action Creator
 const gotGame = info => {
@@ -109,7 +110,9 @@ export const clearGameState = () => ({
   type: CLEAR_GAME_STATE,
 });
 
-//END ACTIONS ADDED BY LAUREN
+export const toggleChains = () => ({
+  type: TOGGLE_CHAINS,
+})
 
 // Thunk Creator
 export const fetchGame = gameID => {
@@ -153,6 +156,12 @@ export const secretCode = code => {
     dispatch(setCode(code));
   };
 };
+
+export const toggleChainsThunk = () => {
+  return dispatch => {
+    dispatch(toggleChains())
+  }
+}
 
 export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
@@ -204,6 +213,8 @@ const gameReducer = (state = initialState, action) => {
       return {...state, puzzles: puzzlesCopy};
     case CLEAR_GAME_STATE:
       return {...initialState};
+    case TOGGLE_CHAINS:
+      return {...state, legsBound: false}
     default:
       return state;
   }

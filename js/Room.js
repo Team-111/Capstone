@@ -27,6 +27,7 @@ import {
   selectItemThunk,
   toggleLight,
   saveGameThunk,
+  toggleChainsThunk
 } from '../store';
 
 class Room extends Component {
@@ -69,6 +70,7 @@ class Room extends Component {
     if(this.props.currentGame.legsBound) {
       if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'key') {
         this.setState({hudText: 'Yes! My legs are free!'})
+        this.props.toggleChains();
         setTimeout(() => this.setState({hudText: ''}), 4000)
       } else {
         this.setState({hudText: "I'll need a key to free my legs..."})
@@ -81,10 +83,10 @@ class Room extends Component {
 
   }
 
-  getItem(passedObj, inventoryIMG, isCollectable, itemText = '', hudPopup = false) {
+  getItem(passedObj, isCollectable, itemText = '', hudPopup = false) {
     if (isCollectable) {
       this.props.visibleItems(passedObj);
-      this.props.addToInventory({name: passedObj, itemIMG: inventoryIMG});
+      this.props.addToInventory(passedObj);
       //Sets the selectedItem Index to 0 whenever you get a new item
       this.props.selectItem(0);
     } else if (hudPopup) {
@@ -106,7 +108,7 @@ class Room extends Component {
     let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
 
     const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
-    onClick={() => this.getItem('newspaper', 'noImg', false, '', true)}/>)
+    onClick={() => this.getItem('newspaper', false, '', true)}/>)
 
     const Spoon = (
       <Viro3DObject
@@ -117,7 +119,7 @@ class Room extends Component {
     position={[-1, -3, 2]}
     visible={this.props.currentGame.visibleInRoom.spoon}
     onClick={() =>
-      this.getItem('spoon', require('../js/Inventory/images/spoon.jpg'), true)
+      this.getItem('spoon', true)
     } />)
 
     let Key = (
@@ -133,7 +135,7 @@ class Room extends Component {
         scale={[.8,.8,.8]}
         visible={this.props.currentGame.visibleInRoom.key}
         onClick={() =>
-          this.getItem('key', require('../js/Inventory/images/key.png'), true)
+          this.getItem('key', true)
         }
         materials={['key']}
       />
@@ -147,7 +149,7 @@ class Room extends Component {
         position={[3, -3.5, 1]}
         scale={[0.015, 0.015, 0.015]}
         rotation={[0, 90, 0]}
-        onClick={() => this.getItem('cot', 'noIMG', false, 'An Old bed.')}
+        onClick={() => this.getItem('cot', false, 'An Old bed.')}
         materials={['cot']}
       />
     );
@@ -161,7 +163,7 @@ class Room extends Component {
         scale={[0.03, 0.03, 0.03]}
         rotation={[0, 90, 0]}
         onClick={() =>
-          this.getItem('desk', 'noIMG', false, 'A sturdy wooden desk.')
+          this.getItem('desk', false, 'A sturdy wooden desk.')
         }
         materials={['desk']}
       />
@@ -175,7 +177,7 @@ class Room extends Component {
         position={[-3.1, -0.9, 0]}
         scale={[0.01, 0.01, 0.01]}
         rotation={[90, 110, 0]}
-        onClick={() => this.getItem('knife', 'noIMG', false, 'A bloody knife')}
+        onClick={() => this.getItem('knife', false, 'A bloody knife')}
         materials={['knife']}
       />
     );
@@ -373,6 +375,7 @@ const mapDispatchToProps = dispatch => {
     addToInventory: itemObj => dispatch(addToInventoryThunk(itemObj)),
     selectItem: selectInd => dispatch(selectItemThunk(selectInd)),
     toggleLight: () => dispatch(toggleLight()),
+    toggleChains: () => dispatch(toggleChainsThunk()),
     saveGame: (userId, gameState) => dispatch(saveGameThunk(userId, gameState)),
   };
 };
