@@ -124,20 +124,20 @@ class Room extends Component {
     materials={['chains']}
     onClick={this.chainedLegsInteract} />)
 
-    const Newspaper = (<ViroBox height={.1} width={1} length={1} position={[-3.1, -0.9, 1]}
+    const Newspaper = (<Viro3DObject source={require('./Objects/models/ARoomModels/newspaper.obj')} highAccuracyEvents={true}
+    type="OBJ" materials={['newspaper']} position={[-2, -0.9, 1]} scale={[.1,.1,.1]}
     onClick={() => this.getItem('newspaper', false, '', true)}/>)
-
-    // const Newspaper = (<Viro3DObject />)
 
     const Spoon = (
       <Viro3DObject
         source={require('../js/Objects/models/ARoomModels/spoonLowPoly.obj')}
-        resources={[require('./Objects/models/ARoomModels/spoondiffuse.png')]}
     highAccuracyEvents={true}
     type="OBJ"
-    position={[-1, -3, 4]}
-    rotation={[0,90,0]}
+    position={[0, 0, -2]}
+    rotation={[90,0,0]}
+    scale={[0.1,0.1,0.1]}
     visible={this.props.currentGame.visibleInRoom.spoon}
+    materials={['spoon']}
     onClick={() =>
       this.getItem('spoon', true)
     } />)
@@ -210,6 +210,7 @@ class Room extends Component {
         position={[1.5, -1.2, 1]}
         scale={[0.018, 0.018, 0.018]}
         rotation={[260, 230, -10]}
+        materials={['skull']}
         visible={this.props.currentGame.visibleInRoom.skull}
         onClick={this.skullInteract}
       />
@@ -384,6 +385,14 @@ ViroMaterials.createMaterials({
   },
   chains: {
     diffuseTexture: require('./Objects/models/ARoomModels/chains.jpg'),
+    lightingModel: 'Blinn'
+  },
+  spoon: {
+    diffuseTexture: require('./Objects/models/ARoomModels/spoondiffuse.png'),
+    lightingModel: 'Blinn'
+  },
+  newspaper: {
+    diffuseTexture: require('./Objects/models/ARoomModels/newspaper.png'),
     lightingModel: 'Blinn'
   }
 });
