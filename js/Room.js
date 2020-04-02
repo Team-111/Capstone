@@ -26,7 +26,7 @@ import {
   selectItemThunk,
   toggleLight,
   saveGameThunk,
-  toggleChainsThunk
+  toggleChainsThunk,
 } from '../store';
 
 class Room extends Component {
@@ -43,13 +43,17 @@ class Room extends Component {
     this.chainedLegsInteract = this.chainedLegsInteract.bind(this);
     this.getItem = this.getItem.bind(this);
     this.putItemAway = this.putItemAway.bind(this);
+    this.endGameProcessing = this.endGameProcessing.bind(this);
   }
 
   doorInteract() {
     //change to check curr selected inventory item
-    if ((!this.props.currentGame.legsBound) && (this.props.currentGame.puzzles.combo.complete)) {
-      this.props.exitViro('youWin');
-      this.props.saveGame(this.props.uid, {});
+    if (
+      !this.props.currentGame.legsBound &&
+      this.props.currentGame.puzzles.combo.complete
+    ) {
+      this.props.gameOver();
+      setTimeout(this.endGameProcessing, 5000);
     } else {
       this.setState({hudText: 'Enter the combo'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -57,29 +61,40 @@ class Room extends Component {
   }
 
   skullInteract() {//change to check curr selected inventory item
-    if(!(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name === 'spoon')) {
+    if (
+      !(
+        this.props.currentGame.inventory[
+          this.props.currentGame.selectedItemIndex
+        ] === 'spoon'
+      )
+    ) {
       this.setState({hudText: 'A Skull.'});
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     } else {
       this.props.visibleItems('skull');
     }
   }
 
   chainedLegsInteract() {
-    if(this.props.currentGame.legsBound) {
-      if(this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex] === 'key') {
-        this.setState({hudText: 'Yes! My legs are free!'})
+    if (this.props.currentGame.legsBound) {
+      if (
+        this.props.currentGame.inventory[
+          this.props.currentGame.selectedItemIndex
+        ] === 'key'
+      ) {
+        this.setState({hudText: 'Yes! My legs are free!'});
         this.props.toggleChains();
-        setTimeout(() => this.setState({hudText: ''}), 4000)
+        setTimeout(() => this.setState({hudText: ''}), 4000);
       } else {
-        this.setState({hudText: "I'll need a key to free my legs..."})
-        setTimeout(() => this.setState({hudText: ''}), 4000)
+        this.setState({hudText: "I'll need a key to free my legs..."});
+        setTimeout(() => this.setState({hudText: ''}), 4000);
       }
     } else {
-      this.setState({hudText: 'I could just walk out! If I knew the door combo...'})
-      setTimeout(() => this.setState({hudText: ''}), 4000)
+      this.setState({
+        hudText: 'I could just walk out! If I knew the door combo...',
+      });
+      setTimeout(() => this.setState({hudText: ''}), 4000);
     }
-
   }
 
   getItem(passedObj, isCollectable, itemText = '', hudPopup = false) {
@@ -90,16 +105,20 @@ class Room extends Component {
       this.props.selectItem(0);
     } else if (hudPopup) {
       //set state to value
-      this.setState({shownObject: passedObj, investigateObjDisplay: true})
-    }
-      else {
+      this.setState({shownObject: passedObj, investigateObjDisplay: true});
+    } else {
       this.setState({hudText: itemText});
       setTimeout(() => this.setState({hudText: ''}), 4000);
     }
   }
 
   putItemAway() {
-    this.setState({investigateObjDisplay: false})
+    this.setState({investigateObjDisplay: false});
+  }
+
+  endGameProcessing() {
+    this.props.exitViro('youWin');
+    this.props.saveGame(this.props.uid, {});
   }
 
   render() {
@@ -152,11 +171,9 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[.8,.8,.8]}
+        scale={[0.8, 0.8, 0.8]}
         visible={this.props.currentGame.visibleInRoom.key}
-        onClick={() =>
-          this.getItem('key', true)
-        }
+        onClick={() => this.getItem('key', true)}
         materials={['key']}
       />
     );
@@ -182,9 +199,7 @@ class Room extends Component {
         position={[-4, -3, 0]}
         scale={[0.03, 0.03, 0.03]}
         rotation={[0, 90, 0]}
-        onClick={() =>
-          this.getItem('desk', false, 'A sturdy wooden desk.')
-        }
+        onClick={() => this.getItem('desk', false, 'A sturdy wooden desk.')}
         materials={['desk']}
       />
     );
@@ -208,7 +223,7 @@ class Room extends Component {
         highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
-        scale={[0.018, 0.018, 0.018]}
+        scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         materials={['skull']}
         visible={this.props.currentGame.visibleInRoom.skull}
@@ -236,9 +251,9 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={200}/>
+          <ViroAmbientLight color="#ffffff" intensity={200} />
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000}/>
+          <ViroAmbientLight color="#00001a" intensity={50000} />
         )}
 
         <ViroBox
@@ -270,7 +285,7 @@ class Room extends Component {
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
           rotation={[0, 180, 0]}
-          visible={this.props.entered}
+          visible={this.props.entered && !this.props.endGame}
           onClick={this.doorInteract}
         />
 
@@ -317,7 +332,7 @@ class Room extends Component {
         <Pallindrome />
         <PuzzleSliding />
 
-        {this.props.isLoaded && (
+        {this.props.isLoaded && !this.props.endGame && (
           <Combo
             code={this.props.currentGame.lockCombo}
             getItem={this.getItem}
