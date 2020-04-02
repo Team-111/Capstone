@@ -105,6 +105,11 @@ class PuzzleColoredSquares extends Component {
             );
           })
         ) : (
+        <ViroFlexView
+          materials={['helpme']}
+          style={{justifyContent: 'center', alignItems: 'center'}}
+          width={0.9}
+          height={0.9}>
           <ViroText
             text={this.props.codeDigit}
             color="red"
@@ -114,14 +119,6 @@ class PuzzleColoredSquares extends Component {
               fontSize: 32,
             }}
           />
-        )}
-        ) : (
-        <ViroFlexView
-          materials={['helpme']}
-          style={{justifyContent: 'center', alignItems: 'center'}}
-          width={0.9}
-          height={0.9}>
-          <ViroText text={this.props.codeDigit} color="red" />
         </ViroFlexView>
         )}
       </ViroFlexView>

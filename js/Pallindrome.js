@@ -182,7 +182,7 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./res/input.jpg'),
   },
   clockImage: {
-    diffuseTexture: require('../images/1221.jpeg'),
+    diffuseTexture: require('./res/Pallindrome/1221.jpeg'),
     lightingModel: 'Blinn',
   },
   scary: {
