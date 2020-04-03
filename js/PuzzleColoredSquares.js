@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {updatePuzzleStatus} from '../store';
-import {ViroFlexView, ViroMaterials, ViroQuad, ViroText} from 'react-viro';
+import {
+  ViroFlexView,
+  ViroMaterials,
+  ViroQuad,
+  ViroText,
+  ViroNode,
+  ViroSound,
+} from 'react-viro';
 
 class PuzzleColoredSquares extends Component {
   constructor() {
@@ -105,21 +112,25 @@ class PuzzleColoredSquares extends Component {
             );
           })
         ) : (
-        <ViroFlexView
-          materials={['helpme']}
-          style={{justifyContent: 'center', alignItems: 'center'}}
-          width={0.9}
-          height={0.9}>
-          <ViroText
-            text={this.props.codeDigit}
-            color="red"
-            style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              fontSize: 32,
-            }}
-          />
-        </ViroFlexView>
+          <ViroNode>
+            <ViroQuad materials={['helpme']} width={0.9} height={0.9} />
+            <ViroText
+              text={this.props.codeDigit}
+              color="red"
+              style={{
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                fontSize: 32,
+              }}
+            />
+            <ViroSound
+              source={require('./sounds/female_scream.wav')}
+              loop={false}
+              muted={false}
+              paused={false}
+              volume={1}
+            />
+          </ViroNode>
         )}
       </ViroFlexView>
     );

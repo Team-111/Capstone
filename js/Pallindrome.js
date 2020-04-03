@@ -93,6 +93,13 @@ class Pallindrome extends Component {
               color="green"
               style={{fontSize: 32, textAlign: 'center'}}
             />
+            <ViroSound
+              source={require('./sounds/laughhowl1.wav')}
+              loop={false}
+              muted={false}
+              paused={false}
+              volume={1}
+            />
           </ViroNode>
         )}
         <ViroFlexView
