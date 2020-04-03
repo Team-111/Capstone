@@ -22,11 +22,6 @@ class RoomCamera extends Component {
     super(props);
     this.state = {
       hintVisible: false,
-      itemImageKeys: {
-        key: require('./Inventory/images/key.png'),
-        spoon: require('./Inventory/images/spoon.jpg'),
-        empty: require('./Inventory/images/icon_close.png')
-      }
     }
     this.showHint = this.showHint.bind(this);
     this.changeItem = this.changeItem.bind(this);
@@ -93,8 +88,9 @@ class RoomCamera extends Component {
           textClipMode="ClipToBounds"
           width={1} />
         <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
-          <ViroImage source={this.state.itemImageKeys[this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex].name]} />
-          {/* <ViroText text={this.props.inventory[this.state.selectedItem].name}/> */}
+          {/* <ViroImage source={this.state.itemImageKeys[this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]]} /> */}
+          <ViroQuad materials={[`${this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]}Inv`]} />
+          {/* <ViroText text={this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]} /> */}
         </ViroNode>
         <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}}/>
         <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}}/>
@@ -117,7 +113,17 @@ ViroMaterials.createMaterials({
   },
   left: {
     diffuseTexture: require('./Inventory/images/icon_left.png'),
-  }
+  },
+  keyInv: {
+    diffuseTexture: require('./Inventory/images/key.png'),
+  },
+  spoonInv: {
+    diffuseTexture: require('./Inventory/images/spoon.png'),
+  },
+  emptyInv: {
+    diffuseTexture: require('./Inventory/images/icon_close.png'),
+  },
+
 })
 
 const mapStateToProps = state => ({
