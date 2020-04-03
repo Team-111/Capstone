@@ -62,11 +62,9 @@ class Room extends Component {
 
   skullInteract() {//change to check curr selected inventory item
     if (
-      !(
-        this.props.currentGame.inventory[
-          this.props.currentGame.selectedItemIndex
-        ] === 'spoon'
-      )
+      !this.props.currentGame.inventory[
+        this.props.currentGame.selectedItemIndex
+      ] === 'spoon'
     ) {
       this.setState({hudText: 'A Skull.'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
@@ -225,6 +223,20 @@ class Room extends Component {
       />
     );
 
+    const Grenade = (
+      <Viro3DObject
+        source={require('./Objects/models/Grenade/MK2.obj')} 
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[-3, -3, -1.5]}
+        scale={[0.05, 0.05, 0.05]}
+        rotation={[0, 20, 270]}
+        materials={['grenade']}
+        visible={this.props.currentGame.visibleInRoom.grenade}
+        onClick={() => this.getItem('grenade', true)}
+      />
+    );
+
     return (
       <ViroNode position={[0, 0, -4.6]}>
         <RoomCamera
@@ -278,9 +290,13 @@ class Room extends Component {
           materials={['door']}
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
-          rotation={[0, 180, 0]}
-          visible={this.props.entered && !this.props.endGame}
-          onClick={this.doorInteract}
+          // This needs to be clickable even when invisible to make the zombie disappear,
+          // so instead of using the visibility prop the quad can be turned invisible 
+          // by rotating 180 degrees
+          rotation={!this.props.endGame ? [0, 180, 0] : [0, 0, 0]}
+          onClick={
+            !this.props.endGame ? this.doorInteract : this.props.zombieClick
+          }
         />
 
         {this.props.entered && (
@@ -307,6 +323,7 @@ class Room extends Component {
         {Newspaper}
         {Spoon}
         {Key}
+        {Grenade}
 
         <ViroFlexView
           style={{
@@ -387,6 +404,13 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
     lightingModel: 'Blinn',
   },
+  grenade: {
+    diffuseTexture: require('./Objects/models/Grenade/PBR_MK2_Base_Color.png'),
+    metalnessTexture: require('./Objects/models/Grenade/PBR_MK2_Metallic.png'),
+    normalTexture: require('./Objects/models/Grenade/PBR_MK2_Normal_DirectX.png'),
+    roughnessTexture: require('./Objects/models/Grenade/PBR_MK2_Roughness.png'),
+    lightingModel: 'Blinn',
+  }
 });
 
 const mapStateToProps = state => {

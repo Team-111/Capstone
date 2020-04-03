@@ -6,7 +6,7 @@ import {StyleSheet, TouchableHighlightBase} from 'react-native';
 import Room from './Room';
 import {connect} from 'react-redux';
 import {getSingleGame, updateGame} from '../server/api/games';
-import {fetchGame, setUser, secretCode} from '../store';
+import {fetchGame, setUser, secretCode, userSurvived} from '../store';
 
 import {
   ViroARScene,
@@ -34,6 +34,7 @@ class HelloWorldSceneAR extends Component {
     this.enterPortal = this.enterPortal.bind(this);
     this.exitPortal = this.exitPortal.bind(this);
     this.gameOver = this.gameOver.bind(this);
+    this.zombieClick = this.zombieClick.bind(this);
   }
 
   async componentDidMount() {
@@ -58,6 +59,12 @@ class HelloWorldSceneAR extends Component {
 
   gameOver() {
     this.setState({endGame: true});
+  }
+
+  zombieClick() {
+    if (this.props.selectedItem === 'grenade') {
+      this.props.survive();
+    }
   }
 
   render() {
@@ -89,7 +96,7 @@ class HelloWorldSceneAR extends Component {
           ]}
           highAccuracyEvents={true}
           type="OBJ"
-          visible={this.state.endGame}
+          visible={this.state.endGame && !this.props.survived}
         />
 
         {this.state.endGame && (
@@ -97,6 +104,10 @@ class HelloWorldSceneAR extends Component {
             source={require('./sounds/zombie_groan.mp3')}
             loop={false}
           />
+        )}
+
+        {this.props.survived && (
+          <ViroSound source={require('./sounds/grenade.mp3')} loop={false} />
         )}
 
         {/* <ViroAmbientLight color="#ffffff" intensity={200} /> */}
@@ -122,6 +133,7 @@ class HelloWorldSceneAR extends Component {
             exitViro={exitViro}
             endGame={this.state.endGame}
             gameOver={this.gameOver}
+            zombieClick={this.zombieClick}
           />
         </ViroPortalScene>
       </ViroARScene>
@@ -152,6 +164,8 @@ var styles = StyleSheet.create({
 const mapStateToProps = state => ({
   currentGame: state.game,
   lockCombo: state.code,
+  selectedItem: state.game.inventory[state.game.selectedItemIndex],
+  survived: state.user.survived,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -159,6 +173,7 @@ const mapDispatchToProps = dispatch => {
     getGame: userID => dispatch(fetchGame(userID)),
     setUser: (uid, name) => dispatch(setUser(uid, name)),
     secretCode: code => dispatch(secretCode(code)),
+    survive: () => dispatch(userSurvived()),
   };
 };
 
