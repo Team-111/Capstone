@@ -147,9 +147,9 @@ class PuzzleSliding extends Component {
 
   render() {
     return (
-      <ViroNode shadowCastingBitMask={2}>
+      <ViroNode>
         <ViroFlexView
-          position={[0, 0, -2]}
+          position={[0, -1, -3.8]}
           style={{
             flexDirection: 'column',
             justifyContent: 'space-around',
@@ -157,9 +157,8 @@ class PuzzleSliding extends Component {
           }}
           backgroundColor="black"
           rotation={[0, 0, 0]}
-          height={0.94}
-          width={0.94}
-          shadowCastingBitMask={2}>
+          height={1.5}
+          width={1.5}>
           {!this.props.solved ? (
             this.state.gameBoard.map((row, rowIdx) => {
               return (
@@ -170,19 +169,17 @@ class PuzzleSliding extends Component {
                     justifyContent: 'space-around',
                     alignItems: 'center',
                   }}
-                  height={0.3}
-                  width={0.94}
-                  backgroundColor="black"
-                  shadowCastingBitMask={2}>
+                  height={0.5}
+                  width={1.5}
+                  backgroundColor="black">
                   {row.map((tile, colIdx) => {
                     return (
                       <ViroQuad
                         key={`tile${colIdx}`}
                         materials={[`grid${tile}`]}
-                        height={0.3}
-                        width={0.3}
+                        height={0.5}
+                        width={0.5}
                         onClick={this.clickSquare(rowIdx, colIdx).bind(this)}
-                        shadowCastingBitMask={2}
                       />
                     );
                   })}
@@ -195,9 +192,8 @@ class PuzzleSliding extends Component {
                 this.state.spookyPortrait ? ['portrait2'] : ['portrait1']
               }
               style={{justifyContent: 'center', alignItems: 'center'}}
-              width={0.94}
-              height={0.94}
-              shadowCastingBitMask={2}>
+              width={1.5}
+              height={1.5}>
               {!this.props.lightOn && (
                 <ViroText
                   text={this.props.codeDigit}
@@ -207,7 +203,6 @@ class PuzzleSliding extends Component {
                     textAlignVertical: 'center',
                     fontSize: 32,
                   }}
-                  shadowCastingBitMask={2}
                 />
               )}
             </ViroFlexView>

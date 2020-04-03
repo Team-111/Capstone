@@ -237,7 +237,7 @@ class Room extends Component {
       <Viro3DObject
         source={require('./Objects/models/knife/knife.obj')}
         type="OBJ"
-        position={[-3.1, -0.9, 0]}
+        position={[-3.1, -0.9, -1]}
         scale={[0.01, 0.01, 0.01]}
         rotation={[90, 110, 0]}
         onClick={() => this.getItem('knife', false, 'A bloody knife')}
@@ -343,6 +343,7 @@ class Room extends Component {
           onClick={
             !this.props.endGame ? this.doorInteract : this.props.zombieClick
           }
+          shadowCastingBitMask={2}
         />
 
         {this.props.entered && (

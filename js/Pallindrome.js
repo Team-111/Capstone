@@ -79,7 +79,7 @@ class Pallindrome extends Component {
         {!this.props.solved || this.props.lightOn ? (
           <ViroQuad
             materials={['clockImage']}
-            position={[2, 0.4, 0]}
+            position={[3.8, -0.4, 0]}
             width={0.7}
             height={0.75}
             rotation={[0, 270, 0]}
@@ -87,7 +87,7 @@ class Pallindrome extends Component {
             shadowCastingBitMask={2}
           />
         ) : (
-          <ViroNode position={[2, 0.4, 0]} rotation={[0, 270, 0]} shadowCastingBitMask={2}>
+          <ViroNode position={[3.8, -0.4, 0]} rotation={[0, 270, 0]} shadowCastingBitMask={2}>
             <ViroQuad materials={['scary']} height={1.2} width={0.9} shadowCastingBitMask={2}/>
             <ViroText
               text={this.props.codeDigit}
@@ -108,7 +108,7 @@ class Pallindrome extends Component {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          position={[2, -0.4, 0]}
+          position={[3.8, -1.2, 0]}
           rotation={[0, 270, 0]}
           shadowCastingBitMask={2}>
           {this.state.guess1.map((digit, idx) => {
@@ -150,7 +150,7 @@ class Pallindrome extends Component {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          position={[2, -0.7, 0]}
+          position={[3.8, -1.5, 0]}
           rotation={[0, 270, 0]}
           shadowCastingBitMask={2}
           >
