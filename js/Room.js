@@ -16,6 +16,8 @@ import {
   Viro3DObject,
   ViroFlexView,
   ViroAmbientLight,
+  ViroOmniLight,
+  ViroSpotLight,
   ViroText,
   ViroQuad,
 } from 'react-viro';
@@ -247,7 +249,14 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={200} />
+          <ViroSpotLight position={[0, 3, 0]}
+          color="#ffffff"
+          direction={[0, -1, 0]}
+          attenuationStartDistance={5}
+          attenuationEndDistance={10}
+          innerAngle={20}
+          outerAngle={100}
+          castsShadow={true} />
         ) : (
           <ViroAmbientLight color="#00001a" intensity={50000} />
         )}

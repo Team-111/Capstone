@@ -118,7 +118,7 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Inventory/images/key.png'),
   },
   spoonInv: {
-    diffuseTexture: require('./Inventory/images/spoon.jpg'),
+    diffuseTexture: require('./Inventory/images/spoon.png'),
   },
   emptyInv: {
     diffuseTexture: require('./Inventory/images/icon_close.png'),
