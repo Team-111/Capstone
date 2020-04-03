@@ -143,18 +143,17 @@ class Room extends Component {
     materials={['chains']}
     onClick={this.chainedLegsInteract} />)
 
-    const Newspaper = (<Viro3DObject source={require('./Objects/models/ARoomModels/newspaper.obj')} highAccuracyEvents={true}
+    const Newspaper = (<Viro3DObject source={require('./Objects/models/ARoomModels/newspaper.obj')}
     type="OBJ" materials={['newspaper']} position={[-2, -0.9, 1]} scale={[.1,.1,.1]}
     onClick={() => this.getItem('newspaper', false, '', true)}/>)
 
     const Spoon = (
       <Viro3DObject
         source={require('../js/Objects/models/ARoomModels/spoonLowPoly.obj')}
-    highAccuracyEvents={true}
     type="OBJ"
-    position={[0, 0, -2]}
-    rotation={[90,0,0]}
-    scale={[0.1,0.1,0.1]}
+    position={[-2, -3, 3]}
+    rotation={[90,0,90]}
+    scale={[0.006,0.006,0.006]}
     visible={this.props.currentGame.visibleInRoom.spoon}
     materials={['spoon']}
     onClick={() =>
@@ -168,7 +167,6 @@ class Room extends Component {
           require('./Objects/models/key/worn_key.mtl'),
           require('./Objects/models/key/t_worn_key.png'),
         ]}
-        highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
         scale={[0.8, 0.8, 0.8]}
@@ -207,7 +205,6 @@ class Room extends Component {
     const Knife = (
       <Viro3DObject
         source={require('./Objects/models/knife/knife.obj')}
-        highAccuracyEvents={true}
         type="OBJ"
         position={[-3.1, -0.9, 0]}
         scale={[0.01, 0.01, 0.01]}
@@ -220,7 +217,6 @@ class Room extends Component {
     const Skull = (
       <Viro3DObject
         source={require('./Objects/models/skull/12140_Skull_v3_L2.obj')}
-        highAccuracyEvents={true}
         type="OBJ"
         position={[1.5, -1.2, 1]}
         scale={[0.017, 0.017, 0.017]}
