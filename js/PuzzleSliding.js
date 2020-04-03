@@ -142,7 +142,7 @@ class PuzzleSliding extends Component {
 
   render() {
     return (
-      <ViroNode>
+      <ViroNode shadowCastingBitMask={2}>
         <ViroFlexView
           position={[0, 0, -2]}
           style={{
@@ -153,7 +153,8 @@ class PuzzleSliding extends Component {
           backgroundColor="black"
           rotation={[0, 0, 0]}
           height={0.94}
-          width={0.94}>
+          width={0.94}
+          shadowCastingBitMask={2}>
           {!this.props.solved ? (
             this.state.gameBoard.map((row, rowIdx) => {
               return (
@@ -166,7 +167,8 @@ class PuzzleSliding extends Component {
                   }}
                   height={0.3}
                   width={0.94}
-                  backgroundColor="black">
+                  backgroundColor="black"
+                  shadowCastingBitMask={2}>
                   {row.map((tile, colIdx) => {
                     return (
                       <ViroQuad
@@ -175,6 +177,7 @@ class PuzzleSliding extends Component {
                         height={0.3}
                         width={0.3}
                         onClick={this.clickSquare(rowIdx, colIdx).bind(this)}
+                        shadowCastingBitMask={2}
                       />
                     );
                   })}
@@ -188,7 +191,8 @@ class PuzzleSliding extends Component {
               }
               style={{justifyContent: 'center', alignItems: 'center'}}
               width={0.94}
-              height={0.94}>
+              height={0.94}
+              shadowCastingBitMask={2}>
               {!this.props.lightOn && (
                 <ViroText
                   text={this.props.codeDigit}
@@ -198,6 +202,7 @@ class PuzzleSliding extends Component {
                     textAlignVertical: 'center',
                     fontSize: 32,
                   }}
+                  shadowCastingBitMask={2}
                 />
               )}
             </ViroFlexView>

@@ -57,14 +57,15 @@ class RoomCamera extends Component {
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
         <TimerComponent />
         <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.35, 0.8, -1.5]}>
-          <ViroButton
-            source={require('./res/firewood-clipart-20-original.png')}
+          <ViroQuad
+            materials={['save']}
             onClick={() => {
               this.props.saveGame(this.props.uid, this.props.currentGame);
               this.props.exitViro();
             }}
             height={1}
             width={1}
+            shadowCastingBitMask={2}
           />
         </ViroNode>
         <ViroNode position={[-0.25, 0.6, -1.5]} scale={[0.38, 0.38, 0.38]}>
@@ -78,6 +79,7 @@ class RoomCamera extends Component {
               this.props.useHint();
 
             }}
+            shadowCastingBitMask={2}
           />
         </ViroNode>
         <ViroText
@@ -86,16 +88,16 @@ class RoomCamera extends Component {
           textAlign="center"
           scale={[0.5, 0.5, 0.5]}
           textClipMode="ClipToBounds"
-          width={1} />
-        <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]}>
+          width={1} shadowCastingBitMask={2}/>
+        <ViroNode position={[0, -.6, -1.5]} scale={[.3, .3, .3]} shadowCastingBitMask={2}>
           {/* <ViroImage source={this.state.itemImageKeys[this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]]} /> */}
-          <ViroQuad materials={[`${this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]}Inv`]} />
+          <ViroQuad materials={[`${this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]}Inv`]} shadowCastingBitMask={2}/>
           {/* <ViroText text={this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]} /> */}
         </ViroNode>
-        <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}}/>
-        <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}}/>
+        <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}} shadowCastingBitMask={2}/>
+        <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}} shadowCastingBitMask={2}/>
         {/*This ViroQuad is passed the material for a 'pop up display item' ie newspaper */}
-          <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.4]} onClick={this.props.putItemAway} visible={this.props.objectDisplay}/>
+          <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.4]} onClick={this.props.putItemAway} visible={this.props.objectDisplay} shadowCastingBitMask={2}/>
 
 
       </ViroCamera>
@@ -125,6 +127,9 @@ ViroMaterials.createMaterials({
   },
   emptyInv: {
     diffuseTexture: require('./Inventory/images/icon_close.png'),
+  },
+  save: {
+    diffuseTexture: require('./res/firewood-clipart-20-original.png'),
   },
 
 })
