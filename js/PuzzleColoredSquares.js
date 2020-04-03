@@ -9,7 +9,6 @@ class PuzzleColoredSquares extends Component {
     this.state = {
       gameBoard: this.makeBoard(6, 6),
       secretCodeDigit: 1,
-      spookyPortrait: false,
     };
 
     this.clickSquare = this.clickSquare.bind(this);
