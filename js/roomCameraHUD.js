@@ -120,6 +120,9 @@ ViroMaterials.createMaterials({
   spoonInv: {
     diffuseTexture: require('./Inventory/images/spoon.png'),
   },
+  grenadeInv: {
+    diffuseTexture: require('./Inventory/images/grenade.png')
+  },
   emptyInv: {
     diffuseTexture: require('./Inventory/images/icon_close.png'),
   },
