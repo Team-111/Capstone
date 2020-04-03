@@ -247,7 +247,7 @@ class Room extends Component {
 
     const Grenade = (
       <Viro3DObject
-        source={require('./Objects/models/Grenade/MK2.obj')} 
+        source={require('./Objects/models/Grenade/MK2.obj')}
         highAccuracyEvents={true}
         type="OBJ"
         position={[-3, -3, -1.5]}
@@ -322,7 +322,7 @@ class Room extends Component {
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
           // This needs to be clickable even when invisible to make the zombie disappear,
-          // so instead of using the visibility prop the quad can be turned invisible 
+          // so instead of using the visibility prop the quad can be turned invisible
           // by rotating 180 degrees
           rotation={!this.props.endGame ? [0, 180, 0] : [0, 0, 0]}
           onClick={
@@ -359,20 +359,7 @@ class Room extends Component {
 
         {this.props.isLoaded && (
           <ViroNode>
-            <ViroFlexView
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              width={0.7}
-              height={0.7}
-              position={[-2, 0, 0]}
-              rotation={[0, 90, 0]}
-              backgroundColor="transparent">
-              <PuzzleColoredSquares />
-            </ViroFlexView>
-
+            <PuzzleColoredSquares />
             <Pallindrome getItem={this.getItem} />
             <PuzzleSliding />
             {!this.props.endGame && (

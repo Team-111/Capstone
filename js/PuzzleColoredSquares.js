@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {updatePuzzleStatus} from '../store';
-import {ViroFlexView, ViroMaterials, ViroQuad, ViroText} from 'react-viro';
+import {
+  ViroFlexView,
+  ViroMaterials,
+  ViroQuad,
+  ViroText,
+  ViroNode,
+  ViroSound,
+} from 'react-viro';
 
 class PuzzleColoredSquares extends Component {
   constructor() {
@@ -67,60 +74,68 @@ class PuzzleColoredSquares extends Component {
 
   render() {
     return (
-      <ViroFlexView
-        style={{
-          flexDirection: 'column',
-          alignSelf: 'center',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        width={0.6}
-        height={0.6}
-        backgroundColor="transparent">
-        {this.props.lightOn || !this.props.solved ? (
-          this.state.gameBoard.map((row, rowIdx) => {
-            return (
-              <ViroFlexView
-                key={`row${rowIdx}`}
-                style={{flexDirection: 'row'}}
-                width={0.5}
-                height={0.1}>
-                {row.map((tile, colIdx) => {
-                  return (
-                    <ViroQuad
-                      key={`tile${colIdx}`}
-                      width={0.1}
-                      height={0.1}
-                      materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
-                      onClick={
-                        this.props.solved === true
-                          ? null
-                          : this.clickSquare(rowIdx, colIdx).bind(this)
-                      }
-                    />
-                  );
-                })}
-              </ViroFlexView>
-            );
-          })
-        ) : (
+      <ViroNode>
         <ViroFlexView
-          materials={['helpme']}
-          style={{justifyContent: 'center', alignItems: 'center'}}
-          width={0.9}
-          height={0.9}>
-          <ViroText
-            text={this.props.codeDigit}
-            color="red"
-            style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              fontSize: 32,
-            }}
-          />
+          position={[-2, 0, 0]}
+          rotation={[0, 90, 0]}
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          width={0.6}
+          height={0.6}
+          backgroundColor="transparent">
+          {this.props.lightOn || !this.props.solved ? (
+            this.state.gameBoard.map((row, rowIdx) => {
+              return (
+                <ViroFlexView
+                  key={`row${rowIdx}`}
+                  style={{flexDirection: 'row'}}
+                  width={0.6}
+                  height={0.1}>
+                  {row.map((tile, colIdx) => {
+                    return (
+                      <ViroQuad
+                        key={`tile${colIdx}`}
+                        width={0.1}
+                        height={0.1}
+                        materials={
+                          tile === 1 ? ['redSquare'] : ['yellowSquare']
+                        }
+                        onClick={
+                          this.props.solved === true
+                            ? null
+                            : this.clickSquare(rowIdx, colIdx).bind(this)
+                        }
+                      />
+                    );
+                  })}
+                </ViroFlexView>
+              );
+            })
+          ) : (
+            <ViroFlexView materials={['helpme']} width={0.9} height={0.9}>
+              <ViroText
+                text={this.props.codeDigit}
+                color="red"
+                style={{
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  fontSize: 32,
+                }}
+              />
+              <ViroSound
+                source={require('./sounds/female_scream.wav')}
+                loop={false}
+                muted={false}
+                paused={false}
+                volume={1}
+              />
+            </ViroFlexView>
+          )}
         </ViroFlexView>
-        )}
-      </ViroFlexView>
+      </ViroNode>
     );
   }
 }
