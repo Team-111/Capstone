@@ -184,6 +184,15 @@ class Pallindrome extends Component {
             );
           })}
         </ViroFlexView>
+        {this.props.solved && (
+          <ViroSound
+            source={require('./sounds/laughhowl1.wav')}
+            loop={false}
+            muted={false}
+            paused={false}
+            volume={1}
+          />
+        )}
       </ViroNode>
     );
   }
