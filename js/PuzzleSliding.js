@@ -27,25 +27,30 @@ class PuzzleSliding extends Component {
   }
 
   componentWillMount() {
-    let arr = [];
-    const newArr = [];
-    let row = [];
-    let isSolvable = false;
-
-    while (!isSolvable) {
-      arr = this.shuffle([0, 1, 2, 3, 4, 5, 6, 7, 'Blank']);
-      isSolvable = this.determineSolvability(arr);
+    if (this.props.solved) {
+      this.setState({spookyPortrait: true});
     }
+    else {
+      let arr = [];
+      const newArr = [];
+      let row = [];
+      let isSolvable = false;
 
-    for (let i = 0; i < arr.length; i++) {
-      row.push(arr[i]);
-      if (row.length === 3) {
-        newArr.push(row);
-        row = [];
+      while (!isSolvable) {
+        arr = this.shuffle([0, 1, 2, 3, 4, 5, 6, 7, 'Blank']);
+        isSolvable = this.determineSolvability(arr);
       }
-    }
 
-    this.setState({gameBoard: newArr});
+      for (let i = 0; i < arr.length; i++) {
+        row.push(arr[i]);
+        if (row.length === 3) {
+          newArr.push(row);
+          row = [];
+        }
+      }
+
+      this.setState({gameBoard: newArr});
+    }
   }
 
   shuffle(arr) {

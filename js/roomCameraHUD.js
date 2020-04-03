@@ -97,7 +97,7 @@ class RoomCamera extends Component {
         <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}} shadowCastingBitMask={2}/>
         <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}} shadowCastingBitMask={2}/>
         {/*This ViroQuad is passed the material for a 'pop up display item' ie newspaper */}
-          <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.4]} onClick={this.props.putItemAway} visible={this.props.objectDisplay} shadowCastingBitMask={2}/>
+          <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.6]} onClick={this.props.putItemAway} visible={this.props.objectDisplay} shadowCastingBitMask={2}/>
 
 
       </ViroCamera>
@@ -109,6 +109,9 @@ class RoomCamera extends Component {
 ViroMaterials.createMaterials({
   newspaper: {
     diffuseTexture: require('./res/newspaper.jpg'),
+  },
+  palindrome: {
+    diffuseTexture: require('./res/Pallindrome/1221.jpeg'),
   },
   right: {
     diffuseTexture: require('./Inventory/images/icon_right.png'),

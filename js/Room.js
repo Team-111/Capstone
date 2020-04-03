@@ -372,29 +372,32 @@ class Room extends Component {
         {Key}
         {Grenade}
 
-        <ViroFlexView
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          width={0.7}
-          height={0.7}
-          position={[-2, 0, 0]}
-          rotation={[0, 90, 0]}
-          backgroundColor="transparent"
-          shadowCastingBitMask={2}>
-          <PuzzleColoredSquares />
-        </ViroFlexView>
+        {this.props.isLoaded && (
+          <ViroNode shadowCastingBitMask={2}>
+            <ViroFlexView
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              width={0.7}
+              height={0.7}
+              position={[-2, 0, 0]}
+              rotation={[0, 90, 0]}
+              backgroundColor="transparent"
+              shadowCastingBitMask={2}>
+              <PuzzleColoredSquares />
+            </ViroFlexView>
 
-        <Pallindrome />
-        <PuzzleSliding />
-
-        {this.props.isLoaded && !this.props.endGame && (
-          <Combo
-            code={this.props.currentGame.lockCombo}
-            getItem={this.getItem}
-          />
+            <Pallindrome getItem={this.getItem} />
+            <PuzzleSliding />
+            {!this.props.endGame && (
+              <Combo
+                code={this.props.currentGame.lockCombo}
+                getItem={this.getItem}
+              />
+            )}
+          </ViroNode>
         )}
 
         {!this.props.lightOn && (
