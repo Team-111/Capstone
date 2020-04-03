@@ -42,20 +42,43 @@ class Winner extends Component {
     this.props.exitViro('highScores')
   }
   render() {
-    return(
-      <View style={styles.bigContainer}>
-        <View style={styles.container}>
-          <Text style={styles.bigCongrats}>{`Congratulations, ${this.props.currentUser.username.split('@')[0]}`}</Text>
-          <Text style={styles.littleCongrats}>{`You got a highscore of: ${
-            this.state.min
-          }: ${
-            this.state.sec < 10 ? `0${this.state.sec}` : `${this.state.sec}`
-          }`}</Text>
-          <Text style={styles.littleCongrats}>Rachel, Lauren, Karen, and Danielle are so proud of you.</Text>
-          <Button title="Submit Your Score" onPress={this.handleSubmit}></Button>
+    if (this.props.survived) {
+      return (
+        <View style={styles.bigContainer}>
+          <View style={styles.container}>
+            <Text style={styles.bigCongrats}>{`Congratulations, ${
+              this.props.currentUser.username.split('@')[0]
+            }!`}</Text>
+            <Text style={styles.bigCongrats}>You've survived for now...</Text>
+            <Text style={styles.littleCongrats}>{`You got a highscore of: ${
+              this.state.min
+            }: ${
+              this.state.sec < 10 ? `0${this.state.sec}` : `${this.state.sec}`
+            }`}</Text>
+            <Text style={styles.littleCongrats}>Rachel, Lauren, Karen, and Danielle are so proud of you.</Text>
+            <Button title="Submit Your Score" onPress={this.handleSubmit}></Button>
+          </View>
         </View>
-      </View>
-    )
+      );
+    } else {
+      return (
+        <View style={styles.bigContainer}>
+          <View style={styles.container}>
+            <Text style={styles.bigCongrats}>{`You've escaped the room, ${
+              this.props.currentUser.username.split('@')[0]
+            }!`}</Text>
+            <Text style={styles.bigCongrats}>But at what cost...</Text>
+            <Text style={styles.littleCongrats}>{`You got a highscore of: ${
+              this.state.min
+            }: ${
+              this.state.sec < 10 ? `0${this.state.sec}` : `${this.state.sec}`
+            }`}</Text>
+            <Text style={styles.littleCongrats}>There must be something you missed! Can you find the good ending?</Text>
+            <Button title="Submit Your Score" onPress={this.handleSubmit}></Button>
+          </View>
+        </View>
+      );
+    }
   }
 }
 const styles = StyleSheet.create({
@@ -88,6 +111,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   currentGame: state.game,
   currentUser: state.user,
+  survived: state.user.survived,
 })
 
 const mapDispatchToProps = dispatch => ({
