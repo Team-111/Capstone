@@ -21,6 +21,7 @@ class RoomCamera extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentHint:'',
       hintVisible: false,
       itemImageKeys: {
         key: require('./Inventory/images/key.png'),
@@ -30,6 +31,7 @@ class RoomCamera extends Component {
     }
     this.showHint = this.showHint.bind(this);
     this.changeItem = this.changeItem.bind(this);
+    this.notSolvedPuzzles = this.notSolvedPuzzles.bind(this);
   }
 
   changeItem(direction) {
@@ -53,11 +55,63 @@ class RoomCamera extends Component {
     }
   }
 
-  showHint() {
+  notSolvedPuzzles() {
+    let notSolved = [];
+    let currentPuzzles = this.props.currentGame.puzzles;
+    let currentHints = this.props.currentGame.hints;
+    for (let puzzle in currentPuzzles) {
+      //console.log('puzzle', puzzle);
+      //console.log('currentHints[puzzle]', currentHints[puzzle])
+      //console.log('currentHints[puzzle] || !currentPuzzles[puzzle].complete', !!currentHints[puzzle] && !currentPuzzles[puzzle].complete)
+      if (!!currentHints[puzzle] && !currentPuzzles[puzzle].complete) {
+        notSolved.push(puzzle);
+      }
+    }
+    if (currentHints.room){
+      if (currentHints.room.length > 0){
+        notSolved.push('room');
+      }
+    }
+    return notSolved;
+  }
 
+  showHint() {
+    if (this.props.currentGame.hintsLeft > 0) {
+      console.log('Current game in roomCameraHUD', this.props.currentGame);
+      // let currentPuzzles = this.props.currentGame.puzzles;
+      let currentHints = JSON.parse(
+        JSON.stringify(this.props.currentGame.hints),
+      );
+      console.log('currentHints copy =', currentHints)
+      let notSolvedPuzz = this.notSolvedPuzzles();
+      console.log('notSolvedPuzz', notSolvedPuzz);
+      // if (notSolvedPuzz.length > 0) {
+      let randomPuzzle = notSolvedPuzz[randomIdx(notSolvedPuzz.length)];
+      console.log('Here is randomPuzzle', randomPuzzle);
+      let randomPuzzleHints = [...currentHints[randomPuzzle]];
+      let randomPuzzleIdx = randomIdx(randomPuzzleHints.length);
+      //console.log('randomPuzzleIdx', randomPuzzleIdx);
+      //console.log('randomPuzzleHints', randomPuzzleHints);
+      let randomPuzzleHint = randomPuzzleHints[randomPuzzleIdx];
+      console.log('Here is the hint selected:', randomPuzzleHint);
+      randomPuzzleHints.splice(randomPuzzleIdx, 1);
+      console.log('New set of hints:', randomPuzzle, randomPuzzleHints);
+      if (randomPuzzleHints.length > 0){
+        currentHints[randomPuzzle] = randomPuzzleHints;
+      } else {
+        delete currentHints[randomPuzzle];
+      }
+      //   this.props.useHint(randomPuzzle, randomPuzzleIdx);
+      // }
+      console.log('current hints', currentHints);
+      this.props.useHint(currentHints);
+      this.setState({currentHint: randomPuzzleHint});
+    }
   }
 
   render() {
+    console.log('Current game in roomCameraHud', this.props.currentGame);
+    console.log('Current state in roomCameraHud', this.state);
     return (
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
         <TimerComponent />
@@ -79,10 +133,7 @@ class RoomCamera extends Component {
             height={1}
             color="#F5B041"
             style={{fontFamily: 'Arial', fontSize: 15}}
-            onClick={() => {
-              this.props.useHint();
-
-            }}
+            onClick={this.showHint}
           />
         </ViroNode>
         <ViroText
@@ -117,8 +168,15 @@ ViroMaterials.createMaterials({
   },
   left: {
     diffuseTexture: require('./Inventory/images/icon_left.png'),
-  }
-})
+  },
+});
+
+//Random index helper function
+const randomIdx  = (arrayLen) => {
+  let randI = Math.floor(Math.random() * Math.floor(arrayLen));
+  console.log('randomIdx = ', randI);
+  return randI;
+};
 
 const mapStateToProps = state => ({
   currentGame: state.game,
@@ -128,7 +186,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     saveGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame)),
-    useHint: () => dispatch(useHint()),
+    useHint: hints => dispatch(useHint(hints)),
     selectItem: newIndex => dispatch(selectItemThunk(newIndex)),
   };
 };

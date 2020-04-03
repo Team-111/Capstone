@@ -69,8 +69,6 @@ export async function getSingleGame(callbackFunc, gameId) {
     } else {
       let game = initializeGameObj();
       game.hints = await getGameHints(game.puzzles);
-
-      // console.log('Here is hintsArr inside getSingleGame', hintsArr);
       await db
         .collection('games')
         .doc(gameId)
@@ -119,16 +117,16 @@ export async function getGameHints(gamePuzzles) {
     let hintsArray = [];
     await getPuzzles(puzzleHints => {
       // console.log('Here is puzzleHints', puzzleHints);
-      hintsArray = puzzleHints.filter(puzzHint =>
+      hintsArray = puzzleHints.filter(
+        puzzHint =>
         // console.log('Here is puzzHint inside filter', puzzHint);
         // console.log(gamePuzzArray.includes(puzzHint.id));
-        gamePuzzArray.includes(puzzHint.id)
-      );
+          gamePuzzArray.includes(puzzHint.id) || puzzHint.id === 'room');
     });
-    console.log('Here is the hintsArray inside getGameHints', hintsArray);
-    let hints = {}
-    for(let i =0; i<hintsArray.length; i++){
-      if(hintsArray[i].hints){
+    //console.log('Here is the hintsArray inside getGameHints', hintsArray);
+    let hints = {};
+    for (let i = 0; i < hintsArray.length; i++) {
+      if (hintsArray[i].hints) {
         hints[hintsArray[i].id] = hintsArray[i].hints;
       }
     }
@@ -137,3 +135,18 @@ export async function getGameHints(gamePuzzles) {
     console.log(error);
   }
 }
+
+// export async function updateHints(userId, hintsLeft, hints) {
+//   try {
+//     await db
+//       .collection('games')
+//       .doc(userId)
+//       .update({hintsLeft, hints});
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// db.collection('games')
+//   .doc('1JnAhq3B6lThAlozgChOqnj5VcP2')
+//   .update({'hintsLeft': 3, 'hints.room': ['hints1', 'hints2', 'hints3']});
