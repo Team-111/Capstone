@@ -83,6 +83,7 @@ class Pallindrome extends Component {
             width={0.7}
             height={0.75}
             rotation={[0, 270, 0]}
+            onClick={() => this.props.getItem('palindrome', false, '', true)}
           />
         ) : (
           <ViroNode position={[2, 0.4, 0]} rotation={[0, 270, 0]}>

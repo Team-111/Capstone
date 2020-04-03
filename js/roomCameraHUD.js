@@ -95,7 +95,7 @@ class RoomCamera extends Component {
         <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}}/>
         <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}}/>
         {/*This ViroQuad is passed the material for a 'pop up display item' ie newspaper */}
-          <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.4]} onClick={this.props.putItemAway} visible={this.props.objectDisplay}/>
+        <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.6]} onClick={this.props.putItemAway} visible={this.props.objectDisplay}/>
 
 
       </ViroCamera>
@@ -107,6 +107,9 @@ class RoomCamera extends Component {
 ViroMaterials.createMaterials({
   newspaper: {
     diffuseTexture: require('./res/newspaper.jpg'),
+  },
+  palindrome: {
+    diffuseTexture: require('./res/Pallindrome/1221.jpeg'),
   },
   right: {
     diffuseTexture: require('./Inventory/images/icon_right.png'),
@@ -126,8 +129,7 @@ ViroMaterials.createMaterials({
   emptyInv: {
     diffuseTexture: require('./Inventory/images/icon_close.png'),
   },
-
-})
+});
 
 const mapStateToProps = state => ({
   currentGame: state.game,

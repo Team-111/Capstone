@@ -373,7 +373,7 @@ class Room extends Component {
               <PuzzleColoredSquares />
             </ViroFlexView>
 
-            <Pallindrome />
+            <Pallindrome getItem={this.getItem} />
             <PuzzleSliding />
             {!this.props.endGame && (
               <Combo
