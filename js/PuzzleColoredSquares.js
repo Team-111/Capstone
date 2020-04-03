@@ -125,16 +125,15 @@ class PuzzleColoredSquares extends Component {
                   fontSize: 32,
                 }}
               />
-              <ViroSound
-                source={require('./sounds/female_scream.wav')}
-                loop={false}
-                muted={false}
-                paused={false}
-                volume={1}
-              />
             </ViroFlexView>
           )}
         </ViroFlexView>
+        {this.props.solved && (
+          <ViroSound
+            source={require('./sounds/female_scream.wav')}
+            loop={false}
+          />
+        )}
       </ViroNode>
     );
   }
