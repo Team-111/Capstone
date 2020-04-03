@@ -76,15 +76,15 @@ class PuzzleColoredSquares extends Component {
     return (
       <ViroNode shadowCastingBitMask={2}>
         <ViroFlexView
-          position={[-2, 0, 0]}
+          position={[-3.8, -0.8, 0]}
           rotation={[0, 90, 0]}
           style={{
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          width={0.6}
-          height={0.6}
+          width={1.2}
+          height={1.2}
           backgroundColor="transparent"
           shadowCastingBitMask={2}>
           {this.props.lightOn || !this.props.solved ? (
@@ -93,14 +93,14 @@ class PuzzleColoredSquares extends Component {
                 <ViroFlexView
                   key={`row${rowIdx}`}
                   style={{flexDirection: 'row'}}
-                  width={0.6}
-                  height={0.1}>
+                  width={1.2}
+                  height={0.2}>
                   {row.map((tile, colIdx) => {
                     return (
                       <ViroQuad
                         key={`tile${colIdx}`}
-                        width={0.1}
-                        height={0.1}
+                        width={0.2}
+                        height={0.2}
                         materials={
                           tile === 1 ? ['redSquare'] : ['yellowSquare']
                         }
@@ -117,7 +117,7 @@ class PuzzleColoredSquares extends Component {
               );
             })
           ) : (
-            <ViroFlexView materials={['helpme']} width={0.9} height={0.9} shadowCastingBitMask={2}>
+            <ViroFlexView materials={['helpme']} width={1.2} height={1.2} shadowCastingBitMask={2}>
               <ViroText
                 text={this.props.codeDigit}
                 color="red"
