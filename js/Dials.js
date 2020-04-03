@@ -27,7 +27,8 @@ class Dials extends Component {
           justifyContent: 'space-between',
         }}
         position={[0, -0.5, 3.2]}
-        rotation={[0, 270, 0]}>
+        rotation={[0, 270, 0]}
+        shadowCastingBitMask={2}>
         {this.state.solution.map((num, idx) => {
           return (
             <ViroFlexView
@@ -43,7 +44,8 @@ class Dials extends Component {
               }}
               onClick={
                 !this.state.solved ? () => this.handleClick(idx) : () => {}
-              }>
+              }
+              shadowCastingBitMask={2}>
               <ViroText
                 color="red"
                 height={0.3}
@@ -51,6 +53,7 @@ class Dials extends Component {
                 textAlign="center"
                 textAlignVertical="center"
                 text={num.toString()}
+                shadowCastingBitMask={2}
               />
             </ViroFlexView>
           );

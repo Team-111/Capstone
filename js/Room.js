@@ -38,6 +38,7 @@ class Room extends Component {
       hudText: '',
       investigateObjDisplay: false,
       shownObject: 'newspaper',
+      interval: () => {},
     };
 
     this.doorInteract = this.doorInteract.bind(this);
@@ -46,6 +47,18 @@ class Room extends Component {
     this.getItem = this.getItem.bind(this);
     this.putItemAway = this.putItemAway.bind(this);
     this.endGameProcessing = this.endGameProcessing.bind(this);
+  }
+  componentDidMount = () => {
+    this.setState({interval: setInterval(() => this.flickerLights(), 60000)});
+  };
+  componentWillUnmount = () => {
+    clearInterval(this.state.interval);
+  }
+  flickerLights() {
+    this.props.toggleLight();
+    setTimeout(this.props.toggleLight, 100);
+    setTimeout(this.props.toggleLight, 300);
+    setTimeout(this.props.toggleLight, 50);
   }
 
   doorInteract() {
@@ -65,14 +78,14 @@ class Room extends Component {
   skullInteract() {
     //change to check curr selected inventory item
     if (
-      !this.props.currentGame.inventory[
+      this.props.currentGame.inventory[
         this.props.currentGame.selectedItemIndex
       ] === 'spoon'
     ) {
+      this.props.visibleItems('skull');
+    } else {
       this.setState({hudText: 'A Skull.'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
-    } else {
-      this.props.visibleItems('skull');
     }
   }
 
@@ -159,8 +172,8 @@ class Room extends Component {
         source={require('./Objects/models/ARoomModels/newspaper.obj')}
         type="OBJ"
         materials={['newspaper']}
-        position={[-2, -0.9, 1]}
-        scale={[0.1, 0.1, 0.1]}
+        position={[-3.4, -1.5, 1]}
+        scale={[0.09, 0.09, 0.09]}
         onClick={() => this.getItem('newspaper', false, '', true)}
       />
     );
@@ -186,9 +199,9 @@ class Room extends Component {
           require('./Objects/models/key/t_worn_key.png'),
         ]}
         type="OBJ"
-        position={[1.5, -1.2, 1]}
+        position={[2.5, -1.9, 1]}
         scale={[0.8, 0.8, 0.8]}
-        visible={this.props.currentGame.visibleInRoom.key}
+        visible={this.props.currentGame.visibleInRoom.key && !this.props.currentGame.visibleInRoom.skull}
         onClick={() => this.getItem('key', true)}
         materials={['key']}
       />
@@ -236,7 +249,7 @@ class Room extends Component {
       <Viro3DObject
         source={require('./Objects/models/skull/12140_Skull_v3_L2.obj')}
         type="OBJ"
-        position={[1.5, -1.2, 1]}
+        position={[2.5, -1.9, 1]}
         scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         materials={['skull']}
@@ -280,7 +293,7 @@ class Room extends Component {
         />
         {this.props.lightOn ? (
           <ViroSpotLight
-            position={[0, 3, 0]}
+            position={[0, 3.4, 0]}
             color="#ffffff"
             direction={[0, -1, 0]}
             attenuationStartDistance={5}
@@ -288,9 +301,11 @@ class Room extends Component {
             innerAngle={20}
             outerAngle={100}
             castsShadow={true}
+            lightInfluenceBitMask={2}
           />
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000} />
+          // <ViroAmbientLight color="#191520" intensity={50000} />
+          <ViroOmniLight color="#191520" position={[0, 3, 0]} attenuationStartDistance={1} attenuationEndDistance={5}/>
         )}
 
         <ViroBox
@@ -358,7 +373,7 @@ class Room extends Component {
         {Grenade}
 
         {this.props.isLoaded && (
-          <ViroNode>
+          <ViroNode shadowCastingBitMask={2}>
             <PuzzleColoredSquares />
             <Pallindrome getItem={this.getItem} />
             <PuzzleSliding />
@@ -378,6 +393,7 @@ class Room extends Component {
             style={{fontSize: 32}}
             position={[0, 3, -1]}
             rotation={[90, 0, 0]}
+            shadowCastingBitMask={2}
           />
         )}
       </ViroNode>
