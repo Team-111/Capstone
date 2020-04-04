@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {updatePuzzleStatus} from '../store';
-import {ViroFlexView, ViroMaterials, ViroQuad, ViroText} from 'react-viro';
+import {
+  ViroFlexView,
+  ViroMaterials,
+  ViroQuad,
+  ViroText,
+  ViroNode,
+  ViroSound,
+} from 'react-viro';
 
 class PuzzleColoredSquares extends Component {
   constructor() {
@@ -9,7 +16,6 @@ class PuzzleColoredSquares extends Component {
     this.state = {
       gameBoard: this.makeBoard(6, 6),
       secretCodeDigit: 1,
-      spookyPortrait: false,
     };
 
     this.clickSquare = this.clickSquare.bind(this);
@@ -68,60 +74,70 @@ class PuzzleColoredSquares extends Component {
 
   render() {
     return (
-      <ViroFlexView
-        style={{
-          flexDirection: 'column',
-          alignSelf: 'center',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        width={0.6}
-        height={0.6}
-        backgroundColor="transparent">
-        {this.props.lightOn || !this.props.solved ? (
-          this.state.gameBoard.map((row, rowIdx) => {
-            return (
-              <ViroFlexView
-                key={`row${rowIdx}`}
-                style={{flexDirection: 'row'}}
-                width={0.5}
-                height={0.1}>
-                {row.map((tile, colIdx) => {
-                  return (
-                    <ViroQuad
-                      key={`tile${colIdx}`}
-                      width={0.1}
-                      height={0.1}
-                      materials={tile === 1 ? ['redSquare'] : ['yellowSquare']}
-                      onClick={
-                        this.props.solved === true
-                          ? null
-                          : this.clickSquare(rowIdx, colIdx).bind(this)
-                      }
-                    />
-                  );
-                })}
-              </ViroFlexView>
-            );
-          })
-        ) : (
+      <ViroNode shadowCastingBitMask={2}>
         <ViroFlexView
-          materials={['helpme']}
-          style={{justifyContent: 'center', alignItems: 'center'}}
-          width={0.9}
-          height={0.9}>
-          <ViroText
-            text={this.props.codeDigit}
-            color="red"
-            style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              fontSize: 32,
-            }}
-          />
+          position={[-3.8, -0.8, 0]}
+          rotation={[0, 90, 0]}
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          width={1.2}
+          height={1.2}
+          backgroundColor="transparent"
+          shadowCastingBitMask={2}>
+          {this.props.lightOn || !this.props.solved ? (
+            this.state.gameBoard.map((row, rowIdx) => {
+              return (
+                <ViroFlexView
+                  key={`row${rowIdx}`}
+                  style={{flexDirection: 'row'}}
+                  width={1.2}
+                  height={0.2}>
+                  {row.map((tile, colIdx) => {
+                    return (
+                      <ViroQuad
+                        key={`tile${colIdx}`}
+                        width={0.2}
+                        height={0.2}
+                        materials={
+                          tile === 1 ? ['redSquare'] : ['yellowSquare']
+                        }
+                        onClick={
+                          this.props.solved === true
+                            ? null
+                            : this.clickSquare(rowIdx, colIdx).bind(this)
+                        }
+                        shadowCastingBitMask={2}
+                      />
+                    );
+                  })}
+                </ViroFlexView>
+              );
+            })
+          ) : (
+            <ViroFlexView materials={['helpme']} width={1.2} height={1.2} shadowCastingBitMask={2}>
+              <ViroText
+                text={this.props.codeDigit}
+                color="red"
+                style={{
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  fontSize: 32,
+                }}
+                shadowCastingBitMask={2}
+              />
+            </ViroFlexView>
+          )}
         </ViroFlexView>
+        {this.props.solved && (
+          <ViroSound
+            source={require('./sounds/female_scream.wav')}
+            loop={false}
+          />
         )}
-      </ViroFlexView>
+      </ViroNode>
     );
   }
 }

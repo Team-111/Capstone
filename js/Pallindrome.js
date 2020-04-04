@@ -75,23 +75,26 @@ class Pallindrome extends Component {
 
   render() {
     return (
-      <ViroNode>
+      <ViroNode shadowCastingBitMask={2}>
         {!this.props.solved || this.props.lightOn ? (
           <ViroQuad
             materials={['clockImage']}
-            position={[2, 0.4, 0]}
+            position={[3.8, -0.4, 0]}
             width={0.7}
             height={0.75}
             rotation={[0, 270, 0]}
+            onClick={() => this.props.getItem('palindrome', false, '', true)}
+            shadowCastingBitMask={2}
           />
         ) : (
-          <ViroNode position={[2, 0.4, 0]} rotation={[0, 270, 0]}>
-            <ViroQuad materials={['scary']} height={1.2} width={0.9} />
+          <ViroNode position={[3.8, -0.4, 0]} rotation={[0, 270, 0]} shadowCastingBitMask={2}>
+            <ViroQuad materials={['scary']} height={1.2} width={0.9} shadowCastingBitMask={2}/>
             <ViroText
               text={this.props.codeDigit}
               position={[0, -0.2, 0.1]}
               color="green"
               style={{fontSize: 32, textAlign: 'center'}}
+              shadowCastingBitMask={2}
             />
           </ViroNode>
         )}
@@ -105,8 +108,9 @@ class Pallindrome extends Component {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          position={[2, -0.4, 0]}
-          rotation={[0, 270, 0]}>
+          position={[3.8, -1.2, 0]}
+          rotation={[0, 270, 0]}
+          shadowCastingBitMask={2}>
           {this.state.guess1.map((digit, idx) => {
             return (
               <ViroFlexView
@@ -121,7 +125,8 @@ class Pallindrome extends Component {
                 }}
                 onClick={
                   !this.props.solved ? () => this.handleClick1(idx) : () => {}
-                }>
+                }
+                shadowCastingBitMask={2}>
                 <ViroText
                   color="#cc6600"
                   height={0.3}
@@ -129,6 +134,7 @@ class Pallindrome extends Component {
                   textAlign="center"
                   textAlignVertical="center"
                   text={digit.toString()}
+                  shadowCastingBitMask={2}
                 />
               </ViroFlexView>
             );
@@ -144,8 +150,10 @@ class Pallindrome extends Component {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          position={[2, -0.7, 0]}
-          rotation={[0, 270, 0]}>
+          position={[3.8, -1.5, 0]}
+          rotation={[0, 270, 0]}
+          shadowCastingBitMask={2}
+          >
           {this.state.guess2.map((digit, idx) => {
             return (
               <ViroFlexView
@@ -160,7 +168,9 @@ class Pallindrome extends Component {
                 }}
                 onClick={
                   !this.props.solved ? () => this.handleClick2(idx) : () => {}
-                }>
+                }
+                shadowCastingBitMask={2}
+                >
                 <ViroText
                   color="#cc6600"
                   height={0.3}
@@ -168,11 +178,21 @@ class Pallindrome extends Component {
                   textAlign="center"
                   textAlignVertical="center"
                   text={digit.toString()}
+                  shadowCastingBitMask={2}
                 />
               </ViroFlexView>
             );
           })}
         </ViroFlexView>
+        {this.props.solved && (
+          <ViroSound
+            source={require('./sounds/laughhowl1.wav')}
+            loop={false}
+            muted={false}
+            paused={false}
+            volume={1}
+          />
+        )}
       </ViroNode>
     );
   }

@@ -43,17 +43,19 @@ class TimerComponent extends Component {
           source={require('./images/digitalclock.png')}
           position={[0, 0.74, -1.5]}
           scale={[0.4, 0.2, 0.4]}
+          shadowCastingBitMask={2}
         />
 
         <ViroText
           text={`${min}:${sec < 10 ? `0${sec}` : `${sec}`}`}
-          position={[0.1, 0.6, -1.4]}
+          position={[0, 0.69, -1.4]}
           scale={[0.4, 0.4, 0.4]}
           width={1}
           height={1}
-          color="#F5B041"
+          color="#0A4A16"
           // eslint-disable-next-line react-native/no-inline-styles
-          style={{fontFamily: 'Arial', fontSize: 20}}
+          style={{fontFamily: 'Arial', fontSize: 20, textAlign: 'center', textAlignVertical: 'center'}}
+          shadowCastingBitMask={2}
         />
       </ViroNode>
     );

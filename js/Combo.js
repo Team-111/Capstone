@@ -59,7 +59,7 @@ class Combo extends Component {
 
   render() {
     return (
-      <ViroNode>
+      <ViroNode shadowCastingBitMask={2}>
         <ViroFlexView
           backgroundColor="black"
           width={0.3}
@@ -70,7 +70,8 @@ class Combo extends Component {
             justifyContent: 'space-between',
           }}
           position={[0, -0.5, 3.2]}
-          rotation={[0, 180, 0]}>
+          rotation={[0, 180, 0]}
+          shadowCastingBitMask={2}>
           {this.state.digits.map((digit, idx) => {
             return (
               <ViroFlexView
@@ -86,7 +87,8 @@ class Combo extends Component {
                 }}
                 onClick={
                   !this.props.solved ? () => this.handleClick(idx) : () => {}
-                }>
+                }
+                shadowCastingBitMask={2}>
                 <ViroText
                   color="red"
                   height={0.3}
@@ -94,6 +96,7 @@ class Combo extends Component {
                   textAlign="center"
                   textAlignVertical="center"
                   text={digit.toString()}
+                  shadowCastingBitMask={2}
                 />
               </ViroFlexView>
             );

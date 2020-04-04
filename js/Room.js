@@ -16,6 +16,8 @@ import {
   Viro3DObject,
   ViroFlexView,
   ViroAmbientLight,
+  ViroOmniLight,
+  ViroSpotLight,
   ViroText,
   ViroQuad,
 } from 'react-viro';
@@ -36,6 +38,7 @@ class Room extends Component {
       hudText: '',
       investigateObjDisplay: false,
       shownObject: 'newspaper',
+      interval: () => {},
     };
 
     this.doorInteract = this.doorInteract.bind(this);
@@ -44,6 +47,18 @@ class Room extends Component {
     this.getItem = this.getItem.bind(this);
     this.putItemAway = this.putItemAway.bind(this);
     this.endGameProcessing = this.endGameProcessing.bind(this);
+  }
+  componentDidMount = () => {
+    this.setState({interval: setInterval(() => this.flickerLights(), 60000)});
+  };
+  componentWillUnmount = () => {
+    clearInterval(this.state.interval);
+  }
+  flickerLights() {
+    this.props.toggleLight();
+    setTimeout(this.props.toggleLight, 100);
+    setTimeout(this.props.toggleLight, 300);
+    setTimeout(this.props.toggleLight, 50);
   }
 
   doorInteract() {
@@ -60,18 +75,17 @@ class Room extends Component {
     }
   }
 
-  skullInteract() {//change to check curr selected inventory item
+  skullInteract() {
+    //change to check curr selected inventory item
     if (
-      !(
-        this.props.currentGame.inventory[
-          this.props.currentGame.selectedItemIndex
-        ] === 'spoon'
-      )
+      this.props.currentGame.inventory[
+        this.props.currentGame.selectedItemIndex
+      ] === 'spoon'
     ) {
+      this.props.visibleItems('skull');
+    } else {
       this.setState({hudText: 'A Skull.'});
       setTimeout(() => this.setState({hudText: ''}), 4000);
-    } else {
-      this.props.visibleItems('skull');
     }
   }
 
@@ -124,42 +138,58 @@ class Room extends Component {
   render() {
     // Initialize Objects MAKE SURE AFTER INITIALIZING OBJECTS TO ADD THEM BELOW IN RETURN STATEMENT
     // let Legs = (<ViroBox height = {1.4} width={.2} length={.2} position={[0,-1,0]}  visible={this.props.entered} onClick={this.chainedLegsInteract}/>)
-    const Legs = (<Viro3DObject source={require('./Objects/models/ARoomModels/legs.obj')}
-    resources={[require('./Objects/models/ARoomModels/legTextureSmall.png')]}
-    highAccuracyEvents={true}
-    type="OBJ"
-    position={[0, -3, -.1]}
-    visible={this.props.entered}
-    scale={[.3,.3,.3]}
-    materials={['legs']}
-    onClick={this.chainedLegsInteract} />)
+    const Legs = (
+      <Viro3DObject
+        source={require('./Objects/models/ARoomModels/legs.obj')}
+        resources={[
+          require('./Objects/models/ARoomModels/legTextureSmall.png'),
+        ]}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[0, -3, -0.1]}
+        visible={this.props.entered}
+        scale={[0.3, 0.3, 0.3]}
+        materials={['legs']}
+        onClick={this.chainedLegsInteract}
+      />
+    );
 
-    const Chains = (<Viro3DObject source={require('./Objects/models/ARoomModels/chains.obj')}
-    highAccuracyEvents={true}
-    type="OBJ"
-    position={[0, -3, -.1]}
-    visible={this.props.entered && this.props.currentGame.legsBound}
-    scale={[.3,.3,.3]}
-    materials={['chains']}
-    onClick={this.chainedLegsInteract} />)
+    const Chains = (
+      <Viro3DObject
+        source={require('./Objects/models/ARoomModels/chains.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[0, -3, -0.1]}
+        visible={this.props.entered && this.props.currentGame.legsBound}
+        scale={[0.3, 0.3, 0.3]}
+        materials={['chains']}
+        onClick={this.chainedLegsInteract}
+      />
+    );
 
-    const Newspaper = (<Viro3DObject source={require('./Objects/models/ARoomModels/newspaper.obj')} highAccuracyEvents={true}
-    type="OBJ" materials={['newspaper']} position={[-2, -0.9, 1]} scale={[.1,.1,.1]}
-    onClick={() => this.getItem('newspaper', false, '', true)}/>)
+    const Newspaper = (
+      <Viro3DObject
+        source={require('./Objects/models/ARoomModels/newspaper.obj')}
+        type="OBJ"
+        materials={['newspaper']}
+        position={[-3.4, -1.5, 1]}
+        scale={[0.09, 0.09, 0.09]}
+        onClick={() => this.getItem('newspaper', false, '', true)}
+      />
+    );
 
     const Spoon = (
       <Viro3DObject
         source={require('../js/Objects/models/ARoomModels/spoonLowPoly.obj')}
-    highAccuracyEvents={true}
-    type="OBJ"
-    position={[0, 0, -2]}
-    rotation={[90,0,0]}
-    scale={[0.1,0.1,0.1]}
-    visible={this.props.currentGame.visibleInRoom.spoon}
-    materials={['spoon']}
-    onClick={() =>
-      this.getItem('spoon', true)
-    } />)
+        type="OBJ"
+        position={[-2, -3, 3]}
+        rotation={[90, 0, 90]}
+        scale={[0.006, 0.006, 0.006]}
+        visible={this.props.currentGame.visibleInRoom.spoon}
+        materials={['spoon']}
+        onClick={() => this.getItem('spoon', true)}
+      />
+    );
 
     let Key = (
       <Viro3DObject
@@ -168,11 +198,10 @@ class Room extends Component {
           require('./Objects/models/key/worn_key.mtl'),
           require('./Objects/models/key/t_worn_key.png'),
         ]}
-        highAccuracyEvents={true}
         type="OBJ"
-        position={[1.5, -1.2, 1]}
+        position={[2.5, -1.9, 1]}
         scale={[0.8, 0.8, 0.8]}
-        visible={this.props.currentGame.visibleInRoom.key}
+        visible={this.props.currentGame.visibleInRoom.key && !this.props.currentGame.visibleInRoom.skull}
         onClick={() => this.getItem('key', true)}
         materials={['key']}
       />
@@ -207,9 +236,8 @@ class Room extends Component {
     const Knife = (
       <Viro3DObject
         source={require('./Objects/models/knife/knife.obj')}
-        highAccuracyEvents={true}
         type="OBJ"
-        position={[-3.1, -0.9, 0]}
+        position={[-3.1, -0.9, -1]}
         scale={[0.01, 0.01, 0.01]}
         rotation={[90, 110, 0]}
         onClick={() => this.getItem('knife', false, 'A bloody knife')}
@@ -220,14 +248,27 @@ class Room extends Component {
     const Skull = (
       <Viro3DObject
         source={require('./Objects/models/skull/12140_Skull_v3_L2.obj')}
-        highAccuracyEvents={true}
         type="OBJ"
-        position={[1.5, -1.2, 1]}
+        position={[2.5, -1.9, 1]}
         scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         materials={['skull']}
         visible={this.props.currentGame.visibleInRoom.skull}
         onClick={this.skullInteract}
+      />
+    );
+
+    const Grenade = (
+      <Viro3DObject
+        source={require('./Objects/models/Grenade/MK2.obj')}
+        highAccuracyEvents={true}
+        type="OBJ"
+        position={[-3, -3, -1.5]}
+        scale={[0.05, 0.05, 0.05]}
+        rotation={[0, 20, 270]}
+        materials={['grenade']}
+        visible={this.props.currentGame.visibleInRoom.grenade}
+        onClick={() => this.getItem('grenade', true)}
       />
     );
 
@@ -251,9 +292,20 @@ class Room extends Component {
           onClick={this.props.toggleLight}
         />
         {this.props.lightOn ? (
-          <ViroAmbientLight color="#ffffff" intensity={200} />
+          <ViroSpotLight
+            position={[0, 3.4, 0]}
+            color="#ffffff"
+            direction={[0, -1, 0]}
+            attenuationStartDistance={5}
+            attenuationEndDistance={10}
+            innerAngle={20}
+            outerAngle={100}
+            castsShadow={true}
+            lightInfluenceBitMask={2}
+          />
         ) : (
-          <ViroAmbientLight color="#00001a" intensity={50000} />
+          // <ViroAmbientLight color="#191520" intensity={50000} />
+          <ViroOmniLight color="#191520" position={[0, 3, 0]} attenuationStartDistance={1} attenuationEndDistance={5}/>
         )}
 
         <ViroBox
@@ -284,9 +336,14 @@ class Room extends Component {
           materials={['door']}
           position={[0, -0.92, 3.48]}
           scale={[0.8, 3.2, 1]}
-          rotation={[0, 180, 0]}
-          visible={this.props.entered && !this.props.endGame}
-          onClick={this.doorInteract}
+          // This needs to be clickable even when invisible to make the zombie disappear,
+          // so instead of using the visibility prop the quad can be turned invisible
+          // by rotating 180 degrees
+          rotation={!this.props.endGame ? [0, 180, 0] : [0, 0, 0]}
+          onClick={
+            !this.props.endGame ? this.doorInteract : this.props.zombieClick
+          }
+          shadowCastingBitMask={2}
         />
 
         {this.props.entered && (
@@ -314,29 +371,20 @@ class Room extends Component {
         {Newspaper}
         {Spoon}
         {Key}
+        {Grenade}
 
-        <ViroFlexView
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          width={0.7}
-          height={0.7}
-          position={[-2, 0, 0]}
-          rotation={[0, 90, 0]}
-          backgroundColor="transparent">
-          <PuzzleColoredSquares />
-        </ViroFlexView>
-
-        <Pallindrome />
-        <PuzzleSliding />
-
-        {this.props.isLoaded && !this.props.endGame && (
-          <Combo
-            code={this.props.currentGame.lockCombo}
-            getItem={this.getItem}
-          />
+        {this.props.isLoaded && (
+          <ViroNode shadowCastingBitMask={2}>
+            <PuzzleColoredSquares />
+            <Pallindrome getItem={this.getItem} />
+            <PuzzleSliding />
+            {!this.props.endGame && (
+              <Combo
+                code={this.props.currentGame.lockCombo}
+                getItem={this.getItem}
+              />
+            )}
+          </ViroNode>
         )}
 
         {!this.props.lightOn && (
@@ -346,6 +394,7 @@ class Room extends Component {
             style={{fontSize: 32}}
             position={[0, 3, -1]}
             rotation={[90, 0, 0]}
+            shadowCastingBitMask={2}
           />
         )}
       </ViroNode>
@@ -394,22 +443,29 @@ ViroMaterials.createMaterials({
     diffuseTexture: require('./Objects/models/skull/Skull.jpg'),
     lightingModel: 'Blinn',
   },
+  grenade: {
+    diffuseTexture: require('./Objects/models/Grenade/PBR_MK2_Base_Color.png'),
+    metalnessTexture: require('./Objects/models/Grenade/PBR_MK2_Metallic.png'),
+    normalTexture: require('./Objects/models/Grenade/PBR_MK2_Normal_DirectX.png'),
+    roughnessTexture: require('./Objects/models/Grenade/PBR_MK2_Roughness.png'),
+    lightingModel: 'Blinn',
+  },
   legs: {
     diffuseTexture: require('./Objects/models/ARoomModels/legTextureSmall.png'),
     lightingModel: 'Blinn',
   },
   chains: {
     diffuseTexture: require('./Objects/models/ARoomModels/chains.jpg'),
-    lightingModel: 'Blinn'
+    lightingModel: 'Blinn',
   },
   spoon: {
     diffuseTexture: require('./Objects/models/ARoomModels/spoondiffuse.png'),
-    lightingModel: 'Blinn'
+    lightingModel: 'Blinn',
   },
   newspaper: {
     diffuseTexture: require('./Objects/models/ARoomModels/newspaper.png'),
-    lightingModel: 'Blinn'
-  }
+    lightingModel: 'Blinn',
+  },
 });
 
 const mapStateToProps = state => {

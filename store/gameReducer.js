@@ -1,11 +1,21 @@
-import {getSingleGame, updateGame, initializeGameObj} from '../server/api/games';
+import {
+  getSingleGame,
+  updateGame,
+  initializeGameObj,
+} from '../server/api/games';
 
 // Initial State
 const initialState = {
   hintsLeft: 3,
   hints: {},
   currentTime: {min: 0, sec: 0},
-  visibleInRoom: {key: true, desk: true, spoon: true, skull: true},
+  visibleInRoom: {
+    key: true,
+    desk: true,
+    spoon: true,
+    skull: true,
+    grenade: true,
+  },
   inventory: ['empty'],
   selectedItemIndex: 0,
   levelName: 'spookyCabin',
@@ -33,12 +43,12 @@ const initialState = {
 };
 
 // Action Types
-const GOT_GAME = 'GOT_GAME'
-const UPDATE_HINT = 'UPDATE_HINT'
-const UPDATE_TIME = 'UPDATE_TIME'
-const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS'
-const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY'
-const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND'
+const GOT_GAME = 'GOT_GAME';
+const UPDATE_HINT = 'UPDATE_HINT';
+const UPDATE_TIME = 'UPDATE_TIME';
+const UPDATE_VISIBLE_ITEMS = 'UPDATE_VISIBLE_ITEMS';
+const ADD_TO_INVENTORY = 'ADD_TO_INVENTORY';
+const CHANGE_SELECT_ITEM_IND = 'CHANGE_SELECT_ITEM_IND';
 const TOGGLE_LIGHT = 'TOGGLE_LIGHT';
 const SET_CODE = 'SET_CODE';
 const UPDATE_PUZZLE = 'UPDATE_PUZZLE';
@@ -152,9 +162,9 @@ export const secretCode = code => {
 
 export const toggleChainsThunk = () => {
   return dispatch => {
-    dispatch(toggleChains())
-  }
-}
+    dispatch(toggleChains());
+  };
+};
 
 export const saveGameThunk = (userId, updatedGame) => {
   return async dispatch => {
@@ -206,7 +216,7 @@ const gameReducer = (state = initialState, action) => {
         },
       };
     case ADD_TO_INVENTORY:
-      let currInventory = state.inventory;
+      let currInventory = [...state.inventory];
       currInventory.unshift(action.info);
       return {...state, inventory: currInventory};
     case CHANGE_SELECT_ITEM_IND:
