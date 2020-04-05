@@ -7,7 +7,7 @@ import {
 // Initial State
 const initialState = {
   hintsLeft: 3,
-  hints: ['hint1', 'hint2', 'hint3'],
+  hints: {},
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {
     key: true,
@@ -62,9 +62,10 @@ const gotGame = info => {
   };
 };
 
-export const useHint = () => {
+export const useHint = hints => {
   return {
     type: UPDATE_HINT,
+    hints,
   };
 };
 
@@ -180,13 +181,31 @@ export const saveGameThunk = (userId, updatedGame) => {
   };
 };
 
+// export const useHintThunk = (userId, hintsLefts, hints) => {
+//   return async dispatch => {
+//     try {
+//       let data = {};
+//       await updateHints(userId, hintsLefts, hints);
+//       await getSingleGame(gameFound => (data = {...gameFound}), userId);
+//       dispatch(useHint(data));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+// }
+
 // score reducer
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_GAME:
       return {...action.info, isLoaded: true};
     case UPDATE_HINT:
-      return {...state, hintsLeft: state.hintsLeft - 1, hints:[]};
+      console.log('action in game reducer', action);
+      return {
+        ...state,
+        hintsLeft: state.hintsLeft - 1,
+        hints: action.hints,
+      };
     case UPDATE_VISIBLE_ITEMS:
       let itemKey = action.info;
       return {

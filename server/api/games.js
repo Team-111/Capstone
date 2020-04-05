@@ -9,7 +9,7 @@ const randomCode = () => {
 };
 
 // Returns an object to be used when initializing a new game
-export const initializeGameObj = () => ({
+ const initializeGameObj = () => ({
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {
@@ -42,6 +42,7 @@ export const initializeGameObj = () => ({
       complete: false,
     },
   },
+  hints: {},
   legsBound: true,
   isLoaded: false,
 });
@@ -72,10 +73,12 @@ export async function getSingleGame(callbackFunc, gameId) {
     if (singleGame.exists) {
       callbackFunc(singleGame.data());
     } else {
+      let game = initializeGameObj();
+      game.hints = await getGameHints(game.puzzles);
       await db
         .collection('games')
         .doc(gameId)
-        .set(initializeGameObj());
+        .set(game);
       let newGame = await db
         .collection('games')
         .doc(`${gameId}`)
@@ -98,21 +101,37 @@ export const updateGame = async (userId, currentGame) => {
   }
 };
 
-//thunk to update Hints in a Game
-// export async function updateHint(userId, hintCount)
+export async function getPuzzles(callbackFunc) {
+  let allPuzzles = db.collection('puzzles');
+  try {
+    let puzzles = await allPuzzles.get();
+    callbackFunc(
+      puzzles.docs.map(puzzle => {
+        return {id: puzzle.id, ...puzzle.data()};
+      }),
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-// export async function createGame(userId) {
-//   try {
-//     await db
-//       .collection('games')
-//       .doc(`${userId}`)
-//       .set({
-//         hintsLeft: 3,
-//       });
-//     // scores.forEach(doc => callbackFunc(doc.data()))
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// udpateGame('2dA2La6CAsTaK4I7fBx53iofQnF3', {hintsLeft: 2, currentTime: {min: 1, sec: 0}});
+export async function getGameHints(gamePuzzles) {
+  try {
+    let gamePuzzArray = Object.keys(gamePuzzles);
+    let hintsArray = [];
+    await getPuzzles(puzzleHints => {
+      hintsArray = puzzleHints.filter(
+        puzzHint =>
+          gamePuzzArray.includes(puzzHint.id) || puzzHint.id === 'room');
+    });
+    let hints = {};
+    for (let i = 0; i < hintsArray.length; i++) {
+      if (hintsArray[i].hints) {
+        hints[hintsArray[i].id] = hintsArray[i].hints;
+      }
+    }
+    return hints;
+  } catch (error) {
+    console.log(error);
+  }
+}

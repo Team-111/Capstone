@@ -21,10 +21,12 @@ class RoomCamera extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentHint:'',
       hintVisible: false,
     }
     this.showHint = this.showHint.bind(this);
     this.changeItem = this.changeItem.bind(this);
+    this.notSolvedPuzzles = this.notSolvedPuzzles.bind(this);
   }
 
   changeItem(direction) {
@@ -48,15 +50,59 @@ class RoomCamera extends Component {
     }
   }
 
-  showHint() {
+  notSolvedPuzzles() {
+    let notSolved = [];
+    let currentPuzzles = this.props.currentGame.puzzles;
+    let currentHints = this.props.currentGame.hints;
+    for (let puzzle in currentPuzzles) {
+      if (!!currentHints[puzzle] && !currentPuzzles[puzzle].complete) {
+        notSolved.push(puzzle);
+      }
+    }
+    if (currentHints.room){
+      if (currentHints.room.length > 0){
+        notSolved.push('room');
+      }
+    }
+    return notSolved;
+  }
 
+  showHint() {
+    if (this.props.currentGame.hintsLeft > 0) {
+      //Make a copy of the current hints on state
+      let currentHints = JSON.parse(
+        JSON.stringify(this.props.currentGame.hints),
+      );
+
+      //Get puzzles that are not solved
+      let notSolvedPuzz = this.notSolvedPuzzles();
+      //Choose Random puzzle that is not solved
+      //and random hint from that puzzle
+      let randomPuzzle = notSolvedPuzz[randomIdx(notSolvedPuzz.length)];
+      //Copy hints for choosen puzzle
+      let randomPuzzleHints = [...currentHints[randomPuzzle]];
+      let randomPuzzleIdx = randomIdx(randomPuzzleHints.length);
+      let randomPuzzleHint = randomPuzzleHints[randomPuzzleIdx];
+      //Remove hint choosen from hints for that puzzle
+      randomPuzzleHints.splice(randomPuzzleIdx, 1);
+
+      if (randomPuzzleHints.length > 0){
+        currentHints[randomPuzzle] = randomPuzzleHints;
+      } else {
+        delete currentHints[randomPuzzle];
+      }
+      //Use hint and set state to current hint to display to player
+      this.props.useHint(currentHints);
+      this.setState({currentHint: randomPuzzleHint});
+      setTimeout(() => this.setState({currentHint: ''}), 3500);
+    }
   }
 
   render() {
     return (
       <ViroCamera position={[0, 0, 0]} active={this.props.isActive}>
         <TimerComponent />
-        <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.35, 0.8, -1.5]}>
+        <ViroNode scale={[0.18, 0.1, 0.1]} position={[0.33, 0.77, -1.5]}>
           <ViroQuad
             materials={['save']}
             onClick={() => {
@@ -68,20 +114,33 @@ class RoomCamera extends Component {
             shadowCastingBitMask={2}
           />
         </ViroNode>
-        <ViroNode position={[-0.25, 0.6, -1.5]} scale={[0.38, 0.38, 0.38]}>
+        <ViroNode scale={[0.18, 0.1, 0.1]} position={[-0.33, 0.77, -1.5]}>
+          <ViroQuad
+            materials={['hint']}
+            onClick={this.showHint}
+            height={1}
+            width={1}
+            shadowCastingBitMask={2}
+          />
+        </ViroNode>
+        <ViroNode scale={[0.38, 0.38, 0.38]} position={[-0.18, 0.53, -1.5]}>
           <ViroText
-            text={`Hints = ${this.props.currentGame.hintsLeft}`}
+            text={`${this.props.currentGame.hintsLeft}/3`}
             width={1}
             height={1}
             color="#F5B041"
             style={{fontFamily: 'Arial', fontSize: 15}}
-            onClick={() => {
-              this.props.useHint();
-
-            }}
             shadowCastingBitMask={2}
           />
         </ViroNode>
+        <ViroText
+          position={[0, 0, -1]}
+          text={this.state.currentHint}
+          textAlign="center"
+          scale={[0.3, 0.3, 0.3]}
+          style={{fontSize: 15, fontFamily: 'Arial'}}
+          textClipMode="ClipToBounds"
+          width={2} shadowCastingBitMask={2}/>
         <ViroText
           position={[0, 0, -1]}
           text={this.props.hudText}
@@ -134,8 +193,16 @@ ViroMaterials.createMaterials({
   save: {
     diffuseTexture: require('./res/firewood-clipart-20-original.png'),
   },
+  hint: {
+    diffuseTexture: require('./res/firewood-hints.png'),
+  },
+});
 
-})
+const randomIdx  = (arrayLen) => {
+  let randI = Math.floor(Math.random() * Math.floor(arrayLen));
+  console.log('randomIdx = ', randI);
+  return randI;
+};
 
 const mapStateToProps = state => ({
   currentGame: state.game,
@@ -145,7 +212,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     saveGame: (userID, updatedGame) => dispatch(saveGameThunk(userID, updatedGame)),
-    useHint: () => dispatch(useHint()),
+    useHint: hints => dispatch(useHint(hints)),
     selectItem: newIndex => dispatch(selectItemThunk(newIndex)),
   };
 };
