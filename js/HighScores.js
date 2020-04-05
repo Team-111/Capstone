@@ -51,11 +51,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    //fontFamily: 'Arial',
-    // fontSize: 60,
     color: '#FF9800',
-    // textAlignVertical: 'center',
-    // textAlign: 'center',
   },
   hsTitle: {
     fontSize: 58,
