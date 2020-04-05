@@ -39,7 +39,7 @@ class HighScores extends Component {
         </View>
       );
     } else {
-      return <Text>Loading HighScores</Text>;
+      return <Text style={styles.loading}>Loading Highscores</Text>;
     }
   }
 }
@@ -59,6 +59,11 @@ var styles = StyleSheet.create({
   score: {
     fontSize: 22,
   },
+  loading: {
+    textAlign: 'center',
+    paddingTop: 20,
+    fontSize: 32,
+  }
 });
 
 const mapStateToProps = state => {
