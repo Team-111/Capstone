@@ -23,6 +23,7 @@ import {
   PixelRatio,
   TouchableHighlight,
   Button,
+  ImageBackground,
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -52,6 +53,8 @@ var SIGNUP_NAVIGATOR_TYPE = 'SIGNUP';
 var AR_NAVIGATOR_TYPE = 'AR';
 var WINNER_NAVIGATOR_TYPE = 'WINNER';
 var HOWTOPLAY_NAVIGATOR_TYPE = 'HOW TO PLAY';
+//Photo by rabidcoyotetudios instagram https://www.instagram.com/p/BcZFccyHymE/
+const image = require('./js/res/cabin.jpeg');
 
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
@@ -64,6 +67,7 @@ class ViroSample extends Component {
     this.state = {
       navigatorType: defaultNavigatorType,
       sharedProps: sharedProps,
+      imageLoaded: false,
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -75,6 +79,7 @@ class ViroSample extends Component {
     this._getWinner = this._getWinner.bind(this);
     this._exitViro = this._exitViro.bind(this);
     this._getHowToPlayNavigator = this._getHowToPlayNavigator.bind(this);
+    this._onLoad = this._onLoad.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -97,20 +102,24 @@ class ViroSample extends Component {
     }
   }
 
+  _onLoad(){
+    this.setState({imageLoaded: true});
+  }
   // Presents the user with a choice of an AR or VR experience
   _getExperienceSelector() {
     //if (auth.currentUser) console.log('Auth=', auth.currentUser.uid);
     return (
       <View style={localStyles.outer}>
-        <View style={localStyles.inner}>
-          {/* {auth.currentUser ??
-            <Text style={localStyles.titleText}>
-              Welcome {`${auth.currentUser.email.split('@')[0]}`} to
-            </Text>
-          } */}
+        <ImageBackground
+          source={image}
+          style={localStyles.image}
+          onLoad={this._onLoad}
+        />
+        {this.state.imageLoaded && (
+          <View style={localStyles.inner}>
           <Text style={localStyles.titleText}>Escape the Room AR</Text>
           {auth.currentUser ? (
-            <View>
+            <View style={localStyles.buttonContainer}>
               <TouchableHighlight
                 style={localStyles.buttons}
                 onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
@@ -143,7 +152,7 @@ class ViroSample extends Component {
               </TouchableHighlight>
             </View>
           ) : (
-            <View>
+            <View style={localStyles.content}>
               <TouchableHighlight
                 style={localStyles.buttons}
                 onPress={this._getExperienceButtonOnPress(
@@ -162,6 +171,10 @@ class ViroSample extends Component {
             </View>
           )}
         </View>
+        )}
+        {!this.state.imageLoaded && (
+          <Text style={{color:'red', fontSize: 90}}>...</Text>
+        )}
       </View>
     );
   }
@@ -218,6 +231,7 @@ class ViroSample extends Component {
     return () => {
       this.setState({
         navigatorType: navigatorType,
+        imageLoaded: false,
       });
     };
   }
@@ -242,29 +256,47 @@ class ViroSample extends Component {
 }
 
 var localStyles = StyleSheet.create({
+  image: {
+    position: "absolute",
+    top: 0, left: 0, right: 0, bottom: 0,
+    width: null,
+    height: '100%',
+    //opacity: 0.8,
+  },
   viroContainer: {
     flex: 1,
     backgroundColor: 'black',
   },
   outer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'black',
   },
   inner: {
-    flex: 1,
+    //flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'black',
+    opacity: 0.85,
+    width: 400,
+    height: 330,
   },
   titleText: {
-    paddingTop: 30,
+    // paddingTop: 30,
     paddingBottom: 20,
     color: '#ff0000',
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 30,
     // fontFamily: 'CFNightofTerrorPERSONAL-Reg'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    width: 300,
   },
   buttonText: {
     color: '#fff',
@@ -272,10 +304,10 @@ var localStyles = StyleSheet.create({
     fontSize: 20,
   },
   buttons: {
-    height: 80,
-    width: 150,
-    paddingTop: 20,
-    paddingBottom: 20,
+    height: 60,
+    width: 120,
+    paddingTop: 15,
+    paddingBottom: 15,
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: '#ff0000',
