@@ -182,7 +182,7 @@ class Room extends Component {
       <Viro3DObject
         source={require('../js/Objects/models/ARoomModels/spoonLowPoly.obj')}
         type="OBJ"
-        position={[-2, -3, 3]}
+        position={[-2, -3.4, 3]}
         rotation={[90, 0, 90]}
         scale={[0.006, 0.006, 0.006]}
         visible={this.props.currentGame.visibleInRoom.spoon}
@@ -199,8 +199,9 @@ class Room extends Component {
           require('./Objects/models/key/t_worn_key.png'),
         ]}
         type="OBJ"
-        position={[2.5, -1.9, 1]}
+        position={[2.5, -1.9, 1.4]}
         scale={[0.8, 0.8, 0.8]}
+        rotation={[90,0,90]}
         visible={this.props.currentGame.visibleInRoom.key && !this.props.currentGame.visibleInRoom.skull}
         onClick={() => this.getItem('key', true)}
         materials={['key']}
@@ -249,7 +250,7 @@ class Room extends Component {
       <Viro3DObject
         source={require('./Objects/models/skull/12140_Skull_v3_L2.obj')}
         type="OBJ"
-        position={[2.5, -1.9, 1]}
+        position={[2.5, -1.9, 1.4]}
         scale={[0.017, 0.017, 0.017]}
         rotation={[260, 230, -10]}
         materials={['skull']}

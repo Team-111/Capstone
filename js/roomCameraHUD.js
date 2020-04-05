@@ -153,8 +153,8 @@ class RoomCamera extends Component {
           <ViroQuad materials={[`${this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]}Inv`]} shadowCastingBitMask={2}/>
           {/* <ViroText text={this.props.currentGame.inventory[this.props.currentGame.selectedItemIndex]} /> */}
         </ViroNode>
-        <ViroQuad position={[.5, -1, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}} shadowCastingBitMask={2}/>
-        <ViroQuad position={[-.5, -1, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}} shadowCastingBitMask={2}/>
+        <ViroQuad position={[.5, -.9, -2]} scale={[.4,.4,.4]} materials={['right']} onClick={() => {this.changeItem('right')}} shadowCastingBitMask={2}/>
+        <ViroQuad position={[-.5, -.9, -2]} scale={[.4,.4,.4]} materials={['left']} onClick={() => {this.changeItem('left')}} shadowCastingBitMask={2}/>
         {/*This ViroQuad is passed the material for a 'pop up display item' ie newspaper */}
           <ViroQuad materials={[this.props.shownObject]} position={[0,0, -1.6]} onClick={this.props.putItemAway} visible={this.props.objectDisplay} shadowCastingBitMask={2}/>
 
