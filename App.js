@@ -223,8 +223,8 @@ class ViroSample extends Component {
   }
 
   // This function "exits" Viro by setting the navigatorType to UNSET.
-  _exitViro(navType = 'unset') {
-    if(navType === 'unset') {
+  _exitViro(navType = UNSET) {
+    if(navType === UNSET) {
       this.setState({
         navigatorType: UNSET,
       });

@@ -86,7 +86,7 @@ export default class Login extends Component {
 
         <View style={styles.separator} />
 
-        <Button title="Back" onPress={this.props.exitViro} style={styles.otherStyle}>
+        <Button title="Back" onPress={()=>this.props.exitViro()} style={styles.otherStyle}>
           Back
         </Button>
       </View>
