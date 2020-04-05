@@ -72,35 +72,34 @@ class RoomCamera extends Component {
 
   showHint() {
     if (this.props.currentGame.hintsLeft > 0) {
-      console.log('Current game in roomCameraHUD', this.props.currentGame);
+      // console.log('Current game in roomCameraHUD', this.props.currentGame);
       // let currentPuzzles = this.props.currentGame.puzzles;
       let currentHints = JSON.parse(
         JSON.stringify(this.props.currentGame.hints),
       );
-      console.log('currentHints copy =', currentHints)
+      // console.log('currentHints copy =', currentHints)
       let notSolvedPuzz = this.notSolvedPuzzles();
-      console.log('notSolvedPuzz', notSolvedPuzz);
-      // if (notSolvedPuzz.length > 0) {
+      // console.log('notSolvedPuzz', notSolvedPuzz);
       let randomPuzzle = notSolvedPuzz[randomIdx(notSolvedPuzz.length)];
-      console.log('Here is randomPuzzle', randomPuzzle);
+      // console.log('Here is randomPuzzle', randomPuzzle);
       let randomPuzzleHints = [...currentHints[randomPuzzle]];
       let randomPuzzleIdx = randomIdx(randomPuzzleHints.length);
       //console.log('randomPuzzleIdx', randomPuzzleIdx);
       //console.log('randomPuzzleHints', randomPuzzleHints);
       let randomPuzzleHint = randomPuzzleHints[randomPuzzleIdx];
-      console.log('Here is the hint selected:', randomPuzzleHint);
+      // console.log('Here is the hint selected:', randomPuzzleHint);
       randomPuzzleHints.splice(randomPuzzleIdx, 1);
-      console.log('New set of hints:', randomPuzzle, randomPuzzleHints);
+      // console.log('New set of hints:', randomPuzzle, randomPuzzleHints);
       if (randomPuzzleHints.length > 0){
         currentHints[randomPuzzle] = randomPuzzleHints;
       } else {
         delete currentHints[randomPuzzle];
       }
-      //   this.props.useHint(randomPuzzle, randomPuzzleIdx);
-      // }
-      console.log('current hints', currentHints);
+      //console.log('current hints', currentHints);
+      console.log(randomPuzzleHint)
       this.props.useHint(currentHints);
       this.setState({currentHint: randomPuzzleHint});
+      setTimeout(() => this.setState({currentHint: ''}), 3500);
     }
   }
 
@@ -133,6 +132,13 @@ class RoomCamera extends Component {
             shadowCastingBitMask={2}
           />
         </ViroNode>
+        <ViroText
+          position={[0, 0, -1]}
+          text={this.state.currentHint}
+          textAlign="center"
+          scale={[0.3, 0.5, 0.3]}
+          textClipMode="ClipToBounds"
+          width={2} shadowCastingBitMask={2}/>
         <ViroText
           position={[0, 0, -1]}
           text={this.props.hudText}
