@@ -78,18 +78,27 @@ export default class Login extends Component {
     return (
       <View style={styles.otherStyle}>
       <View style={styles.container}>
-        <Text style={styles.otherStyle}>Welcome back...</Text>
+        <Text style={styles.title}>Welcome back...</Text>
         <Form ref={c => this._form = c} type={login} options={this.state.options} />
-        <Button title="submit" onPress={this.handleSubmit} style={styles.otherStyle}>
-          Submit
-        </Button>
 
-        <View style={styles.separator} />
+      <View style={styles.buttonContainer}>
+            <TouchableHighlight
+              title="submit"
+              onPress={this.handleSubmit}
+              style={styles.button}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableHighlight>
 
-        <Button title="Back" onPress={this.props.exitViro} style={styles.otherStyle}>
-          Back
-        </Button>
-      </View>
+            <View style={styles.separator} />
+
+            <TouchableHighlight
+              title="Back"
+              onPress={() => this.props.exitViro()}
+              style={styles.button}>
+              <Text style={styles.buttonText}>Back</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
       </View>
     );
   }
@@ -104,15 +113,44 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000'
   },
   otherStyle: {
+    flex: 1,
     color: '#ff0000',
     backgroundColor: '#000000',
     textAlign: 'center',
     fontSize: 30,
-    paddingBottom: 10,
+    paddingTop: 10,
+  },
+  title: {
+    color: '#ff0000',
+    fontSize: 30,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   separator: {
     marginVertical: 8,
-  }
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  button: {
+    height: 60,
+    width: 120,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#ff0000',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#ae0000',
+    borderTopColor: '#ff5555',
+  },
 });
 
 module.exports = Login;

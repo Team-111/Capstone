@@ -18,6 +18,10 @@
 		2DCD954D1E0B4F2C00145EB5 /* CapstoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CapstoneTests.m */; };
 		AEF3FF4A63FA48D1AA75A538 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C931EC2E3ADC4B03B7CE6A5D /* libRNFirebase.a */; };
 		3E7BDD3B7A48491CAB781CE1 /* CFNightofTerrorPERSONAL-Reg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64D2D6E22158445CB53D4B38 /* CFNightofTerrorPERSONAL-Reg.ttf */; };
+		CA765453E21C4400ADE7C3B8 /* Creepster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F52CAD4D1E9D4B3F9EF0A7E0 /* Creepster-Regular.ttf */; };
+		0D885723722E43C1B8E5E97C /* CFNightofTerrorPERSONAL-Reg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0037DD58ADE44DDC8F4257F8 /* CFNightofTerrorPERSONAL-Reg.ttf */; };
+		1164C4B130F0494F85788A4B /* Creepster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA60AB4F996D4E07A4C90413 /* Creepster-Regular.ttf */; };
+		EE3EDDCD2721412FB6E0B20F /* Brushstroke Horror.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF719040A542AD8B5BF8F0 /* Brushstroke Horror.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +60,10 @@
 		7D3E64BF0FEC429591BC093F /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		C931EC2E3ADC4B03B7CE6A5D /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		64D2D6E22158445CB53D4B38 /* CFNightofTerrorPERSONAL-Reg.ttf */ = {isa = PBXFileReference; name = "CFNightofTerrorPERSONAL-Reg.ttf"; path = "../fonts/CFNightofTerrorPERSONAL-Reg.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F52CAD4D1E9D4B3F9EF0A7E0 /* Creepster-Regular.ttf */ = {isa = PBXFileReference; name = "Creepster-Regular.ttf"; path = "../fonts/Creepster-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0037DD58ADE44DDC8F4257F8 /* CFNightofTerrorPERSONAL-Reg.ttf */ = {isa = PBXFileReference; name = "CFNightofTerrorPERSONAL-Reg.ttf"; path = "../assets/fonts/CFNightofTerrorPERSONAL-Reg.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EA60AB4F996D4E07A4C90413 /* Creepster-Regular.ttf */ = {isa = PBXFileReference; name = "Creepster-Regular.ttf"; path = "../assets/fonts/Creepster-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5AFF719040A542AD8B5BF8F0 /* Brushstroke Horror.otf */ = {isa = PBXFileReference; name = "Brushstroke Horror.otf"; path = "../assets/fonts/Brushstroke Horror.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +177,10 @@
 			isa = "PBXGroup";
 			children = (
 				64D2D6E22158445CB53D4B38 /* CFNightofTerrorPERSONAL-Reg.ttf */,
+				F52CAD4D1E9D4B3F9EF0A7E0 /* Creepster-Regular.ttf */,
+				0037DD58ADE44DDC8F4257F8 /* CFNightofTerrorPERSONAL-Reg.ttf */,
+				EA60AB4F996D4E07A4C90413 /* Creepster-Regular.ttf */,
+				5AFF719040A542AD8B5BF8F0 /* Brushstroke Horror.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -311,6 +323,10 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				3E7BDD3B7A48491CAB781CE1 /* CFNightofTerrorPERSONAL-Reg.ttf in Resources */,
+				CA765453E21C4400ADE7C3B8 /* Creepster-Regular.ttf in Resources */,
+				0D885723722E43C1B8E5E97C /* CFNightofTerrorPERSONAL-Reg.ttf in Resources */,
+				1164C4B130F0494F85788A4B /* Creepster-Regular.ttf in Resources */,
+				EE3EDDCD2721412FB6E0B20F /* Brushstroke Horror.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

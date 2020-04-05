@@ -84,19 +84,32 @@ export default class SignUp extends Component {
   render() {
     return (
       <View style={styles.otherStyle}>
-      <View style={styles.container}>
-        <Text style={styles.otherStyle}>Register...If you dare...</Text>
-        <Form ref={c => this._form = c} type={Signup} options={this.state.options}/>
-        <Button title="Register" onPress={this.handleSubmit} style={styles.otherStyle}>
-          Register
-        </Button>
+        <View style={styles.container}>
+          <Text style={styles.title}>Register...If you dare...</Text>
+          <Form
+            ref={c => (this._form = c)}
+            type={Signup}
+            options={this.state.options}
+          />
 
-        <View style={styles.separator} />
+          <View style={styles.buttonContainer}>
+            <TouchableHighlight
+              title="Register"
+              onPress={this.handleSubmit}
+              style={styles.button}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableHighlight>
 
-        <Button title="Back" onPress={this.props.exitViro} style={styles.otherStyle}>
-          Back
-        </Button>
-      </View>
+            <View style={styles.separator} />
+
+            <TouchableHighlight
+              title="Back"
+              onPress={() => this.props.exitViro()}
+              style={styles.button}>
+              <Text style={styles.buttonText}>Back</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
       </View>
     );
   }
@@ -108,20 +121,47 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 400,
     padding: 20,
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
   },
   otherStyle: {
+    flex: 1,
     color: '#ff0000',
     backgroundColor: '#000000',
     textAlign: 'center',
     fontSize: 30,
     paddingBottom: 10,
   },
+  title: {
+    color: '#ff0000',
+    fontSize: 30,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
   separator: {
     marginVertical: 8,
-  }
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  button: {
+    height: 60,
+    width: 120,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#ff0000',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#ae0000',
+    borderTopColor: '#ff5555',
+  },
 });
-
-
 
 module.exports = SignUp;
