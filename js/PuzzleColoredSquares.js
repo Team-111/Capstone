@@ -117,7 +117,15 @@ class PuzzleColoredSquares extends Component {
               );
             })
           ) : (
-            <ViroFlexView materials={['helpme']} width={1.2} height={1.2} shadowCastingBitMask={2}>
+            <ViroFlexView
+              materials={['helpme']}
+              width={1.2}
+              height={1.2}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
               <ViroText
                 text={this.props.codeDigit}
                 color="red"
@@ -126,7 +134,6 @@ class PuzzleColoredSquares extends Component {
                   textAlignVertical: 'center',
                   fontSize: 32,
                 }}
-                shadowCastingBitMask={2}
               />
             </ViroFlexView>
           )}
