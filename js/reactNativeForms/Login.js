@@ -81,7 +81,7 @@ export default class Login extends Component {
         <Text style={styles.title}>Welcome back...</Text>
         <Form ref={c => this._form = c} type={login} options={this.state.options} />
 
-      <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <TouchableHighlight
               title="submit"
               onPress={this.handleSubmit}
@@ -97,7 +97,16 @@ export default class Login extends Component {
               style={styles.button}>
               <Text style={styles.buttonText}>Back</Text>
             </TouchableHighlight>
-          </View>
+          </View> */}
+          <Button title="Login" onPress={()=>this.handleSubmit()} color= '#ff0000' style={styles.otherStyle}>
+          Register
+        </Button>
+
+        <View style={styles.separator} />
+
+        <Button title="Back" onPress={()=>this.props.exitViro()} color= '#ff0000' style={styles.otherStyle}>
+          Back
+        </Button>
         </View>
       </View>
     );

@@ -92,10 +92,10 @@ export default class SignUp extends Component {
             options={this.state.options}
           />
 
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <TouchableHighlight
               title="Register"
-              onPress={this.handleSubmit}
+              onPress={()=>this.handleSubmit()}
               style={styles.button}>
               <Text style={styles.buttonText}>Register</Text>
             </TouchableHighlight>
@@ -108,7 +108,17 @@ export default class SignUp extends Component {
               style={styles.button}>
               <Text style={styles.buttonText}>Back</Text>
             </TouchableHighlight>
-          </View>
+          </View> */}
+        <Button title="Register" onPress={()=>this.handleSubmit()} color= '#ff0000' style={styles.otherStyle}>
+          Register
+        </Button>
+
+        <View style={styles.separator} />
+
+        <Button title="Back" onPress={()=>this.props.exitViro()} color= '#ff0000' style={styles.otherStyle}>
+          Back
+        </Button>
+
         </View>
       </View>
     );
@@ -150,8 +160,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    height: 60,
-    width: 120,
+    height: 80,
+    width: 140,
     paddingTop: 15,
     paddingBottom: 15,
     marginTop: 10,

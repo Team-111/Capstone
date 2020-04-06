@@ -281,7 +281,7 @@ var localStyles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'black',
     opacity: 0.85,
-    width: 400,
+    width: 330,
     height: 330,
   },
   titleText: {

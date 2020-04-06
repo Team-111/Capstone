@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     height: 600,
-    width: 400,
+    width: 330,
     borderWidth: 2,
     borderRadius: 10,
     borderColor: '#ff0000',
