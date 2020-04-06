@@ -9,7 +9,7 @@ const randomCode = () => {
 };
 
 // Returns an object to be used when initializing a new game
- const initializeGameObj = () => ({
+export const initializeGameObj = () => ({
   hintsLeft: 3,
   currentTime: {min: 0, sec: 0},
   visibleInRoom: {

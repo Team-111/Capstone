@@ -380,10 +380,7 @@ class Room extends Component {
             <Pallindrome getItem={this.getItem} />
             <PuzzleSliding />
             {!this.props.endGame && (
-              <Combo
-                code={this.props.currentGame.lockCombo}
-                getItem={this.getItem}
-              />
+              <Combo code={this.props.currentGame.lockCombo} />
             )}
           </ViroNode>
         )}

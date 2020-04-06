@@ -52,8 +52,6 @@ class Combo extends Component {
         return false;
       }
     }
-
-    this.props.getItem('key', require('../js/Inventory/images/key.png'), true);
     return true;
   }
 
