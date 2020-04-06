@@ -120,6 +120,11 @@ var styles = StyleSheet.create({
     borderColor: '#ae0000',
     borderTopColor: '#ff5555',
   },
+  loading: {
+    textAlign: 'center',
+    paddingTop: 20,
+    fontSize: 32,
+  }
 });
 
 const mapStateToProps = state => {
