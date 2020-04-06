@@ -81,7 +81,7 @@ var styles = StyleSheet.create({
   },
   highScoreStyle:{
     height: 600,
-    width: 400,
+    width: 330,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
